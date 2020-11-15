@@ -17,7 +17,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"www.zi-c.wang","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"www.zi-c.wang","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="something about kernel &amp; programming">
@@ -102,6 +102,7 @@
 
   <div class="site-nav-right">
     <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
 </div>
@@ -141,11 +142,38 @@
     <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a>
 
   </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
   </ul>
 </nav>
 
 
 
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
 
 </div>
     </header>
@@ -164,6 +192,101 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.zi-c.wang/2020/11/15/eBPF-%E7%AE%80%E4%BB%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/media/icon.ico">
+      <meta itemprop="name" content="purplewall1206">
+      <meta itemprop="description" content="something about kernel & programming">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="purplewall1206 blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/15/eBPF-%E7%AE%80%E4%BB%8B/" class="post-title-link" itemprop="url">eBPF 简介</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-11-15 19:17:06 / 修改时间：19:32:38" itemprop="dateCreated datePublished" datetime="2020-11-15T19:17:06+08:00">2020-11-15</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/eBPF/" itemprop="url" rel="index"><span itemprop="name">eBPF</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="eBPF"><a href="#eBPF" class="headerlink" title="eBPF"></a>eBPF</h1><ul>
+<li><a href="#ebpf">eBPF</a><ul>
+<li><a href="#1-%E7%AE%80%E4%BB%8B">1. 简介</a></li>
+<li><a href="#2-%E5%8F%82%E8%80%83%E6%9D%90%E6%96%99">2. 参考材料</a></li>
+<li><a href="#3-in-kernel-virtual-machine">3. in-kernel virtual machine</a></li>
+<li><a href="#4-jit-just-in-time-compile">4. JIT just-in-time compile</a></li>
+<li><a href="#5-kprobe-%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86">5. kprobe 实现原理</a></li>
+</ul>
+</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://ebpf.io/summit-2020/">ebpf summit 2020峰会</a> 这个有时间应该看一下</p>
+<h2 id="1-简介"><a href="#1-简介" class="headerlink" title="1. 简介"></a>1. 简介</h2><p>eBPF由BPF（berkeley packet filter发展而来，BPF现在也叫classic-BPF由于区别BPF），到目前为止被引入了linux内核并且使用了JIT just in time comilper进行加速，类似于浏览器的javascript脚本执行语言。</p>
+<p>eBPF定义了一个内核内运行的虚拟机</p>
+<p><img src="/2020/11/15/eBPF-%E7%AE%80%E4%BB%8B/ebpf-arch.png" alt="ebpf-arch"></p>
+<p>使用bcc进行bpf的开发，bcc和bpftrace项目的维护放在 <strong>iovisor</strong></p>
+<h2 id="2-参考材料"><a href="#2-参考材料" class="headerlink" title="2. 参考材料"></a>2. 参考材料</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://lwn.net/Articles/740157/">A thorough introduction to eBPF</a></li>
+<li><a target="_blank" rel="noopener" href="https://lwn.net/Articles/437981/">A JIT for packet filters</a></li>
+<li><a target="_blank" rel="noopener" href="https://lwn.net/Articles/599755/">BPF: the universal in-kernel virtual machine</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=JRFNIKUROPE">LECTURE BPF: Tracing and More</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.brendangregg.com/blog/2019-01-01/learn-ebpf-tracing.html">TUTORIAL Learn eBPF Tracing: Tutorial and Examples</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/iovisor/bpftrace/blob/master/docs/tutorial_one_liners.md">TUTORIAL The bpftrace One-Liner Tutorial</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/iovisor/bpftrace/blob/master/docs/reference_guide.md">TUTORIAL bpftrace Reference Guide</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.anquanke.com/post/id/220047">Linux内核攻击面之eBPF模块</a></li>
+</ol>
+<h2 id="3-in-kernel-virtual-machine"><a href="#3-in-kernel-virtual-machine" class="headerlink" title="3. in-kernel virtual machine"></a>3. in-kernel virtual machine</h2><p>Things started to change in the 3.0 release, when Eric Dumazet added a <strong>just-in-time compiler</strong> to the <strong>BPF interpreter</strong>. In the 3.4 kernel, the <strong>“secure computing” (seccomp)</strong> facility was enhanced to support a user-supplied filter for system calls; that filter, too, is written in the BPF language.</p>
+<h2 id="4-JIT-just-in-time-compile"><a href="#4-JIT-just-in-time-compile" class="headerlink" title="4. JIT just-in-time compile"></a>4. JIT just-in-time compile</h2><p>Eric Dumazet’s patch is a fundamental change: it puts a just-in-time compiler into the kernel to <strong>translate BPF code directly into the host system’s assembly code.</strong> The simplicity of the BPF machine makes the JIT translation relatively simple; every BPF instruction maps to a straightforward <strong>x86 instruction sequence</strong>. </p>
+<h2 id="5-kprobe-实现原理"><a href="#5-kprobe-实现原理" class="headerlink" title="5. kprobe 实现原理"></a>5. kprobe 实现原理</h2><p>这里仅做猜测，应该是直接使用kprobe技术，int3 打断点到指定位置，截取控制流到相应的probe callback 函数。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -457,6 +580,13 @@
 
               <time title="创建时间：2020-11-14 16:54:12" itemprop="dateCreated datePublished" datetime="2020-11-14T16:54:12+08:00">2020-11-14</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-11-15 19:22:11" itemprop="dateModified" datetime="2020-11-15T19:22:11+08:00">2020-11-15</time>
+              </span>
 
           
 
@@ -482,6 +612,7 @@
 <h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
 
 <p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+<h3 id="Next-theme-Config"><a href="#Next-theme-Config" class="headerlink" title="Next-theme Config"></a>Next-theme Config</h3><p><a target="_blank" rel="noopener" href="https://tding.top/archives/42c38b10.html">Hexo-NexT (v7.0+) 主题配置</a></p>
 
       
     </div>
@@ -565,20 +696,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">4</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -657,6 +788,10 @@
   
 
 
+
+
+  
+<script src="/js/local-search.js"></script>
 
 
 
