@@ -6,7 +6,7 @@
   <link href="https://www.zi-c.wang/atom.xml" rel="self"/>
   
   <link href="https://www.zi-c.wang/"/>
-  <updated>2020-11-15T11:46:00.824Z</updated>
+  <updated>2020-11-15T11:52:18.240Z</updated>
   <id>https://www.zi-c.wang/</id>
   
   <author>
@@ -21,25 +21,32 @@
     <link href="https://www.zi-c.wang/2020/11/15/io-uring-%E7%B3%BB%E7%BB%9F%E6%80%A7%E6%95%B4%E7%90%86/"/>
     <id>https://www.zi-c.wang/2020/11/15/io-uring-%E7%B3%BB%E7%BB%9F%E6%80%A7%E6%95%B4%E7%90%86/</id>
     <published>2020-11-15T11:42:54.000Z</published>
-    <updated>2020-11-15T11:46:00.824Z</updated>
+    <updated>2020-11-15T11:52:18.240Z</updated>
     
     
-      
-      
-        
-        
-    <summary type="html"></summary>
-        
-      
+    <summary type="html">&lt;h1 id=&quot;io-uring-系统性整理&quot;&gt;&lt;a href=&quot;#io-uring-系统性整理&quot; class=&quot;headerlink&quot; title=&quot;io_uring 系统性整理&quot;&gt;&lt;/a&gt;io_uring 系统性整理&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#io_uring-%E7%B3%BB%E7%BB%9F%E6%80%A7%E6%95%B4%E7%90%86&quot;&gt;io_uring 系统性整理&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#io-%E6%A8%A1%E5%9E%8B&quot;&gt;I/O 模型&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#comparison&quot;&gt;comparison&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#asynchronous-io&quot;&gt;Asynchronous I/O&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#io_uring&quot;&gt;io_uring&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#%E6%80%BB%E7%BB%93%E9%82%AE%E4%BB%B6&quot;&gt;总结邮件&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这里有个误解，I/O模型其实是针对整个系统的所有I/O操作的，但是平时很少对文件系统使用异步读写，同步或直接映射的情况比较多。更别提多路复用了，这个机制基本只用在network中。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://lwn.net/Kernel/Index/&quot;&gt;lwn Kernel article index&lt;/a&gt;&lt;/p&gt;</summary>
     
     
     
     <category term="kernel" scheme="https://www.zi-c.wang/categories/kernel/"/>
     
     
-    <category term="kernel" scheme="https://www.zi-c.wang/tags/kernel/"/>
-    
     <category term="io_uring" scheme="https://www.zi-c.wang/tags/io-uring/"/>
+    
+    <category term="kernel" scheme="https://www.zi-c.wang/tags/kernel/"/>
     
   </entry>
   
@@ -48,16 +55,24 @@
     <link href="https://www.zi-c.wang/2020/11/15/eBPF-%E7%AE%80%E4%BB%8B/"/>
     <id>https://www.zi-c.wang/2020/11/15/eBPF-%E7%AE%80%E4%BB%8B/</id>
     <published>2020-11-15T11:17:06.000Z</published>
-    <updated>2020-11-15T11:32:38.784Z</updated>
+    <updated>2020-11-15T11:52:20.424Z</updated>
     
     
-      
-      
-        
-        
-    <summary type="html"></summary>
-        
-      
+    <summary type="html">&lt;h1 id=&quot;eBPF&quot;&gt;&lt;a href=&quot;#eBPF&quot; class=&quot;headerlink&quot; title=&quot;eBPF&quot;&gt;&lt;/a&gt;eBPF&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#ebpf&quot;&gt;eBPF&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#1-%E7%AE%80%E4%BB%8B&quot;&gt;1. 简介&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#2-%E5%8F%82%E8%80%83%E6%9D%90%E6%96%99&quot;&gt;2. 参考材料&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#3-in-kernel-virtual-machine&quot;&gt;3. in-kernel virtual machine&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#4-jit-just-in-time-compile&quot;&gt;4. JIT just-in-time compile&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#5-kprobe-%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86&quot;&gt;5. kprobe 实现原理&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href=&quot;https://ebpf.io/summit-2020/&quot;&gt;ebpf summit 2020峰会&lt;/a&gt; 这个有时间应该看一下&lt;/p&gt;
+&lt;h2 id=&quot;1-简介&quot;&gt;&lt;a href=&quot;#1-简介&quot; class=&quot;headerlink&quot; title=&quot;1. 简介&quot;&gt;&lt;/a&gt;1. 简介&lt;/h2&gt;&lt;p&gt;eBPF由BPF（berkeley packet filter发展而来，BPF现在也叫classic-BPF由于区别BPF），到目前为止被引入了linux内核并且使用了JIT just in time comilper进行加速，类似于浏览器的javascript脚本执行语言。&lt;/p&gt;
+&lt;p&gt;eBPF定义了一个内核内运行的虚拟机&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/2020/11/15/eBPF-%E7%AE%80%E4%BB%8B/ebpf-arch.png&quot; alt=&quot;ebpf-arch&quot;&gt;&lt;/p&gt;
+&lt;p&gt;使用bcc进行bpf的开发，bcc和bpftrace项目的维护放在 &lt;strong&gt;iovisor&lt;/strong&gt;&lt;/p&gt;</summary>
     
     
     
@@ -73,16 +88,39 @@
     <link href="https://www.zi-c.wang/2020/11/15/%E5%86%85%E6%A0%B8%E8%BF%91%E6%9C%9F%E6%94%B9%E5%8F%98/"/>
     <id>https://www.zi-c.wang/2020/11/15/%E5%86%85%E6%A0%B8%E8%BF%91%E6%9C%9F%E6%94%B9%E5%8F%98/</id>
     <published>2020-11-15T11:09:13.000Z</published>
-    <updated>2020-11-15T11:09:48.790Z</updated>
+    <updated>2020-11-15T11:52:26.240Z</updated>
     
     
-      
-      
-        
-        
-    <summary type="html"></summary>
-        
-      
+    <summary type="html">&lt;h1 id=&quot;内核近期改变&quot;&gt;&lt;a href=&quot;#内核近期改变&quot; class=&quot;headerlink&quot; title=&quot;内核近期改变&quot;&gt;&lt;/a&gt;内核近期改变&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#%E5%86%85%E6%A0%B8%E8%BF%91%E6%9C%9F%E6%94%B9%E5%8F%98&quot;&gt;内核近期改变&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#ioctl&quot;&gt;ioctl&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#1%E5%8E%9F%E5%A7%8B%E7%89%88%E6%9C%AC%E7%9A%84ioctl&quot;&gt;1.原始版本的ioctl&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#2%E5%86%85%E6%A0%B8%E6%94%B9%E8%BF%9B%E5%90%8E%E7%9A%84ioctl&quot;&gt;2.内核改进后的ioctl&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#3%E5%9C%A8%E7%BC%96%E5%86%99%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84%E5%A4%84%E7%90%86%E5%8A%9E%E6%B3%95&quot;&gt;3.在编写过程中的处理办法&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#4-%E5%8E%9F%E5%9B%A0%E5%88%86%E6%9E%90&quot;&gt;4. 原因分析&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#%E5%BC%82%E6%AD%A5io-read_iter&quot;&gt;异步I/O read_iter&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#1%E5%85%B7%E4%BD%93%E5%8F%98%E5%8C%96&quot;&gt;1.具体变化&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#2%E5%8E%9F%E5%9B%A0%E5%88%86%E6%9E%90&quot;&gt;2.原因分析&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#3%E9%97%AE%E9%A2%98&quot;&gt;3.问题&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#timer%E8%AE%A1%E6%97%B6%E5%99%A8%E5%8F%91%E7%94%9F%E6%94%B9%E5%8F%98&quot;&gt;timer计时器发生改变&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#block-%E9%A9%B1%E5%8A%A8%E5%9C%A850%E5%90%8E%E8%BF%9B%E8%A1%8C%E4%BA%86%E9%9D%9E%E5%B8%B8%E5%A4%A7%E7%9A%84%E5%8F%98%E5%8C%96&quot;&gt;block 驱动在5.0后进行了非常大的变化&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#%E5%8E%9F%E5%9B%A0&quot;&gt;原因&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#blk-mq-%E8%AE%BE%E8%AE%A1%E4%BA%86%E4%B8%A4%E5%B1%82%E9%98%9F%E5%88%97&quot;&gt;blk-mq 设计了两层队列&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#%E5%9C%A8%E6%9E%B6%E6%9E%84%E5%B1%82%E9%9D%A2&quot;&gt;在架构层面&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#%E5%85%B7%E4%BD%93%E5%88%B0%E5%87%BD%E6%95%B0&quot;&gt;具体到函数&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#%E5%86%85%E6%A0%B8%E8%AE%A1%E6%97%B6%E6%8E%A5%E5%8F%A3%E5%8F%91%E7%94%9F%E5%8F%98%E5%8C%96&quot;&gt;内核计时接口发生变化&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%88%9D%E5%A7%8B%E5%8C%96%E6%8E%A5%E5%8F%A3%E5%8F%98%E5%8C%96%E6%9C%AA%E8%A7%A3%E5%86%B3&quot;&gt;系统调用初始化接口变化（未解决）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%87%8F%E5%B0%91%E5%AE%9A%E4%B9%89%E6%95%B0%E9%87%8F-%E6%9C%AA%E8%A7%A3%E5%86%B3&quot;&gt;文件系统减少定义数量 （未解决）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#jprobe-%E8%A2%AB%E5%8F%96%E6%B6%88&quot;&gt;jprobe 被取消&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</summary>
     
     
     
@@ -98,16 +136,12 @@
     <link href="https://www.zi-c.wang/2020/11/15/dynamicprogramming-md/"/>
     <id>https://www.zi-c.wang/2020/11/15/dynamicprogramming-md/</id>
     <published>2020-11-15T10:36:17.000Z</published>
-    <updated>2020-11-15T10:57:20.564Z</updated>
+    <updated>2020-11-15T11:52:25.507Z</updated>
     
     
-      
-      
-        
-        
-    <summary type="html"></summary>
-        
-      
+    <summary type="html">&lt;h1 id=&quot;动态规划-Dynamic-Programming&quot;&gt;&lt;a href=&quot;#动态规划-Dynamic-Programming&quot; class=&quot;headerlink&quot; title=&quot;动态规划 Dynamic Programming&quot;&gt;&lt;/a&gt;动态规划 Dynamic Programming&lt;/h1&gt;&lt;p&gt;动态规划(dynamic programming)是运筹学的一个分支，是求解决策过程(decision process)最优化的数学方法。20世纪50年代初美国数学家R.E.Bellman等人在研究多阶段决策过程(multistep decision process)的优化问题时，提出了著名的最优化原理(principle of optimality)，把多阶段过程转化为一系列单阶段问题，利用各阶段之间的关系，逐个求解，创立了解决这类过程优化问题的新方法——动态规划。1957年出版了他的名著《Dynamic Programming》，这是该领域的第一本著作。&lt;/p&gt;
+&lt;h2 id=&quot;tricky&quot;&gt;&lt;a href=&quot;#tricky&quot; class=&quot;headerlink&quot; title=&quot;tricky&quot;&gt;&lt;/a&gt;tricky&lt;/h2&gt;&lt;p&gt;一般不要求记录解空间具体内容的，但是看起来好像需要从所有解中提取结果的都可以试试看动态规划，设计不好dp不妨试试看从0到i的物品的xxx，dp有可能是1维2维甚至3维。&lt;/p&gt;
+&lt;p&gt;如果要求解空间具体内容的上backtrack也不错，而且dp的题也可以用backtrack或者dfs碰碰运气。&lt;/p&gt;</summary>
     
     
     

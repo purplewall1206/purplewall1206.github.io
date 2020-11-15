@@ -6,6 +6,7 @@
     <content><![CDATA[<h1 id="动态规划-Dynamic-Programming"><a href="#动态规划-Dynamic-Programming" class="headerlink" title="动态规划 Dynamic Programming"></a>动态规划 Dynamic Programming</h1><p>动态规划(dynamic programming)是运筹学的一个分支，是求解决策过程(decision process)最优化的数学方法。20世纪50年代初美国数学家R.E.Bellman等人在研究多阶段决策过程(multistep decision process)的优化问题时，提出了著名的最优化原理(principle of optimality)，把多阶段过程转化为一系列单阶段问题，利用各阶段之间的关系，逐个求解，创立了解决这类过程优化问题的新方法——动态规划。1957年出版了他的名著《Dynamic Programming》，这是该领域的第一本著作。</p>
 <h2 id="tricky"><a href="#tricky" class="headerlink" title="tricky"></a>tricky</h2><p>一般不要求记录解空间具体内容的，但是看起来好像需要从所有解中提取结果的都可以试试看动态规划，设计不好dp不妨试试看从0到i的物品的xxx，dp有可能是1维2维甚至3维。</p>
 <p>如果要求解空间具体内容的上backtrack也不错，而且dp的题也可以用backtrack或者dfs碰碰运气。</p>
+<a id="more"></a>
 <h2 id="硬币找零问题-coin-change"><a href="#硬币找零问题-coin-change" class="headerlink" title="硬币找零问题 coin change"></a>硬币找零问题 coin change</h2><p><a href="https://leetcode-cn.com/problems/coin-change/">leetcode-322</a></p>
 <blockquote>
 <p>You are given coins of different denominations and a total amount of money amount. Write a function to compute the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return -1.  </p>
@@ -66,6 +67,7 @@
 <p>eBPF定义了一个内核内运行的虚拟机</p>
 <p><img src="/2020/11/15/eBPF-%E7%AE%80%E4%BB%8B/ebpf-arch.png" alt="ebpf-arch"></p>
 <p>使用bcc进行bpf的开发，bcc和bpftrace项目的维护放在 <strong>iovisor</strong></p>
+<a id="more"></a>
 <h2 id="2-参考材料"><a href="#2-参考材料" class="headerlink" title="2. 参考材料"></a>2. 参考材料</h2><ol>
 <li><a href="https://lwn.net/Articles/740157/">A thorough introduction to eBPF</a></li>
 <li><a href="https://lwn.net/Articles/437981/">A JIT for packet filters</a></li>
@@ -107,110 +109,6 @@
 ]]></content>
   </entry>
   <entry>
-    <title>内核近期改变</title>
-    <url>/2020/11/15/%E5%86%85%E6%A0%B8%E8%BF%91%E6%9C%9F%E6%94%B9%E5%8F%98/</url>
-    <content><![CDATA[<h1 id="内核近期改变"><a href="#内核近期改变" class="headerlink" title="内核近期改变"></a>内核近期改变</h1><ul>
-<li><a href="#%E5%86%85%E6%A0%B8%E8%BF%91%E6%9C%9F%E6%94%B9%E5%8F%98">内核近期改变</a><ul>
-<li><a href="#ioctl">ioctl</a><ul>
-<li><a href="#1%E5%8E%9F%E5%A7%8B%E7%89%88%E6%9C%AC%E7%9A%84ioctl">1.原始版本的ioctl</a></li>
-<li><a href="#2%E5%86%85%E6%A0%B8%E6%94%B9%E8%BF%9B%E5%90%8E%E7%9A%84ioctl">2.内核改进后的ioctl</a></li>
-<li><a href="#3%E5%9C%A8%E7%BC%96%E5%86%99%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84%E5%A4%84%E7%90%86%E5%8A%9E%E6%B3%95">3.在编写过程中的处理办法</a></li>
-<li><a href="#4-%E5%8E%9F%E5%9B%A0%E5%88%86%E6%9E%90">4. 原因分析</a></li>
-</ul>
-</li>
-<li><a href="#%E5%BC%82%E6%AD%A5io-read_iter">异步I/O read_iter</a><ul>
-<li><a href="#1%E5%85%B7%E4%BD%93%E5%8F%98%E5%8C%96">1.具体变化</a></li>
-<li><a href="#2%E5%8E%9F%E5%9B%A0%E5%88%86%E6%9E%90">2.原因分析</a></li>
-<li><a href="#3%E9%97%AE%E9%A2%98">3.问题</a></li>
-</ul>
-</li>
-<li><a href="#timer%E8%AE%A1%E6%97%B6%E5%99%A8%E5%8F%91%E7%94%9F%E6%94%B9%E5%8F%98">timer计时器发生改变</a></li>
-<li><a href="#block-%E9%A9%B1%E5%8A%A8%E5%9C%A850%E5%90%8E%E8%BF%9B%E8%A1%8C%E4%BA%86%E9%9D%9E%E5%B8%B8%E5%A4%A7%E7%9A%84%E5%8F%98%E5%8C%96">block 驱动在5.0后进行了非常大的变化</a><ul>
-<li><a href="#%E5%8E%9F%E5%9B%A0">原因</a></li>
-<li><a href="#blk-mq-%E8%AE%BE%E8%AE%A1%E4%BA%86%E4%B8%A4%E5%B1%82%E9%98%9F%E5%88%97">blk-mq 设计了两层队列</a></li>
-<li><a href="#%E5%9C%A8%E6%9E%B6%E6%9E%84%E5%B1%82%E9%9D%A2">在架构层面</a></li>
-<li><a href="#%E5%85%B7%E4%BD%93%E5%88%B0%E5%87%BD%E6%95%B0">具体到函数</a></li>
-</ul>
-</li>
-<li><a href="#%E5%86%85%E6%A0%B8%E8%AE%A1%E6%97%B6%E6%8E%A5%E5%8F%A3%E5%8F%91%E7%94%9F%E5%8F%98%E5%8C%96">内核计时接口发生变化</a></li>
-<li><a href="#%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%88%9D%E5%A7%8B%E5%8C%96%E6%8E%A5%E5%8F%A3%E5%8F%98%E5%8C%96%E6%9C%AA%E8%A7%A3%E5%86%B3">系统调用初始化接口变化（未解决）</a></li>
-<li><a href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%87%8F%E5%B0%91%E5%AE%9A%E4%B9%89%E6%95%B0%E9%87%8F-%E6%9C%AA%E8%A7%A3%E5%86%B3">文件系统减少定义数量 （未解决）</a></li>
-<li><a href="#jprobe-%E8%A2%AB%E5%8F%96%E6%B6%88">jprobe 被取消</a></li>
-</ul>
-</li>
-</ul>
-<h2 id="ioctl"><a href="#ioctl" class="headerlink" title="ioctl"></a>ioctl</h2><h3 id="1-原始版本的ioctl"><a href="#1-原始版本的ioctl" class="headerlink" title="1.原始版本的ioctl"></a>1.原始版本的ioctl</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">int (*ioctl)(struct inode *, struct file *, unsigned int, unsigned long);</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-内核改进后的ioctl"><a href="#2-内核改进后的ioctl" class="headerlink" title="2.内核改进后的ioctl"></a>2.内核改进后的ioctl</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">long (*unlocked_ioctl) (struct file *, unsigned int, unsigned long);</span><br><span class="line"></span><br><span class="line">long (*compat_ioctl) (struct file *, unsigned int, unsigned long);</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-在编写过程中的处理办法"><a href="#3-在编写过程中的处理办法" class="headerlink" title="3.在编写过程中的处理办法"></a>3.在编写过程中的处理办法</h3><ul>
-<li><p>将原先的写的 ioctl 函数声明给改成下面的 unlocked_ioctl 或者 compat_ioctl,</p>
-</li>
-<li><p>在 file_operations 结构体的初始化中也是一样. 修改为unlocked_ioctl 或者 compat_ioctl,</p>
-</li>
-<li><p>注意参数的兼容性问题, 新的ioctl() 接口没有 struct inode* 参数, 如果ioctl 接口中使用了 inode, 因此需要通过其他方式获取 inode</p>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2, 6, 36)</span><br><span class="line">static int XXX_ioctl(</span><br><span class="line">        struct inode *indoe,</span><br><span class="line">        struct file *filp,</span><br><span class="line">        unsigned int cmd,</span><br><span class="line">        unsigned long arg)</span><br><span class="line">&#123;</span><br><span class="line">#else</span><br><span class="line">&#x2F;&#x2F;long (*unlocked_ioctl) (struct file *, unsigned int, unsigned long);</span><br><span class="line">&#x2F;&#x2F;long (*compat_ioctl) (struct file *, unsigned int cmd, unsigned long arg)</span><br><span class="line">static long XXX_unlocked_ioctl(</span><br><span class="line">        struct file *filp,</span><br><span class="line">        unsigned int cmd,</span><br><span class="line">        unsigned long arg)</span><br><span class="line">&#123;</span><br><span class="line">    &#x2F;&#x2F;struct inode *inode &#x3D; filp-&gt;f_dentry-&gt;d_inode;</span><br><span class="line">    &#x2F;&#x2F;struct inode *inode &#x3D; filp-&gt;d_inode;</span><br><span class="line">    struct inode *inode &#x3D; inode &#x3D; file_inode(filp);</span><br><span class="line">#endif</span><br><span class="line">    &#x2F;*  此处是ioctl() 函数结构的具体实现  *&#x2F;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>同理，file_operations中也进行同样修改。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">static struct file_operations fpga_fops &#x3D; &#123;</span><br><span class="line">    .owner  &#x3D; THIS_MODULE,</span><br><span class="line">    .open   &#x3D; fpga_open,</span><br><span class="line">    .read   &#x3D; fpga_read,</span><br><span class="line">    .write &#x3D; fpga_write,</span><br><span class="line">    .llseek &#x3D; fpga_llseek,</span><br><span class="line">#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2, 6, 36)</span><br><span class="line">    .ioctl &#x3D; XXX_ioctl,</span><br><span class="line">#else</span><br><span class="line">    .unlocked_ioctl &#x3D; XXX_unlocked_ioctl,</span><br><span class="line">#endif</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-
-<h3 id="4-原因分析"><a href="#4-原因分析" class="headerlink" title="4. 原因分析"></a>4. 原因分析</h3><p><code>file_operations (include/linux/fs.h)</code> 结构变化,ioctl本身并不安全，且之前的ioctl使用了大内核锁延迟太大，因此进行修改。具体内容见<br><a href="https://lwn.net/Articles/119652/">The new way of ioctl()</a></p>
-<h2 id="异步I-O-read-iter"><a href="#异步I-O-read-iter" class="headerlink" title="异步I/O read_iter"></a>异步I/O read_iter</h2><h3 id="1-具体变化"><a href="#1-具体变化" class="headerlink" title="1.具体变化"></a>1.具体变化</h3><p><code>file_operations (include/linux/fs.h)</code> 结构变化，导致</p>
-<p><code>read_iter</code> 和 <code>write_iter</code> 负责设备驱动的异步读写，取代了之前的 <code>aio_read</code> 和 <code>aio_write</code>,只需要将资料中二者进行转换即可。</p>
-<h3 id="2-原因分析"><a href="#2-原因分析" class="headerlink" title="2.原因分析"></a>2.原因分析</h3><p><a href="https://lwn.net/Articles/625077/">The iov_iter interface</a></p>
-<p>iov_iter 功能增强了，并且试图合并 read(write)_iter 和 splice_read(write)，不过截至2020年5月13日来看这俩似乎还存在着</p>
-<h3 id="3-问题"><a href="#3-问题" class="headerlink" title="3.问题"></a>3.问题</h3><p><code>fs/ramfs/file-mmu.c</code> 中为什么 <code>file_operations</code> 里面没有定义 read 和 write， 而只有异步I/O。</p>
-<h2 id="timer计时器发生改变"><a href="#timer计时器发生改变" class="headerlink" title="timer计时器发生改变"></a>timer计时器发生改变</h2><p><a href="https://lwn.net/Articles/735887/">Improving the kernel timers API</a><br>用 <code>timer_setup</code> 替换了 <code>init_timer</code>,替换内核版本为4.14(2017)，属于较新的替换</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(4,14,0)</span><br><span class="line">    init_timer(&amp;dev-&gt;getIntrTimer);</span><br><span class="line">    dev-&gt;getIntrTimer.data &#x3D; (unsigned long) dev;</span><br><span class="line">    dev-&gt;getIntrTimer.function &#x3D; GetIntrTimerCallback;</span><br><span class="line">    &#x2F;* ... *&#x2F;</span><br><span class="line">    add_timer(&amp;dev-&gt;getIntrTimer);</span><br><span class="line">#else</span><br><span class="line">    timer_setup(&amp;dev-&gt;getIntrTimer, GetIntrTimerCallback, 0);</span><br><span class="line">    &#x2F;* the third argument may include TIMER_* flags *&#x2F;</span><br><span class="line">    &#x2F;* ... *&#x2F;</span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
-
-<p>callback function的变化 <strong>参数类型发生变化，否则会编译失败</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(4,14,0)</span><br><span class="line">void GetIntrTimerCallback(unsigned long devAddr)</span><br><span class="line">&#123;</span><br><span class="line">    myDevice *dev &#x3D; (myDevice *) devAddr;</span><br><span class="line">#else</span><br><span class="line">void GetIntrTimerCallback(struct timer_list *t)</span><br><span class="line">&#123;</span><br><span class="line">    myDevice *dev &#x3D; from_timer(dev, t, getIntrTimer);</span><br><span class="line">#endif</span><br><span class="line">    &#x2F;* Do something with &quot;dev&quot; *&#x2F;</span><br></pre></td></tr></table></figure>
-
-<h2 id="block-驱动在5-0后进行了非常大的变化"><a href="#block-驱动在5-0后进行了非常大的变化" class="headerlink" title="block 驱动在5.0后进行了非常大的变化"></a>block 驱动在5.0后进行了非常大的变化</h2><p><a href="https://www.linuxquestions.org/questions/linux-kernel-70/in-kernel-v5-blk_fetch_request-and-blk_init_queue-gone-now-what-4175670215/">In kernel V5 blk_fetch_request() and blk_init_queue() gone. Now What?</a>  </p>
-<p><a href="https://prog.world/linux-kernel-5-0-we-write-simple-block-device-under-blk-mq/">Linux Kernel 5.0 – we write Simple Block Device under blk-mq</a>  </p>
-<p><a href="https://patchwork.kernel.org/patch/10048915/">block: remove __bio_kmap_atomic</a></p>
-<p><strong>内核工匠 公众号 Multiqueue架构分析</strong></p>
-<p>block 驱动在5.0后进行了非常大的变化</p>
-<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>是使用了 multi-queue block layer 即 blk-mq 完全取代了之前的 blk-sq（single-queue），<br>因为从前的IO速度瓶颈在硬件方面，因此可以使用单一队列，即使多个cpu竞争自旋锁获取队列写入权限依旧不过分影响性能。<br>而最近的高IOPS（io per second）硬件逐渐增多比如ssd，nvme等硬件设备开始大量使用，那么从前的single queue在高IOPS场景下80% cpu时间耗费在锁获取上了，因此设计了新的blk-mq 获取锁仅占用 3% cpu时间。</p>
-<h3 id="blk-mq-设计了两层队列"><a href="#blk-mq-设计了两层队列" class="headerlink" title="blk-mq 设计了两层队列"></a>blk-mq 设计了两层队列</h3><ol>
-<li><p>首先为每个cpu分配了一个软件暂存队列（software staging queue），负责完成bio 提交/完成处理，IO请求暂存（合并、排序等）、IO请求标记、调度、记账（和新的IO调度算法BFS有关）</p>
-</li>
-<li><p>硬件派发队列（Hardware Dispatch Queue） 为每个硬件队列分派一个硬件派发队列，负责存放软件队列向硬件派发的IO请求，一个和多个软件队列和一个硬件队列存在固定映射关系</p>
-</li>
-</ol>
-<h3 id="在架构层面"><a href="#在架构层面" class="headerlink" title="在架构层面"></a>在架构层面</h3><p>mq 将 request 和 tag 绑定，request内存分配在块设备驱动初始化时完成（调用blk_mq_alloc_tag_set）避免IO时分配request内存带来消耗</p>
-<p>tag作为request（static_rqs/rqs）的索引。</p>
-<h3 id="具体到函数"><a href="#具体到函数" class="headerlink" title="具体到函数"></a>具体到函数</h3><p>有 <code>blk_fetch_request</code> , <code>__blk_end_request_cur</code>  ,<code>blk_init_queue</code>, <code>__bio_kmap_atomic(bio, iter)</code> , <code>__bio_kunmap_atomic(buffer)</code> 等</p>
-<p>其中 取代 <code>__bio_kmap_atomic(bio, iter)</code> , <code>__bio_kunmap_atomic(buffer)</code> 如下</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">-		char *buffer &#x3D; __bio_kmap_atomic(bio, iter);</span><br><span class="line">+		char *buffer &#x3D; kmap_atomic(bvec.bv_page) + bvec.bv_offset;</span><br><span class="line"> 		unsigned len &#x3D; bvec.bv_len &gt;&gt; SECTOR_SHIFT;</span><br><span class="line"> </span><br><span class="line"> 		simdisk_transfer(dev, sector, len, buffer,</span><br><span class="line"> 				bio_data_dir(bio) &#x3D;&#x3D; WRITE);</span><br><span class="line"> 		sector +&#x3D; len;</span><br><span class="line">-		__bio_kunmap_atomic(buffer);</span><br><span class="line">+		kunmap_atomic(buffer)</span><br></pre></td></tr></table></figure>
-
-<p>除此之外 <code>BLK_MQ_F_SG_MERGE</code> 和 <code>QUEUE_FLAG_NO_SG_MERGE</code>  都可以被省略了<br><a href="https://lore.kernel.org/patchwork/patch/1042759/">block: kill BLK_MQ_F_SG_MERGE</a></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">-	lo-&gt;tag_set.flags &#x3D; BLK_MQ_F_SHOULD_MERGE | BLK_MQ_F_SG_MERGE;</span><br><span class="line">+	lo-&gt;tag_set.flags &#x3D; BLK_MQ_F_SHOULD_MERGE;</span><br></pre></td></tr></table></figure>
-
-<h2 id="内核计时接口发生变化"><a href="#内核计时接口发生变化" class="headerlink" title="内核计时接口发生变化"></a>内核计时接口发生变化</h2><p>64位系统中,由于<a href="https://en.wikipedia.org/wiki/Year_2038_problem">2038问题</a> 时间戳 timespec 在 inode数据结构中的i_*time 中弃用，转而使用 timespec64</p>
-<p>相应的 getnstimeofday 等函数也被弃用， 转而使用 <code>ktime_get_ts64(struct timespec64 *ts)</code> 等函数获取时间，另外需要注意 这个函数必须使用 GPL协议才能成功加载。</p>
-<p>详见内核时间api文件，<br><a href="https://www.kernel.org/doc/html/latest/core-api/timekeeping.html">ktime accessors</a></p>
-<p>最新设计的时间数据结构为 <code>ktime_t</code> 获取方式为 <code>ktime_t ktime_get(void)</code></p>
-<h2 id="系统调用初始化接口变化（未解决）"><a href="#系统调用初始化接口变化（未解决）" class="headerlink" title="系统调用初始化接口变化（未解决）"></a>系统调用初始化接口变化（未解决）</h2><p>系统调用初始化接口代码越变越少，而且有点难以理解，除了在<code>arch/x86/entry/syscall</code> 目录下定义之外，还用了同目录下的脚本直接生成了ni代码</p>
-<p>具体的解决办法是直接ftrace跟踪一波，看看syscall最新的调用路径</p>
-<h2 id="文件系统减少定义数量-（未解决）"><a href="#文件系统减少定义数量-（未解决）" class="headerlink" title="文件系统减少定义数量 （未解决）"></a>文件系统减少定义数量 （未解决）</h2><p>文件系统减少了大量file_operations定义数量，例如 aio_read  aio_write 等异步代码直接被省略掉，read 和 write 接口基本也不定义了， 似乎使用了 read_iter 和 write_iter 替代了前两类接口</p>
-<p>具体原因还没搞清楚，但是在 <a href="https://lore.kernel.org/patchwork/patch/350494/">[V5,17/30] fs: use read_iter and write_iter rather than aio_read and aio_write</a> 中显示 aio被明确删除掉，用iter替代。</p>
-<p>此外 <code>file_operations</code> 当中的 readdir 等接口也被取消，直接由read/read_iter和 iterate 替代,iterate基本上可以理解为负责执行ls命令， filldentry_t 由 dir_context 替代。</p>
-<h2 id="jprobe-被取消"><a href="#jprobe-被取消" class="headerlink" title="jprobe 被取消"></a>jprobe 被取消</h2><p>在 kprobe中只剩下kprobe和kretprobe，jprobe及相关的一套函数被取消，替代方式如下：</p>
-<p><code>/source/samples/kprobes/kprobe_example.c</code> 和 <code>/source/samples/kprobes/kretprobe_example.c</code> 中示例</p>
-<p>使用kprobe中的handler_pre和handler_post替代。</p>
-]]></content>
-      <categories>
-        <category>kernel</category>
-      </categories>
-      <tags>
-        <tag>kernel</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>io_uring 系统性整理</title>
     <url>/2020/11/15/io-uring-%E7%B3%BB%E7%BB%9F%E6%80%A7%E6%95%B4%E7%90%86/</url>
     <content><![CDATA[<h1 id="io-uring-系统性整理"><a href="#io-uring-系统性整理" class="headerlink" title="io_uring 系统性整理"></a>io_uring 系统性整理</h1><ul>
@@ -227,6 +125,7 @@
 </ul>
 <p>这里有个误解，I/O模型其实是针对整个系统的所有I/O操作的，但是平时很少对文件系统使用异步读写，同步或直接映射的情况比较多。更别提多路复用了，这个机制基本只用在network中。</p>
 <p><a href="https://lwn.net/Kernel/Index/">lwn Kernel article index</a></p>
+<a id="more"></a>
 <h2 id="I-O-模型"><a href="#I-O-模型" class="headerlink" title="I/O 模型"></a>I/O 模型</h2><ul>
 <li>blocking I/O</li>
 </ul>
@@ -305,8 +204,113 @@
         <category>kernel</category>
       </categories>
       <tags>
-        <tag>kernel</tag>
         <tag>io_uring</tag>
+        <tag>kernel</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>内核近期改变</title>
+    <url>/2020/11/15/%E5%86%85%E6%A0%B8%E8%BF%91%E6%9C%9F%E6%94%B9%E5%8F%98/</url>
+    <content><![CDATA[<h1 id="内核近期改变"><a href="#内核近期改变" class="headerlink" title="内核近期改变"></a>内核近期改变</h1><ul>
+<li><a href="#%E5%86%85%E6%A0%B8%E8%BF%91%E6%9C%9F%E6%94%B9%E5%8F%98">内核近期改变</a><ul>
+<li><a href="#ioctl">ioctl</a><ul>
+<li><a href="#1%E5%8E%9F%E5%A7%8B%E7%89%88%E6%9C%AC%E7%9A%84ioctl">1.原始版本的ioctl</a></li>
+<li><a href="#2%E5%86%85%E6%A0%B8%E6%94%B9%E8%BF%9B%E5%90%8E%E7%9A%84ioctl">2.内核改进后的ioctl</a></li>
+<li><a href="#3%E5%9C%A8%E7%BC%96%E5%86%99%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84%E5%A4%84%E7%90%86%E5%8A%9E%E6%B3%95">3.在编写过程中的处理办法</a></li>
+<li><a href="#4-%E5%8E%9F%E5%9B%A0%E5%88%86%E6%9E%90">4. 原因分析</a></li>
+</ul>
+</li>
+<li><a href="#%E5%BC%82%E6%AD%A5io-read_iter">异步I/O read_iter</a><ul>
+<li><a href="#1%E5%85%B7%E4%BD%93%E5%8F%98%E5%8C%96">1.具体变化</a></li>
+<li><a href="#2%E5%8E%9F%E5%9B%A0%E5%88%86%E6%9E%90">2.原因分析</a></li>
+<li><a href="#3%E9%97%AE%E9%A2%98">3.问题</a></li>
+</ul>
+</li>
+<li><a href="#timer%E8%AE%A1%E6%97%B6%E5%99%A8%E5%8F%91%E7%94%9F%E6%94%B9%E5%8F%98">timer计时器发生改变</a></li>
+<li><a href="#block-%E9%A9%B1%E5%8A%A8%E5%9C%A850%E5%90%8E%E8%BF%9B%E8%A1%8C%E4%BA%86%E9%9D%9E%E5%B8%B8%E5%A4%A7%E7%9A%84%E5%8F%98%E5%8C%96">block 驱动在5.0后进行了非常大的变化</a><ul>
+<li><a href="#%E5%8E%9F%E5%9B%A0">原因</a></li>
+<li><a href="#blk-mq-%E8%AE%BE%E8%AE%A1%E4%BA%86%E4%B8%A4%E5%B1%82%E9%98%9F%E5%88%97">blk-mq 设计了两层队列</a></li>
+<li><a href="#%E5%9C%A8%E6%9E%B6%E6%9E%84%E5%B1%82%E9%9D%A2">在架构层面</a></li>
+<li><a href="#%E5%85%B7%E4%BD%93%E5%88%B0%E5%87%BD%E6%95%B0">具体到函数</a></li>
+</ul>
+</li>
+<li><a href="#%E5%86%85%E6%A0%B8%E8%AE%A1%E6%97%B6%E6%8E%A5%E5%8F%A3%E5%8F%91%E7%94%9F%E5%8F%98%E5%8C%96">内核计时接口发生变化</a></li>
+<li><a href="#%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%88%9D%E5%A7%8B%E5%8C%96%E6%8E%A5%E5%8F%A3%E5%8F%98%E5%8C%96%E6%9C%AA%E8%A7%A3%E5%86%B3">系统调用初始化接口变化（未解决）</a></li>
+<li><a href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%87%8F%E5%B0%91%E5%AE%9A%E4%B9%89%E6%95%B0%E9%87%8F-%E6%9C%AA%E8%A7%A3%E5%86%B3">文件系统减少定义数量 （未解决）</a></li>
+<li><a href="#jprobe-%E8%A2%AB%E5%8F%96%E6%B6%88">jprobe 被取消</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<h2 id="ioctl"><a href="#ioctl" class="headerlink" title="ioctl"></a>ioctl</h2><h3 id="1-原始版本的ioctl"><a href="#1-原始版本的ioctl" class="headerlink" title="1.原始版本的ioctl"></a>1.原始版本的ioctl</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">int (*ioctl)(struct inode *, struct file *, unsigned int, unsigned long);</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-内核改进后的ioctl"><a href="#2-内核改进后的ioctl" class="headerlink" title="2.内核改进后的ioctl"></a>2.内核改进后的ioctl</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">long (*unlocked_ioctl) (struct file *, unsigned int, unsigned long);</span><br><span class="line"></span><br><span class="line">long (*compat_ioctl) (struct file *, unsigned int, unsigned long);</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-在编写过程中的处理办法"><a href="#3-在编写过程中的处理办法" class="headerlink" title="3.在编写过程中的处理办法"></a>3.在编写过程中的处理办法</h3><ul>
+<li><p>将原先的写的 ioctl 函数声明给改成下面的 unlocked_ioctl 或者 compat_ioctl,</p>
+</li>
+<li><p>在 file_operations 结构体的初始化中也是一样. 修改为unlocked_ioctl 或者 compat_ioctl,</p>
+</li>
+<li><p>注意参数的兼容性问题, 新的ioctl() 接口没有 struct inode* 参数, 如果ioctl 接口中使用了 inode, 因此需要通过其他方式获取 inode</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2, 6, 36)</span><br><span class="line">static int XXX_ioctl(</span><br><span class="line">        struct inode *indoe,</span><br><span class="line">        struct file *filp,</span><br><span class="line">        unsigned int cmd,</span><br><span class="line">        unsigned long arg)</span><br><span class="line">&#123;</span><br><span class="line">#else</span><br><span class="line">&#x2F;&#x2F;long (*unlocked_ioctl) (struct file *, unsigned int, unsigned long);</span><br><span class="line">&#x2F;&#x2F;long (*compat_ioctl) (struct file *, unsigned int cmd, unsigned long arg)</span><br><span class="line">static long XXX_unlocked_ioctl(</span><br><span class="line">        struct file *filp,</span><br><span class="line">        unsigned int cmd,</span><br><span class="line">        unsigned long arg)</span><br><span class="line">&#123;</span><br><span class="line">    &#x2F;&#x2F;struct inode *inode &#x3D; filp-&gt;f_dentry-&gt;d_inode;</span><br><span class="line">    &#x2F;&#x2F;struct inode *inode &#x3D; filp-&gt;d_inode;</span><br><span class="line">    struct inode *inode &#x3D; inode &#x3D; file_inode(filp);</span><br><span class="line">#endif</span><br><span class="line">    &#x2F;*  此处是ioctl() 函数结构的具体实现  *&#x2F;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>同理，file_operations中也进行同样修改。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">static struct file_operations fpga_fops &#x3D; &#123;</span><br><span class="line">    .owner  &#x3D; THIS_MODULE,</span><br><span class="line">    .open   &#x3D; fpga_open,</span><br><span class="line">    .read   &#x3D; fpga_read,</span><br><span class="line">    .write &#x3D; fpga_write,</span><br><span class="line">    .llseek &#x3D; fpga_llseek,</span><br><span class="line">#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2, 6, 36)</span><br><span class="line">    .ioctl &#x3D; XXX_ioctl,</span><br><span class="line">#else</span><br><span class="line">    .unlocked_ioctl &#x3D; XXX_unlocked_ioctl,</span><br><span class="line">#endif</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="4-原因分析"><a href="#4-原因分析" class="headerlink" title="4. 原因分析"></a>4. 原因分析</h3><p><code>file_operations (include/linux/fs.h)</code> 结构变化,ioctl本身并不安全，且之前的ioctl使用了大内核锁延迟太大，因此进行修改。具体内容见<br><a href="https://lwn.net/Articles/119652/">The new way of ioctl()</a></p>
+<h2 id="异步I-O-read-iter"><a href="#异步I-O-read-iter" class="headerlink" title="异步I/O read_iter"></a>异步I/O read_iter</h2><h3 id="1-具体变化"><a href="#1-具体变化" class="headerlink" title="1.具体变化"></a>1.具体变化</h3><p><code>file_operations (include/linux/fs.h)</code> 结构变化，导致</p>
+<p><code>read_iter</code> 和 <code>write_iter</code> 负责设备驱动的异步读写，取代了之前的 <code>aio_read</code> 和 <code>aio_write</code>,只需要将资料中二者进行转换即可。</p>
+<h3 id="2-原因分析"><a href="#2-原因分析" class="headerlink" title="2.原因分析"></a>2.原因分析</h3><p><a href="https://lwn.net/Articles/625077/">The iov_iter interface</a></p>
+<p>iov_iter 功能增强了，并且试图合并 read(write)_iter 和 splice_read(write)，不过截至2020年5月13日来看这俩似乎还存在着</p>
+<h3 id="3-问题"><a href="#3-问题" class="headerlink" title="3.问题"></a>3.问题</h3><p><code>fs/ramfs/file-mmu.c</code> 中为什么 <code>file_operations</code> 里面没有定义 read 和 write， 而只有异步I/O。</p>
+<h2 id="timer计时器发生改变"><a href="#timer计时器发生改变" class="headerlink" title="timer计时器发生改变"></a>timer计时器发生改变</h2><p><a href="https://lwn.net/Articles/735887/">Improving the kernel timers API</a><br>用 <code>timer_setup</code> 替换了 <code>init_timer</code>,替换内核版本为4.14(2017)，属于较新的替换</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(4,14,0)</span><br><span class="line">    init_timer(&amp;dev-&gt;getIntrTimer);</span><br><span class="line">    dev-&gt;getIntrTimer.data &#x3D; (unsigned long) dev;</span><br><span class="line">    dev-&gt;getIntrTimer.function &#x3D; GetIntrTimerCallback;</span><br><span class="line">    &#x2F;* ... *&#x2F;</span><br><span class="line">    add_timer(&amp;dev-&gt;getIntrTimer);</span><br><span class="line">#else</span><br><span class="line">    timer_setup(&amp;dev-&gt;getIntrTimer, GetIntrTimerCallback, 0);</span><br><span class="line">    &#x2F;* the third argument may include TIMER_* flags *&#x2F;</span><br><span class="line">    &#x2F;* ... *&#x2F;</span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
+
+<p>callback function的变化 <strong>参数类型发生变化，否则会编译失败</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(4,14,0)</span><br><span class="line">void GetIntrTimerCallback(unsigned long devAddr)</span><br><span class="line">&#123;</span><br><span class="line">    myDevice *dev &#x3D; (myDevice *) devAddr;</span><br><span class="line">#else</span><br><span class="line">void GetIntrTimerCallback(struct timer_list *t)</span><br><span class="line">&#123;</span><br><span class="line">    myDevice *dev &#x3D; from_timer(dev, t, getIntrTimer);</span><br><span class="line">#endif</span><br><span class="line">    &#x2F;* Do something with &quot;dev&quot; *&#x2F;</span><br></pre></td></tr></table></figure>
+
+<h2 id="block-驱动在5-0后进行了非常大的变化"><a href="#block-驱动在5-0后进行了非常大的变化" class="headerlink" title="block 驱动在5.0后进行了非常大的变化"></a>block 驱动在5.0后进行了非常大的变化</h2><p><a href="https://www.linuxquestions.org/questions/linux-kernel-70/in-kernel-v5-blk_fetch_request-and-blk_init_queue-gone-now-what-4175670215/">In kernel V5 blk_fetch_request() and blk_init_queue() gone. Now What?</a>  </p>
+<p><a href="https://prog.world/linux-kernel-5-0-we-write-simple-block-device-under-blk-mq/">Linux Kernel 5.0 – we write Simple Block Device under blk-mq</a>  </p>
+<p><a href="https://patchwork.kernel.org/patch/10048915/">block: remove __bio_kmap_atomic</a></p>
+<p><strong>内核工匠 公众号 Multiqueue架构分析</strong></p>
+<p>block 驱动在5.0后进行了非常大的变化</p>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>是使用了 multi-queue block layer 即 blk-mq 完全取代了之前的 blk-sq（single-queue），<br>因为从前的IO速度瓶颈在硬件方面，因此可以使用单一队列，即使多个cpu竞争自旋锁获取队列写入权限依旧不过分影响性能。<br>而最近的高IOPS（io per second）硬件逐渐增多比如ssd，nvme等硬件设备开始大量使用，那么从前的single queue在高IOPS场景下80% cpu时间耗费在锁获取上了，因此设计了新的blk-mq 获取锁仅占用 3% cpu时间。</p>
+<h3 id="blk-mq-设计了两层队列"><a href="#blk-mq-设计了两层队列" class="headerlink" title="blk-mq 设计了两层队列"></a>blk-mq 设计了两层队列</h3><ol>
+<li><p>首先为每个cpu分配了一个软件暂存队列（software staging queue），负责完成bio 提交/完成处理，IO请求暂存（合并、排序等）、IO请求标记、调度、记账（和新的IO调度算法BFS有关）</p>
+</li>
+<li><p>硬件派发队列（Hardware Dispatch Queue） 为每个硬件队列分派一个硬件派发队列，负责存放软件队列向硬件派发的IO请求，一个和多个软件队列和一个硬件队列存在固定映射关系</p>
+</li>
+</ol>
+<h3 id="在架构层面"><a href="#在架构层面" class="headerlink" title="在架构层面"></a>在架构层面</h3><p>mq 将 request 和 tag 绑定，request内存分配在块设备驱动初始化时完成（调用blk_mq_alloc_tag_set）避免IO时分配request内存带来消耗</p>
+<p>tag作为request（static_rqs/rqs）的索引。</p>
+<h3 id="具体到函数"><a href="#具体到函数" class="headerlink" title="具体到函数"></a>具体到函数</h3><p>有 <code>blk_fetch_request</code> , <code>__blk_end_request_cur</code>  ,<code>blk_init_queue</code>, <code>__bio_kmap_atomic(bio, iter)</code> , <code>__bio_kunmap_atomic(buffer)</code> 等</p>
+<p>其中 取代 <code>__bio_kmap_atomic(bio, iter)</code> , <code>__bio_kunmap_atomic(buffer)</code> 如下</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">-		char *buffer &#x3D; __bio_kmap_atomic(bio, iter);</span><br><span class="line">+		char *buffer &#x3D; kmap_atomic(bvec.bv_page) + bvec.bv_offset;</span><br><span class="line"> 		unsigned len &#x3D; bvec.bv_len &gt;&gt; SECTOR_SHIFT;</span><br><span class="line"> </span><br><span class="line"> 		simdisk_transfer(dev, sector, len, buffer,</span><br><span class="line"> 				bio_data_dir(bio) &#x3D;&#x3D; WRITE);</span><br><span class="line"> 		sector +&#x3D; len;</span><br><span class="line">-		__bio_kunmap_atomic(buffer);</span><br><span class="line">+		kunmap_atomic(buffer)</span><br></pre></td></tr></table></figure>
+
+<p>除此之外 <code>BLK_MQ_F_SG_MERGE</code> 和 <code>QUEUE_FLAG_NO_SG_MERGE</code>  都可以被省略了<br><a href="https://lore.kernel.org/patchwork/patch/1042759/">block: kill BLK_MQ_F_SG_MERGE</a></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">-	lo-&gt;tag_set.flags &#x3D; BLK_MQ_F_SHOULD_MERGE | BLK_MQ_F_SG_MERGE;</span><br><span class="line">+	lo-&gt;tag_set.flags &#x3D; BLK_MQ_F_SHOULD_MERGE;</span><br></pre></td></tr></table></figure>
+
+<h2 id="内核计时接口发生变化"><a href="#内核计时接口发生变化" class="headerlink" title="内核计时接口发生变化"></a>内核计时接口发生变化</h2><p>64位系统中,由于<a href="https://en.wikipedia.org/wiki/Year_2038_problem">2038问题</a> 时间戳 timespec 在 inode数据结构中的i_*time 中弃用，转而使用 timespec64</p>
+<p>相应的 getnstimeofday 等函数也被弃用， 转而使用 <code>ktime_get_ts64(struct timespec64 *ts)</code> 等函数获取时间，另外需要注意 这个函数必须使用 GPL协议才能成功加载。</p>
+<p>详见内核时间api文件，<br><a href="https://www.kernel.org/doc/html/latest/core-api/timekeeping.html">ktime accessors</a></p>
+<p>最新设计的时间数据结构为 <code>ktime_t</code> 获取方式为 <code>ktime_t ktime_get(void)</code></p>
+<h2 id="系统调用初始化接口变化（未解决）"><a href="#系统调用初始化接口变化（未解决）" class="headerlink" title="系统调用初始化接口变化（未解决）"></a>系统调用初始化接口变化（未解决）</h2><p>系统调用初始化接口代码越变越少，而且有点难以理解，除了在<code>arch/x86/entry/syscall</code> 目录下定义之外，还用了同目录下的脚本直接生成了ni代码</p>
+<p>具体的解决办法是直接ftrace跟踪一波，看看syscall最新的调用路径</p>
+<h2 id="文件系统减少定义数量-（未解决）"><a href="#文件系统减少定义数量-（未解决）" class="headerlink" title="文件系统减少定义数量 （未解决）"></a>文件系统减少定义数量 （未解决）</h2><p>文件系统减少了大量file_operations定义数量，例如 aio_read  aio_write 等异步代码直接被省略掉，read 和 write 接口基本也不定义了， 似乎使用了 read_iter 和 write_iter 替代了前两类接口</p>
+<p>具体原因还没搞清楚，但是在 <a href="https://lore.kernel.org/patchwork/patch/350494/">[V5,17/30] fs: use read_iter and write_iter rather than aio_read and aio_write</a> 中显示 aio被明确删除掉，用iter替代。</p>
+<p>此外 <code>file_operations</code> 当中的 readdir 等接口也被取消，直接由read/read_iter和 iterate 替代,iterate基本上可以理解为负责执行ls命令， filldentry_t 由 dir_context 替代。</p>
+<h2 id="jprobe-被取消"><a href="#jprobe-被取消" class="headerlink" title="jprobe 被取消"></a>jprobe 被取消</h2><p>在 kprobe中只剩下kprobe和kretprobe，jprobe及相关的一套函数被取消，替代方式如下：</p>
+<p><code>/source/samples/kprobes/kprobe_example.c</code> 和 <code>/source/samples/kprobes/kretprobe_example.c</code> 中示例</p>
+<p>使用kprobe中的handler_pre和handler_post替代。</p>
+]]></content>
+      <categories>
+        <category>kernel</category>
+      </categories>
+      <tags>
+        <tag>kernel</tag>
       </tags>
   </entry>
 </search>
