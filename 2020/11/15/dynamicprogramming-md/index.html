@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/media/icon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/media/icon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/media/icon.ico">
+  <link rel="mask-icon" href="/media/icon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.zi-c.wang","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="动态规划 Dynamic Programming动态规划(dynamic programming)是运筹学的一个分支，是求解决策过程(decision process)最优化的数学方法。20世纪50年代初美国数学家R.E.Bellman等人在研究多阶段决策过程(multistep decision process)的优化问题时，提出了著名的最优化原理(principle of optimality">
+<meta property="og:type" content="article">
+<meta property="og:title" content="dynamicprogramming.md">
+<meta property="og:url" content="https://www.zi-c.wang/2020/11/15/dynamicprogramming-md/index.html">
+<meta property="og:site_name" content="purplewall1206 blog">
+<meta property="og:description" content="动态规划 Dynamic Programming动态规划(dynamic programming)是运筹学的一个分支，是求解决策过程(decision process)最优化的数学方法。20世纪50年代初美国数学家R.E.Bellman等人在研究多阶段决策过程(multistep decision process)的优化问题时，提出了著名的最优化原理(principle of optimality">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-11-15T10:36:17.000Z">
+<meta property="article:modified_time" content="2020-11-15T10:57:20.564Z">
+<meta property="article:author" content="purplewall1206">
+<meta property="article:tag" content="leetcode">
+<meta property="article:tag" content="algorithm">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://www.zi-c.wang/2020/11/15/dynamicprogramming-md/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>dynamicprogramming.md | purplewall1206 blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="purplewall1206 blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">purplewall1206 blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.zi-c.wang/2020/11/15/dynamicprogramming-md/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/media/icon.ico">
+      <meta itemprop="name" content="purplewall1206">
+      <meta itemprop="description" content="something about kernel & programming">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="purplewall1206 blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          dynamicprogramming.md
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-11-15 18:36:17 / 修改时间：18:57:20" itemprop="dateCreated datePublished" datetime="2020-11-15T18:36:17+08:00">2020-11-15</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="动态规划-Dynamic-Programming"><a href="#动态规划-Dynamic-Programming" class="headerlink" title="动态规划 Dynamic Programming"></a>动态规划 Dynamic Programming</h1><p>动态规划(dynamic programming)是运筹学的一个分支，是求解决策过程(decision process)最优化的数学方法。20世纪50年代初美国数学家R.E.Bellman等人在研究多阶段决策过程(multistep decision process)的优化问题时，提出了著名的最优化原理(principle of optimality)，把多阶段过程转化为一系列单阶段问题，利用各阶段之间的关系，逐个求解，创立了解决这类过程优化问题的新方法——动态规划。1957年出版了他的名著《Dynamic Programming》，这是该领域的第一本著作。</p>
+<h2 id="tricky"><a href="#tricky" class="headerlink" title="tricky"></a>tricky</h2><p>一般不要求记录解空间具体内容的，但是看起来好像需要从所有解中提取结果的都可以试试看动态规划，设计不好dp不妨试试看从0到i的物品的xxx，dp有可能是1维2维甚至3维。</p>
+<p>如果要求解空间具体内容的上backtrack也不错，而且dp的题也可以用backtrack或者dfs碰碰运气。</p>
+<h2 id="硬币找零问题-coin-change"><a href="#硬币找零问题-coin-change" class="headerlink" title="硬币找零问题 coin change"></a>硬币找零问题 coin change</h2><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/coin-change/">leetcode-322</a></p>
+<blockquote>
+<p>You are given coins of different denominations and a total amount of money amount. Write a function to compute the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return -1.  </p>
+<blockquote>
+<p>Example 1:<br>Input: coins = [1, 2, 5], amount = 11<br>Output: 3<br>Explanation: 11 = 5 + 5 + 1      </p>
+</blockquote>
+</blockquote>
+<p>解析：每种coins的数量是不限的，因此假设dp[i]是从0到金额i，所需要的最小硬币的数量<br>初始化假设dp值均为 amount+1<br><code>dp[i] = min(dp[i-coin[x]]+1, dp[i])</code><br>循环遍历每个coin的值，获得dp最后的值，即相应的结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">int coinChange(vector&lt;int&gt;&amp; coins, int amount) &#123;</span><br><span class="line">        &#x2F;&#x2F; dp[i] &#x3D; min(dp[i-coink]+1, dp[i])</span><br><span class="line">        if (amount &#x3D;&#x3D; 0)</span><br><span class="line">            return 0;</span><br><span class="line">        vector&lt;int&gt; dp(amount+1, amount+1);</span><br><span class="line">        &#x2F;&#x2F; 此处初始化为amount+1，便于之后取最小值</span><br><span class="line">        dp[0] &#x3D; 0;</span><br><span class="line">        for (int i &#x3D; 1;i &lt;&#x3D; amount;i++) &#123;</span><br><span class="line">            for (int j &#x3D; 0;j &lt; coins.size();j++) &#123;</span><br><span class="line">                if (i &gt;&#x3D; coins[j]) &#123;</span><br><span class="line">                    &#x2F;&#x2F; cout &lt;&lt; i &lt;&lt; &quot;  &quot; &lt;&lt; coins[j] &lt;&lt;&quot;  &quot; &lt;&lt; dp[i] &lt;&lt; &quot;  &quot;;</span><br><span class="line">                    dp[i] &#x3D; min(dp[i], dp[i-coins[j]]+1);</span><br><span class="line">                    &#x2F;&#x2F; cout &lt;&lt; dp[i] &lt;&lt; endl;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return (dp[amount] &#x3D;&#x3D; amount+1) ? -1 : dp[amount];</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="01背包问题"><a href="#01背包问题" class="headerlink" title="01背包问题"></a>01背包问题</h2><p>01背包是解决什么问题？</p>
+<p>答：当书包容量大小固定，面对1堆重量固定而且带有价格的物品。在不超出包容量前提下，选择那些物品使包里物品总价值最大。</p>
+<p>其中代表重量的数组 w[0…i….n], 代表价值的数组 v[0…i…n]。</p>
+<p><strong>一般可以通过画表格确定解空间（还没研究明白）</strong></p>
+<p>动态规划的思路是设计 dp[N+1][S+1] 其中N代表物品数量，S代表背包总重量，即在N件物品，重量为S的情况下，物品的价值多大<br>当w[i-1] &lt; j(当前剩余重量)时间<br>分别代表装入或不装入<br><code>dp[i][j] = min(dp[i-1][j], dp[i-1][j-w[i-1]]+v[i-1])</code></p>
+<h3 id="例题-target-sum"><a href="#例题-target-sum" class="headerlink" title="例题 target sum"></a>例题 target sum</h3><p><a target="_blank" rel="noopener" href="https://leetcode-cn.com/problems/target-sum/">leetcode-494</a></p>
+<blockquote>
+<p>You are given a list of non-negative integers, a1, a2, …, an, and a target, S. Now you have 2 symbols + and -. For each integer, you should choose one from + and - as its new symbol.<br>Find out how many ways to assign symbols to make sum of integers equal to target S.  </p>
+<blockquote>
+<p>Example 1:<br>Input: nums is [1, 1, 1, 1, 1], S is 3.<br>Output: 5<br>Explanation:   </p>
+<blockquote>
+<p>-1+1+1+1+1 = 3<br>+1-1+1+1+1 = 3<br>+1+1-1+1+1 = 3<br>+1+1+1-1+1 = 3<br>+1+1+1+1-1 = 3<br>There are 5 ways to assign symbols to make the sum of nums be target 3.  </p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>根据题意可以假设集合nums有两个真子集A,B，其中集合A表示所有为正数的集合，集合B表示所有未负数的集合，目标值未target，那么有</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sum(A) + sum(B) &#x3D; sum(nums)</span><br><span class="line">sum(A) - sum(B) &#x3D; target</span><br><span class="line">2 * sum(A) &#x3D; sum(nums) + target</span><br></pre></td></tr></table></figure>
+<p>由上述递推公式将该问题转化为01背包问题，题解如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">int findTargetSumWays(vector&lt;int&gt;&amp; nums, int S) &#123;</span><br><span class="line">        int n &#x3D; nums.size();</span><br><span class="line">        long sum &#x3D; 0;</span><br><span class="line">        for (int i : nums) sum +&#x3D; i;</span><br><span class="line">        if ((S + sum) % 2 &#x3D;&#x3D; 1 || S &gt; sum) &#123;</span><br><span class="line">            return 0;</span><br><span class="line">        &#125; </span><br><span class="line">        S &#x3D; (sum + S) &#x2F; 2;</span><br><span class="line">        &#x2F;&#x2F; 传统dp</span><br><span class="line">        &#x2F;&#x2F; 对于dp(i,j)就表示可选物品为i到n且背包容量为j(总重量)时背包中所放物品的最大价值</span><br><span class="line">        vector&lt;vector&lt;int&gt;&gt; dp(n+1, vector&lt;int&gt;(S+1, 0));</span><br><span class="line">        &#x2F;&#x2F; 0个数和为0的个数为1</span><br><span class="line">        dp[0][0] &#x3D; 1;</span><br><span class="line">        for (int i &#x3D; 1;i &lt;&#x3D;n;i++ ) &#123;</span><br><span class="line">            for (int j &#x3D; 0;j &lt; S+1;j++) &#123;</span><br><span class="line">                if(j-nums[i-1] &lt; 0)&#x2F;&#x2F;背包容量不足，不能放入第i个物品</span><br><span class="line">                &#123;</span><br><span class="line">                    dp[i][j] &#x3D; dp[i-1][j];&#x2F;&#x2F;其实就是表格的左边界</span><br><span class="line">                &#125;</span><br><span class="line">                else</span><br><span class="line">                &#123;</span><br><span class="line">                    dp[i][j] &#x3D; dp[i-1][j-nums[i-1]] + dp[i-1][j];&#x2F;&#x2F;装入第i个物品或者不装入</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return dp[n][S];      </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>根据上述代码我们发现 <code>dp[i][j] = dp[i-1][...]</code> 的关系，即i至于i-1有关系，因此我们可以减少一维向量，用一维向量记录上一轮的运算结果。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">int findTargetSumWays(vector&lt;int&gt;&amp; nums, int S) &#123;</span><br><span class="line">        int n &#x3D; nums.size();</span><br><span class="line">        long sum &#x3D; 0;</span><br><span class="line">        for (int i : nums) sum +&#x3D; i;</span><br><span class="line">        if ((S + sum) % 2 &#x3D;&#x3D; 1 || S &gt; sum) &#123;</span><br><span class="line">            return 0;</span><br><span class="line">        &#125; </span><br><span class="line">        S &#x3D; (sum + S) &#x2F; 2;</span><br><span class="line">        &#x2F;&#x2F; dp优化</span><br><span class="line">        vector&lt;int&gt; dp(S+1, 0);</span><br><span class="line">        dp[0] &#x3D; 1;</span><br><span class="line">        for (int i &#x3D; 0;i &lt; n;i++) &#123;</span><br><span class="line">            for (int j &#x3D; S;j &gt;&#x3D; nums[i];j--) &#123;</span><br><span class="line">                dp[j] +&#x3D; dp[j-nums[i]];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; </span><br><span class="line">        return dp[S];</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+
+  </div>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/leetcode/" rel="tag"># leetcode</a>
+              <a href="/tags/algorithm/" rel="tag"># algorithm</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/11/14/hello-world/" rel="prev" title="Hello World">
+      <i class="fa fa-chevron-left"></i> Hello World
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/11/15/%E5%86%85%E6%A0%B8%E8%BF%91%E6%9C%9F%E6%94%B9%E5%8F%98/" rel="next" title="内核近期改变">
+      内核近期改变 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92-Dynamic-Programming"><span class="nav-number">1.</span> <span class="nav-text">动态规划 Dynamic Programming</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#tricky"><span class="nav-number">1.1.</span> <span class="nav-text">tricky</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A1%AC%E5%B8%81%E6%89%BE%E9%9B%B6%E9%97%AE%E9%A2%98-coin-change"><span class="nav-number">1.2.</span> <span class="nav-text">硬币找零问题 coin change</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#01%E8%83%8C%E5%8C%85%E9%97%AE%E9%A2%98"><span class="nav-number">1.3.</span> <span class="nav-text">01背包问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%8B%E9%A2%98-target-sum"><span class="nav-number">1.3.1.</span> <span class="nav-text">例题 target sum</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="purplewall1206"
+      src="/media/icon.ico">
+  <p class="site-author-name" itemprop="name">purplewall1206</p>
+  <div class="site-description" itemprop="description">something about kernel & programming</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/purplewall1206" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;purplewall1206" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:wzc@smail.nju.edu.cn" title="E-Mail → mailto:wzc@smail.nju.edu.cn" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">purplewall1206</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
