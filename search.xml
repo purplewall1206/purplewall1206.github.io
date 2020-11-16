@@ -313,4 +313,111 @@
         <tag>kernel</tag>
       </tags>
   </entry>
+  <entry>
+    <title>kernel contribution 统计</title>
+    <url>/2020/11/16/kernel-contribution-%E7%BB%9F%E8%AE%A1/</url>
+    <content><![CDATA[<p>保存lwn.net发布的新版本开发统计文章，目前来看还是华为最屌。</p>
+<p><a href="https://lwn.net/Articles/780271/">Development statistics for the 5.0 kernel</a><br>As of this writing, 12,517 non-merge changesets have been pulled into the mainline repository for the 5.0 release</p>
+<p><a href="https://lwn.net/Articles/810639/">Some 5.5 kernel development statistics</a><br>5.5 saw the merging of 14,350 non-merge changesets from 1,885 developers</p>
+<a id="more"></a>
+
+<p><a href="https://lwn.net/Articles/816162/">Some 5.6 kernel development statistics</a><br>12,665 non-merge changesets had been accepted from 1,712 developers</p>
+<p><a href="https://lwn.net/Articles/821813/">Development statistics for the 5.7 kernel</a><br>Work on 5.7 arrived in the form of 13,901 non-merge changesets contributed by 1,878 developers;</p>
+]]></content>
+      <categories>
+        <category>kernel</category>
+      </categories>
+      <tags>
+        <tag>kernel</tag>
+        <tag>lwn.net</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>三剑客sed/awk/grep常用速查</title>
+    <url>/2020/11/16/%E4%B8%89%E5%89%91%E5%AE%A2sed-awk-grep%E5%B8%B8%E7%94%A8%E9%80%9F%E6%9F%A5/</url>
+    <content><![CDATA[<p>sed和awk的区别，都是按行读入，但是awk会拆分行里面的元素，sed则直接用正则做匹配，基本上sed可以做到的awk都可以。</p>
+<h1 id="awk"><a href="#awk" class="headerlink" title="awk"></a>awk</h1><p><code>awk &#39;&#123;printf &quot;%-8s %-8s %-8s %-18s %-22s %-15s\n&quot;,$1,$2,$3,$4,$5,$6&#125;&#39; netstat.txt</code> awk 使用print和printf打印每行中按列分布的元素。</p>
+<p><code>awk &#39;$3==0 &amp;&amp; $6==&quot;ESTABLISHED&quot;&#39; netstat.txt</code> 过滤记录</p>
+<p><code>awk &#39;$3==0 &amp;&amp; $6==&quot;ESTABLISHED&quot; || NR==1 &#123;printf &quot;%02s %s %-20s %-20s %s\n&quot;,NR, FNR, $4,$5,$6&#125;&#39; netstat.txt</code> 其中NR，FNR为内建变量</p>
+<a id="more"></a>
+<ul>
+<li>$0    当前记录（这个变量中存放着整个行的内容）</li>
+<li>$1~$n    当前记录的第n个字段，字段间由FS分隔</li>
+<li>FS    输入字段分隔符 默认是空格或Tab</li>
+<li>NF    当前记录中的字段个数，就是有多少列</li>
+<li>NR    已经读出的记录数，就是行号，从1开始，如果有多个文件话，这个值也是不断累加中。</li>
+<li>FNR    当前记录数，与NR不同的是，这个值会是各个文件自己的行号</li>
+<li>RS    输入的记录分隔符， 默认为换行符</li>
+<li>OFS    输出字段分隔符， 默认也是空格</li>
+<li>ORS    输出的记录分隔符，默认为换行符</li>
+<li>FILENAME    当前输入文件的名字</li>
+</ul>
+<p><code>awk  &#39;BEGIN&#123;FS=&quot;:&quot;&#125; &#123;print $1,$3,$6&#125;&#39; /etc/passwd</code> 指定分隔符</p>
+<p><code>awk &#39;$6 ~ /E/ || NR==1 &#123;print NR, $4,$5,$6&#125;&#39; netstat.txt</code> ~表示开始，//表示匹配，这行命令表示匹配第六个元素开始包含E的行和第一行，然后输出行数和第456个元素。</p>
+<p><code>awk &#39;NR!=1&#123;print $4,$5 &gt; $6&#125;&#39; netstat.txt</code> 不处理第一行，按照第六列元素分类拆分成若干个文件，文件的内容是第45列元素。</p>
+<h2 id="awk-脚本"><a href="#awk-脚本" class="headerlink" title="awk 脚本"></a>awk 脚本</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#!&#x2F;bin&#x2F;awk -f</span><br><span class="line"># 运行前</span><br><span class="line">BEGIN &#123;</span><br><span class="line">	math &#x3D; 0</span><br><span class="line">	english &#x3D; 0</span><br><span class="line">	computer &#x3D; 0</span><br><span class="line"></span><br><span class="line">	printf &quot;NAME    NO.   MATH  ENGLISH  COMPUTER   TOTAL\n&quot;</span><br><span class="line">	printf &quot;---------------------------------------------\n&quot;</span><br><span class="line">&#125;</span><br><span class="line"># 运行中</span><br><span class="line">&#123;</span><br><span class="line">	math +&#x3D; $3</span><br><span class="line">	english +&#x3D; $4</span><br><span class="line">	computer +&#x3D; $5</span><br><span class="line">	printf &quot;%-6s %-6s %4d %8d %8d %8d\n&quot;, $1, $2, $3,$4,$5, $3+$4+$5</span><br><span class="line">&#125;</span><br><span class="line"># 运行之后</span><br><span class="line">END &#123;</span><br><span class="line">	printf &quot;---------------------------------------------\n&quot;</span><br><span class="line">	printf &quot;  TOTAL:%10d %8d %8d \n&quot;, math, english, computer</span><br><span class="line">	printf &quot;AVERAGE:%10.2f %8.2f %8.2f\n&quot;, math&#x2F;NR, english&#x2F;NR, computer&#x2F;NR</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><code>awk -v val=$x &#39;&#123;print $1, $2, $3, $4+val, $5+ENVIRON[&quot;y&quot;]&#125;&#39; OFS=&quot;\t&quot; score.txt</code> 其中x，y为环境变量，为了使用环境变量需要 -v</p>
+<p><code>echo $PATH| awk &#39;BEGIN&#123;RS=&quot;:&quot;&#125;&#123;print NR,$0&#125;&#39;</code> 把单行拆分成多行</p>
+<h1 id="sed"><a href="#sed" class="headerlink" title="sed"></a>sed</h1><p><code>sed [-hnV][-e&lt;script&gt;][-f&lt;script文件&gt;][文本文件]</code></p>
+<ul>
+<li><p>e&lt;script&gt;或–expression=&lt;script&gt; 以选项中指定的script来处理输入的文本文件。</p>
+</li>
+<li><p>f&lt;script文件&gt;或–file=&lt;script文件&gt; 以选项中指定的script文件来处理输入的文本文件。</p>
+</li>
+<li><p>h或–help 显示帮助。</p>
+</li>
+<li><p>n或–quiet或–silent 仅显示script处理后的结果。</p>
+</li>
+<li><p>V或–version 显示版本信息。</p>
+</li>
+<li><p>a ：新增， a 的后面可以接字串，而这些字串会在新的一行出现(目前的下一行)～</p>
+</li>
+<li><p>c ：取代， c 的后面可以接字串，这些字串可以取代 n1,n2 之间的行！</p>
+</li>
+<li><p>d ：删除，因为是删除啊，所以 d 后面通常不接任何咚咚；</p>
+</li>
+<li><p>i ：插入， i 的后面可以接字串，而这些字串会在新的一行出现(目前的上一行)；</p>
+</li>
+<li><p>p ：打印，亦即将某个选择的数据印出。通常 p 会与参数 sed -n 一起运行～</p>
+</li>
+<li><p>s ：取代，可以直接进行取代的工作哩！通常这个 s 的动作可以搭配正规表示法！例如 1,20s/old/new/g 就是啦！</p>
+</li>
+</ul>
+<p><code>sed &quot;s/my/ppw &#39;s/g&quot; pets.txt</code> 把pets.txt文件的my改成ppw’s，并不修改文件。/g 表示一行上的替换所有的匹配</p>
+<p>加入-i <code>sed -i &quot;s/my/ppw &#39;s/g&quot; pets.txt</code>可以直接修改文件</p>
+<p><code>sed &#39;s/^/---/g&#39; pets.txt</code> 在开头加上—</p>
+<p><code>sed &#39;s/$/---/g&#39; pets.txt</code> 在结尾加上—</p>
+<p>同理类似的有：</p>
+<ul>
+<li>\&lt; 表示词首。 如：&lt;abc 表示以 abc 为首的詞。</li>
+<li>\&gt; 表示词尾。 如：abc&gt; 表示以 abc 結尾的詞。</li>
+<li>. 表示任何单个字符。</li>
+<li>* 表示某个字符出现了0次或多次。</li>
+<li><input disabled type="checkbox"> 字符集合。 如：[abc] 表示匹配a或b或c，还有 [a-zA-Z] 表示匹配所有的26个字符。如果其中有^表示反，如 [^a] 表示非a的字符</li>
+</ul>
+<p><code>sed &#39;s/&lt;[^&gt;]*&gt;//g&#39; html.txt</code> 取消html文件中的&lt;&gt;tags,不能使用<code>&#39;s/&lt;.*&gt;&#39;//g</code>，因为会贪婪匹配掉第一个《和最后一个》之间所有的内容，现在给出的示例是匹配除了&gt;意外的字符。</p>
+<p><code>sed &#39;3s/my/your/g&#39; pets.txt</code> 和 <code>sed &#39;3,6s/my/your/g&#39; pets.txt</code>，分别表示匹配第三行和第三到六行。</p>
+<p><code>sed &#39;s/s/S/1&#39; pets.txt</code> 匹配每一行的第一个s</p>
+<p><code>sed &#39;1,3s/my/your/g; 3,$s/This/That/g&#39; pets.txt</code> 匹配多个</p>
+<p><code>sed &#39;s/my/[&amp;]/g&#39; pets.txt</code> 使用&amp;来当做被匹配的变量，然后可以在基本左右加点东西</p>
+<p><code>sed &#39;s/This is my \([^,]*\),.*is \(.*\)/\1:\2/g&#39; my.txt</code> 圆括号括起来的正则表达式所匹配的字符串会可以当成变量来使用，sed中使用的是\1,\2…</p>
+<p><code>sed &#39;N;s/my/your/&#39; pets.txt</code> 原文本中的偶数行纳入奇数行匹配，而s只匹配并替换一次，所以最后只有奇数行被修改。 N命令把下一行的内容纳入当成缓冲区做匹配。</p>
+<p><code>sed &quot;1 i This is my monkey, my monkey&#39;s name is wukong&quot; my.txt</code> 和 <code>sed &quot;$ a This is my monkey, my monkey&#39;s name is wukong&quot; my.txt</code>  命令i和a分别表示insert 和 append，添加行</p>
+<p><code>sed &quot;/my/a ----&quot; my.txt</code> 在每行结尾都添加 —-</p>
+<p><code>sed &quot;2 c This is my monkey, my monkey&#39;s name is wukong&quot; my.txt</code> 和 <code>sed &quot;/fish/c This is my monkey, my monkey&#39;s name is wukong&quot; my.txt</code> 命令c表示替换，这两个命令分别表示替换第二行和有’fish’存在的那一行。</p>
+<p><code>sed &#39;/fish/d&#39; my.txt</code> 和 <code>sed &#39;2d&#39; my.txt</code> 和 <code>sed &#39;2,$d&#39; my.txt</code> 命令d表示删除匹配行，这三个命令分别表示删除有fish的一行，删除第二行和删除第二到最后的所有行。</p>
+<p><code>sed -n &#39;/dog/,/fish/p&#39; my.txt</code> 命令-n表示只显示处理后的结果，命令p表示打印，图中命令表示打印有dog的一行和有fish的一行。</p>
+<h1 id="grep"><a href="#grep" class="headerlink" title="grep"></a>grep</h1><p><code>grep -i -c &#39;.*ret.*&#39; linux-exec.s</code> 统计内核二级制文件中ret命令的个数，不区分大小写，直接输出匹配行数。</p>
+]]></content>
+      <categories>
+        <category>linux</category>
+        <category>bash</category>
+      </categories>
+      <tags>
+        <tag>bash</tag>
+        <tag>linux</tag>
+        <tag>tool</tag>
+      </tags>
+  </entry>
 </search>
