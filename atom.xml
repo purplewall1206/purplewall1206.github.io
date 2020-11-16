@@ -6,7 +6,7 @@
   <link href="https://www.zi-c.wang/atom.xml" rel="self"/>
   
   <link href="https://www.zi-c.wang/"/>
-  <updated>2020-11-16T06:24:22.817Z</updated>
+  <updated>2020-11-16T12:10:02.276Z</updated>
   <id>https://www.zi-c.wang/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Raspberry Pi 内核编译</title>
+    <link href="https://www.zi-c.wang/2020/11/16/Raspberry-Pi-%E5%86%85%E6%A0%B8%E7%BC%96%E8%AF%91/"/>
+    <id>https://www.zi-c.wang/2020/11/16/Raspberry-Pi-%E5%86%85%E6%A0%B8%E7%BC%96%E8%AF%91/</id>
+    <published>2020-11-16T12:06:10.000Z</published>
+    <updated>2020-11-16T12:10:02.276Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;&lt;strong&gt;我的版本 : 树莓派3&lt;/strong&gt;&lt;/p&gt;
+&lt;h1 id=&quot;1-内核获取&quot;&gt;&lt;a href=&quot;#1-内核获取&quot; class=&quot;headerlink&quot; title=&quot;1.内核获取&quot;&gt;&lt;/a&gt;1.内核获取&lt;/h1&gt;&lt;h2 id=&quot;1-1-软件下载&quot;&gt;&lt;a href=&quot;#1-1-软件下载&quot; class=&quot;headerlink&quot; title=&quot;1.1.软件下载&quot;&gt;&lt;/a&gt;1.1.软件下载&lt;/h2&gt;&lt;p&gt;&lt;code&gt;sudo apt install git bc bison flex libssl-dev make&lt;/code&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="kernel" scheme="https://www.zi-c.wang/categories/kernel/"/>
+    
+    <category term="raspberryPi" scheme="https://www.zi-c.wang/categories/kernel/raspberryPi/"/>
+    
+    
+    <category term="kernel" scheme="https://www.zi-c.wang/tags/kernel/"/>
+    
+    <category term="raspberryPi" scheme="https://www.zi-c.wang/tags/raspberryPi/"/>
+    
+  </entry>
   
   <entry>
     <title>三剑客sed/awk/grep常用速查</title>
