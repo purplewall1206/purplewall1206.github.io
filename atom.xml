@@ -6,7 +6,7 @@
   <link href="https://www.zi-c.wang/atom.xml" rel="self"/>
   
   <link href="https://www.zi-c.wang/"/>
-  <updated>2020-11-16T12:10:02.276Z</updated>
+  <updated>2020-11-19T07:11:17.132Z</updated>
   <id>https://www.zi-c.wang/</id>
   
   <author>
@@ -15,6 +15,41 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>NJU研究生通知RSS</title>
+    <link href="https://www.zi-c.wang/2020/11/19/NJU%E7%A0%94%E7%A9%B6%E7%94%9F%E9%80%9A%E7%9F%A5RSS/"/>
+    <id>https://www.zi-c.wang/2020/11/19/NJU%E7%A0%94%E7%A9%B6%E7%94%9F%E9%80%9A%E7%9F%A5RSS/</id>
+    <published>2020-11-19T06:39:45.000Z</published>
+    <updated>2020-11-19T07:11:17.132Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    <category term="python" scheme="https://www.zi-c.wang/categories/python/"/>
+    
+    <category term="rss" scheme="https://www.zi-c.wang/categories/python/rss/"/>
+    
+    <category term="github" scheme="https://www.zi-c.wang/categories/python/rss/github/"/>
+    
+    
+    <category term="python" scheme="https://www.zi-c.wang/tags/python/"/>
+    
+    <category term="rss" scheme="https://www.zi-c.wang/tags/rss/"/>
+    
+    <category term="github" scheme="https://www.zi-c.wang/tags/github/"/>
+    
+    <category term="NJU" scheme="https://www.zi-c.wang/tags/NJU/"/>
+    
+  </entry>
   
   <entry>
     <title>Raspberry Pi 内核编译</title>

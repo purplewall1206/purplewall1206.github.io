@@ -20,21 +20,23 @@
     var CONFIG = {"hostname":"www.zi-c.wang","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="我的版本 : 树莓派3 1.内核获取1.1.软件下载sudo apt install git bc bison flex libssl-dev make">
+  <meta name="description" content="NJU-notifeedNanjing University notification feed https:&#x2F;&#x2F;github.com&#x2F;purplewall1206&#x2F;NJU-notifeed 主要收集以下两个网站的最新通知，生成统一的feed提供给本地部署的RSS阅读器（i.e. Thunderbird）  https:&#x2F;&#x2F;grawww.nju.edu.cn http:&#x2F;&#x2F;pyb.nju.edu.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Raspberry Pi 内核编译">
-<meta property="og:url" content="https://www.zi-c.wang/2020/11/16/Raspberry-Pi-%E5%86%85%E6%A0%B8%E7%BC%96%E8%AF%91/index.html">
+<meta property="og:title" content="NJU研究生通知RSS">
+<meta property="og:url" content="https://www.zi-c.wang/2020/11/19/NJU%E7%A0%94%E7%A9%B6%E7%94%9F%E9%80%9A%E7%9F%A5RSS/index.html">
 <meta property="og:site_name" content="purplewall1206 blog">
-<meta property="og:description" content="我的版本 : 树莓派3 1.内核获取1.1.软件下载sudo apt install git bc bison flex libssl-dev make">
+<meta property="og:description" content="NJU-notifeedNanjing University notification feed https:&#x2F;&#x2F;github.com&#x2F;purplewall1206&#x2F;NJU-notifeed 主要收集以下两个网站的最新通知，生成统一的feed提供给本地部署的RSS阅读器（i.e. Thunderbird）  https:&#x2F;&#x2F;grawww.nju.edu.cn http:&#x2F;&#x2F;pyb.nju.edu.">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-11-16T12:06:10.000Z">
-<meta property="article:modified_time" content="2020-11-16T12:10:02.276Z">
+<meta property="article:published_time" content="2020-11-19T06:39:45.000Z">
+<meta property="article:modified_time" content="2020-11-19T07:11:17.132Z">
 <meta property="article:author" content="purplewall1206">
-<meta property="article:tag" content="kernel">
-<meta property="article:tag" content="raspberryPi">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="rss">
+<meta property="article:tag" content="github">
+<meta property="article:tag" content="NJU">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://www.zi-c.wang/2020/11/16/Raspberry-Pi-%E5%86%85%E6%A0%B8%E7%BC%96%E8%AF%91/">
+<link rel="canonical" href="https://www.zi-c.wang/2020/11/19/NJU%E7%A0%94%E7%A9%B6%E7%94%9F%E9%80%9A%E7%9F%A5RSS/">
 
 
 <script id="page-configurations">
@@ -47,7 +49,7 @@
   };
 </script>
 
-  <title>Raspberry Pi 内核编译 | purplewall1206 blog</title>
+  <title>NJU研究生通知RSS | purplewall1206 blog</title>
   
 
 
@@ -201,7 +203,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://www.zi-c.wang/2020/11/16/Raspberry-Pi-%E5%86%85%E6%A0%B8%E7%BC%96%E8%AF%91/">
+    <link itemprop="mainEntityOfPage" href="https://www.zi-c.wang/2020/11/19/NJU%E7%A0%94%E7%A9%B6%E7%94%9F%E9%80%9A%E7%9F%A5RSS/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/media/icon.ico">
@@ -214,7 +216,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Raspberry Pi 内核编译
+          NJU研究生通知RSS
         </h1>
 
         <div class="post-meta">
@@ -225,7 +227,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-11-16 20:06:10 / 修改时间：20:10:02" itemprop="dateCreated datePublished" datetime="2020-11-16T20:06:10+08:00">2020-11-16</time>
+              <time title="创建时间：2020-11-19 14:39:45 / 修改时间：15:11:17" itemprop="dateCreated datePublished" datetime="2020-11-19T14:39:45+08:00">2020-11-19</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -233,11 +235,15 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/kernel/" itemprop="url" rel="index"><span itemprop="name">kernel</span></a>
+                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
                 </span>
                   ，
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/kernel/raspberryPi/" itemprop="url" rel="index"><span itemprop="name">raspberryPi</span></a>
+                  <a href="/categories/python/rss/" itemprop="url" rel="index"><span itemprop="name">rss</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/rss/github/" itemprop="url" rel="index"><span itemprop="name">github</span></a>
                 </span>
             </span>
 
@@ -259,24 +265,20 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p><strong>我的版本 : 树莓派3</strong></p>
-<h1 id="1-内核获取"><a href="#1-内核获取" class="headerlink" title="1.内核获取"></a>1.内核获取</h1><h2 id="1-1-软件下载"><a href="#1-1-软件下载" class="headerlink" title="1.1.软件下载"></a>1.1.软件下载</h2><p><code>sudo apt install git bc bison flex libssl-dev make</code></p>
-<a id="more"></a>
-
-<h3 id="关于libssl-dev的小问题"><a href="#关于libssl-dev的小问题" class="headerlink" title="关于libssl-dev的小问题"></a>关于libssl-dev的小问题</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install aptitude</span><br><span class="line"></span><br><span class="line">dpkg -l *libssl*</span><br><span class="line"></span><br><span class="line">sudo aptitude install libssl-dev</span><br></pre></td></tr></table></figure>
-
-
-<h2 id="1-2-源码获取"><a href="#1-2-源码获取" class="headerlink" title="1.2.源码获取"></a>1.2.源码获取</h2><p><code>git clone --depth=1 https://github.com/raspberrypi/linux</code></p>
-<h1 id="2-内核编译"><a href="#2-内核编译" class="headerlink" title="2.内核编译"></a>2.内核编译</h1><p>预设环境</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd linux</span><br><span class="line">KERNEL&#x3D;kernel7</span><br><span class="line">make bcm2709_defconfig</span><br><span class="line">或者 zcat &#x2F;proc&#x2F;config.gz &gt; .config   #从现在原有版本的内核中复制配置文件</span><br></pre></td></tr></table></figure>
-
-<p>编译</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">make -j4 zImage modules dtbs</span><br><span class="line">sudo make modules_install</span><br><span class="line">sudo cp arch&#x2F;arm&#x2F;boot&#x2F;dts&#x2F;*.dtb &#x2F;boot&#x2F;</span><br><span class="line">sudo cp arch&#x2F;arm&#x2F;boot&#x2F;dts&#x2F;overlays&#x2F;*.dtb* &#x2F;boot&#x2F;overlays&#x2F;</span><br><span class="line">sudo cp arch&#x2F;arm&#x2F;boot&#x2F;dts&#x2F;overlays&#x2F;README &#x2F;boot&#x2F;overlays&#x2F;</span><br><span class="line">sudo cp arch&#x2F;arm&#x2F;boot&#x2F;zImage &#x2F;boot&#x2F;$KERNEL.img</span><br></pre></td></tr></table></figure>
-
-<h1 id="3-更换内核"><a href="#3-更换内核" class="headerlink" title="3.更换内核"></a>3.更换内核</h1><p>修改 <code>/boot/config.txt</code> 文件中内容</p>
-<p><code>kernel=kernel-myconfig.img</code></p>
-<p>myconfig的版本在<code>/lib/modules/</code> 文件夹中。</p>
-<h1 id="4-参考文件"><a href="#4-参考文件" class="headerlink" title="4.参考文件"></a>4.参考文件</h1><p><a target="_blank" rel="noopener" href="https://www.raspberrypi.org/documentation/linux/kernel/building.md" title="building">DOCUMENTATION &gt; LINUX &gt; KERNEL &gt; BUILDING</a></p>
+        <h1 id="NJU-notifeed"><a href="#NJU-notifeed" class="headerlink" title="NJU-notifeed"></a>NJU-notifeed</h1><p>Nanjing University notification feed</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/purplewall1206/NJU-notifeed">https://github.com/purplewall1206/NJU-notifeed</a></p>
+<p>主要收集以下两个网站的最新通知，生成统一的feed提供给本地部署的RSS阅读器（i.e. Thunderbird） </p>
+<p><a target="_blank" rel="noopener" href="https://grawww.nju.edu.cn/">https://grawww.nju.edu.cn</a></p>
+<p><a target="_blank" rel="noopener" href="http://pyb.nju.edu.cn/">http://pyb.nju.edu.cn/</a></p>
+<h1 id="设计思路"><a href="#设计思路" class="headerlink" title="设计思路"></a>设计思路</h1><p>使用requests和beautifulsoup4制作爬虫，获取通知页面的信息条目news</p>
+<p>使用PyRSS2Gen生成feed条目，并写到feed.xml文件中（这里有个问题，lib好像只提供文件写入函数了，暂时没找到其他的output方式）</p>
+<p>使用Flask构建RESTful API，访问 <a target="_blank" rel="noopener" href="http://url/rss">http://url/rss</a> 获取feed</p>
+<p>文件结构：</p>
+<ul>
+<li>news.py news struct，存储消息的属性</li>
+<li>crawlerPYB/GRA.py 两个网站的爬虫策略</li>
+<li>__init__.py 主函数，通过多线程的方式每小时更新一次feed。</li>
+</ul>
 
     </div>
 
@@ -284,18 +286,6 @@
     
     
       
-  <div class="popular-posts-header">相关文章推荐</div>
-  <ul class="popular-posts">
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2020/11/15/io-uring-系统性整理/" rel="bookmark">io_uring 系统性整理</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2020/11/15/内核近期改变/" rel="bookmark">内核近期改变</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2020/11/16/kernel-contribution-统计/" rel="bookmark">kernel contribution 统计</a></div>
-    </li>
-  </ul>
 
         
 
@@ -306,7 +296,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://www.zi-c.wang/2020/11/16/Raspberry-Pi-%E5%86%85%E6%A0%B8%E7%BC%96%E8%AF%91/" title="Raspberry Pi 内核编译">https://www.zi-c.wang/2020/11/16/Raspberry-Pi-内核编译/</a>
+    <a href="https://www.zi-c.wang/2020/11/19/NJU%E7%A0%94%E7%A9%B6%E7%94%9F%E9%80%9A%E7%9F%A5RSS/" title="NJU研究生通知RSS">https://www.zi-c.wang/2020/11/19/NJU研究生通知RSS/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -336,8 +326,10 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/kernel/" rel="tag"># kernel</a>
-              <a href="/tags/raspberryPi/" rel="tag"># raspberryPi</a>
+              <a href="/tags/python/" rel="tag"># python</a>
+              <a href="/tags/rss/" rel="tag"># rss</a>
+              <a href="/tags/github/" rel="tag"># github</a>
+              <a href="/tags/NJU/" rel="tag"># NJU</a>
           </div>
 
         
@@ -346,13 +338,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/11/16/%E4%B8%89%E5%89%91%E5%AE%A2sed-awk-grep%E5%B8%B8%E7%94%A8%E9%80%9F%E6%9F%A5/" rel="prev" title="三剑客sed/awk/grep常用速查">
-      <i class="fa fa-chevron-left"></i> 三剑客sed/awk/grep常用速查
+    <a href="/2020/11/16/Raspberry-Pi-%E5%86%85%E6%A0%B8%E7%BC%96%E8%AF%91/" rel="prev" title="Raspberry Pi 内核编译">
+      <i class="fa fa-chevron-left"></i> Raspberry Pi 内核编译
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/11/19/NJU%E7%A0%94%E7%A9%B6%E7%94%9F%E9%80%9A%E7%9F%A5RSS/" rel="next" title="NJU研究生通知RSS">
-      NJU研究生通知RSS <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -411,7 +400,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-%E5%86%85%E6%A0%B8%E8%8E%B7%E5%8F%96"><span class="nav-number">1.</span> <span class="nav-text">1.内核获取</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-%E8%BD%AF%E4%BB%B6%E4%B8%8B%E8%BD%BD"><span class="nav-number">1.1.</span> <span class="nav-text">1.1.软件下载</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E4%BA%8Elibssl-dev%E7%9A%84%E5%B0%8F%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.1.</span> <span class="nav-text">关于libssl-dev的小问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-%E6%BA%90%E7%A0%81%E8%8E%B7%E5%8F%96"><span class="nav-number">1.2.</span> <span class="nav-text">1.2.源码获取</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-%E5%86%85%E6%A0%B8%E7%BC%96%E8%AF%91"><span class="nav-number">2.</span> <span class="nav-text">2.内核编译</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-%E6%9B%B4%E6%8D%A2%E5%86%85%E6%A0%B8"><span class="nav-number">3.</span> <span class="nav-text">3.更换内核</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-%E5%8F%82%E8%80%83%E6%96%87%E4%BB%B6"><span class="nav-number">4.</span> <span class="nav-text">4.参考文件</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#NJU-notifeed"><span class="nav-number">1.</span> <span class="nav-text">NJU-notifeed</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF"><span class="nav-number">2.</span> <span class="nav-text">设计思路</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

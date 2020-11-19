@@ -196,6 +196,95 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.zi-c.wang/2020/11/19/NJU%E7%A0%94%E7%A9%B6%E7%94%9F%E9%80%9A%E7%9F%A5RSS/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/media/icon.ico">
+      <meta itemprop="name" content="purplewall1206">
+      <meta itemprop="description" content="something about kernel & programming">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="purplewall1206 blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/19/NJU%E7%A0%94%E7%A9%B6%E7%94%9F%E9%80%9A%E7%9F%A5RSS/" class="post-title-link" itemprop="url">NJU研究生通知RSS</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-11-19 14:39:45 / 修改时间：15:11:17" itemprop="dateCreated datePublished" datetime="2020-11-19T14:39:45+08:00">2020-11-19</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/rss/" itemprop="url" rel="index"><span itemprop="name">rss</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/rss/github/" itemprop="url" rel="index"><span itemprop="name">github</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="NJU-notifeed"><a href="#NJU-notifeed" class="headerlink" title="NJU-notifeed"></a>NJU-notifeed</h1><p>Nanjing University notification feed</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/purplewall1206/NJU-notifeed">https://github.com/purplewall1206/NJU-notifeed</a></p>
+<p>主要收集以下两个网站的最新通知，生成统一的feed提供给本地部署的RSS阅读器（i.e. Thunderbird） </p>
+<p><a target="_blank" rel="noopener" href="https://grawww.nju.edu.cn/">https://grawww.nju.edu.cn</a></p>
+<p><a target="_blank" rel="noopener" href="http://pyb.nju.edu.cn/">http://pyb.nju.edu.cn/</a></p>
+<h1 id="设计思路"><a href="#设计思路" class="headerlink" title="设计思路"></a>设计思路</h1><p>使用requests和beautifulsoup4制作爬虫，获取通知页面的信息条目news</p>
+<p>使用PyRSS2Gen生成feed条目，并写到feed.xml文件中（这里有个问题，lib好像只提供文件写入函数了，暂时没找到其他的output方式）</p>
+<p>使用Flask构建RESTful API，访问 <a target="_blank" rel="noopener" href="http://url/rss">http://url/rss</a> 获取feed</p>
+<p>文件结构：</p>
+<ul>
+<li>news.py news struct，存储消息的属性</li>
+<li>crawlerPYB/GRA.py 两个网站的爬虫策略</li>
+<li>__init__.py 主函数，通过多线程的方式每小时更新一次feed。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://www.zi-c.wang/2020/11/16/Raspberry-Pi-%E5%86%85%E6%A0%B8%E7%BC%96%E8%AF%91/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -935,20 +1024,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-count">9</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
