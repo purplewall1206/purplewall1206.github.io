@@ -476,6 +476,7 @@
 <li>requirement.txt 安装的python lib，<code>sudo pip install -r requirement.txt</code></li>
 </ul>
 <p>ubuntu 运行面对的问题 <code>sudo apt-get install python3-html5lib</code></p>
+<h1 id="启动问题"><a href="#启动问题" class="headerlink" title="启动问题"></a>启动问题</h1><p>加入description信息获取之后，服务器往往无法立即反应，需要等到logging中显示出爬虫已经完全获取信息的日志之后，才能通过网站访问。需要处理一下这个问题，应该是global被锁住，服务器比爬虫先启动导致的。</p>
 ]]></content>
       <categories>
         <category>python</category>
