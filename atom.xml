@@ -281,4 +281,101 @@
     
   </entry>
   
+  <entry>
+    <title>Nutch2.3.1+hbase-0.98-hadoop+solr5.2.1的自动部署脚本</title>
+    <link href="https://www.zi-c.wang/2016/10/18/Nutch2.3.1+hbase-0.98-hadoop+solr5.2.1%E7%9A%84%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2%E8%84%9A%E6%9C%AC/"/>
+    <id>https://www.zi-c.wang/2016/10/18/Nutch2.3.1+hbase-0.98-hadoop+solr5.2.1%E7%9A%84%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2%E8%84%9A%E6%9C%AC/</id>
+    <published>2016-10-18T09:50:10.000Z</published>
+    <updated>2020-11-22T08:51:15.510Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;在阳总的帮助下，终于搞出了这个自动部署脚本，感谢阳总让我第一次看到真人写的bash脚本，很涨姿势。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;hbase-0.98-hadoop 的选择原因是[&lt;a href=&quot;http://wiki.apache.org/nutch/Nutch2Tutorial&quot;&gt;http://wiki.apache.org/nutch/Nutch2Tutorial&lt;/a&gt; ](nutch turorial)上这么推荐的&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;solr5.x 的玩法似乎和solr4.9 差别不小，之后应该会单独写一篇分析的&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;测试环境是 centos6环境，使用ubuntu或者其他发行版的兄弟记得改下 那堆yum，rpm&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;</summary>
+    
+    
+    
+    
+    <category term="markdown" scheme="https://www.zi-c.wang/tags/markdown/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>nutch-2.3.1+hbase-0.94+eclipse 环境搭建教程</title>
+    <link href="https://www.zi-c.wang/2016/03/08/nutch-2.3.1+hbase-0.94+eclipse%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/"/>
+    <id>https://www.zi-c.wang/2016/03/08/nutch-2.3.1+hbase-0.94+eclipse%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</id>
+    <published>2016-03-08T15:52:10.000Z</published>
+    <updated>2020-11-22T08:50:36.390Z</updated>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;1-开发环境及软件版本&quot;&gt;&lt;a href=&quot;#1-开发环境及软件版本&quot; class=&quot;headerlink&quot; title=&quot;1.开发环境及软件版本&quot;&gt;&lt;/a&gt;1.开发环境及软件版本&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;centos 6.7&lt;/li&gt;
+&lt;li&gt;apache-nutch-2.3.1&lt;/li&gt;
+&lt;li&gt;hbase-0.94&lt;/li&gt;
+&lt;li&gt;eclipse javaEE&lt;/li&gt;
+&lt;li&gt;jdk8&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;2-安装并配置jdk&quot;&gt;&lt;a href=&quot;#2-安装并配置jdk&quot; class=&quot;headerlink&quot; title=&quot;2.安装并配置jdk&quot;&gt;&lt;/a&gt;2.安装并配置jdk&lt;/h2&gt;</summary>
+    
+    
+    
+    
+    <category term="hbase" scheme="https://www.zi-c.wang/tags/hbase/"/>
+    
+    <category term="nutch" scheme="https://www.zi-c.wang/tags/nutch/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>hbase的常用shell</title>
+    <link href="https://www.zi-c.wang/2016/01/20/hbase%E5%B8%B8%E7%94%A8shell/"/>
+    <id>https://www.zi-c.wang/2016/01/20/hbase%E5%B8%B8%E7%94%A8shell/</id>
+    <published>2016-01-20T02:43:10.000Z</published>
+    <updated>2020-11-22T08:52:48.260Z</updated>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;1-打开hbase并进入hbase-shell-console&quot;&gt;&lt;a href=&quot;#1-打开hbase并进入hbase-shell-console&quot; class=&quot;headerlink&quot; title=&quot;1.打开hbase并进入hbase shell console&quot;&gt;&lt;/a&gt;1.打开hbase并进入hbase shell console&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;
+$HBASE_HOME/bin/start-hbase.sh
+$HBASE_HOME/bin/hbase shell
+hbase(main)&gt; whoami
+&lt;/code&gt;&lt;/pre&gt;</summary>
+    
+    
+    
+    
+    <category term="markdown" scheme="https://www.zi-c.wang/tags/markdown/"/>
+    
+    <category term="hbase" scheme="https://www.zi-c.wang/tags/hbase/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>可能经常用到的markdown语法和标签插件</title>
+    <link href="https://www.zi-c.wang/2016/01/20/%E5%8F%AF%E8%83%BD%E7%BB%8F%E5%B8%B8%E7%94%A8%E5%88%B0%E7%9A%84markdown%E8%AF%AD%E6%B3%95%E5%92%8C%E6%A0%87%E7%AD%BE%E6%8F%92%E4%BB%B6/"/>
+    <id>https://www.zi-c.wang/2016/01/20/%E5%8F%AF%E8%83%BD%E7%BB%8F%E5%B8%B8%E7%94%A8%E5%88%B0%E7%9A%84markdown%E8%AF%AD%E6%B3%95%E5%92%8C%E6%A0%87%E7%AD%BE%E6%8F%92%E4%BB%B6/</id>
+    <published>2016-01-20T02:43:10.000Z</published>
+    <updated>2020-11-22T08:50:48.340Z</updated>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;摘要&quot;&gt;&lt;a href=&quot;#摘要&quot; class=&quot;headerlink&quot; title=&quot;摘要&quot;&gt;&lt;/a&gt;摘要&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;本文没有系统介绍markdown语法和标签插件，而是仅仅列举的可能经常使用的markdown语法和标签插件样式&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;l&amp;gt;&amp;lt;li&amp;gt;1&amp;lt;/li&amp;gt;&amp;lt;li&amp;gt;2&amp;lt;/li&amp;gt;&amp;lt;/ol&amp;gt;“ 都可以表示分点&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;First&lt;/li&gt;
+&lt;li&gt;Second&lt;/li&gt;
+&lt;li&gt;Third&lt;/li&gt;
+&lt;li&gt;false&lt;/li&gt;&lt;/ul&gt;</summary>
+    
+    
+    
+    
+    <category term="markdown" scheme="https://www.zi-c.wang/tags/markdown/"/>
+    
+  </entry>
+  
 </feed>

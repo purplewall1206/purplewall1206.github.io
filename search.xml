@@ -490,4 +490,278 @@
         <tag>NJU</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Nutch2.3.1+hbase-0.98-hadoop+solr5.2.1的自动部署脚本</title>
+    <url>/2016/10/18/Nutch2.3.1+hbase-0.98-hadoop+solr5.2.1%E7%9A%84%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2%E8%84%9A%E6%9C%AC/</url>
+    <content><![CDATA[<p>在阳总的帮助下，终于搞出了这个自动部署脚本，感谢阳总让我第一次看到真人写的bash脚本，很涨姿势。</p>
+<ul>
+<li><p>hbase-0.98-hadoop 的选择原因是[<a href="http://wiki.apache.org/nutch/Nutch2Tutorial">http://wiki.apache.org/nutch/Nutch2Tutorial</a> ](nutch turorial)上这么推荐的</p>
+</li>
+<li><p>solr5.x 的玩法似乎和solr4.9 差别不小，之后应该会单独写一篇分析的</p>
+</li>
+<li><p>测试环境是 centos6环境，使用ubuntu或者其他发行版的兄弟记得改下 那堆yum，rpm</p>
+<a id="more"></a>
+<pre><code> #!/bin/bash </code></pre>
+<p>这个写到一开头表示这是<strong>.sh</strong>那一类文件，剩下的就是用重定向之类的linux下的特殊写法追加写入文本的</p>
+</li>
+<li><p>脚本中的所有文件都将被部署到 <strong>/usr</strong> 目录下，如果改目录需要连着配置文件一起改，权限不够加<strong>sudo</strong></p>
+</li>
+<li><p>nutch crawl solr hbase 都写入环境变量，可以在任何目录下运行。</p>
+</li>
+<li><p>nutch 执行的是 /usr/nutch-2/runtime/local/bin/nutch 目录的文件，而不是deploy中</p>
+</li>
+<li><p>之后集成hadoop再修改配置文件。</p>
+</li>
+</ul>
+<p>以下是自动部署脚本，需要复制下来制作成 <strong>.sh</strong> 文件，使用 <pre><code> sudo bash xxx.sh </code></pre> 执行</p>
+<figure class="highlight bash"><figcaption><span>自动部署脚本</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">rpm -Uvh https://centos6.iuscommunity.org/ius-release.rpm</span><br><span class="line">yum install epel-release -y</span><br><span class="line">yum install git wget screen vim -y</span><br><span class="line">yum update -y</span><br><span class="line"></span><br><span class="line">iptables -F</span><br><span class="line">iptables-save</span><br><span class="line">service iptables save</span><br><span class="line">ip6tables -F</span><br><span class="line">ip6tables-save</span><br><span class="line">service ip6tables save</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> /opt</span><br><span class="line">wget --no-cookies --no-check-certificate --header <span class="string">&quot;Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie&quot;</span> <span class="string">&quot;http://download.oracle.com/otn-pub/java/jdk/8u102-b14/jdk-8u102-linux-x64.rpm&quot;</span></span><br><span class="line">rpm -ivh jdk-8u102-linux-x64.rpm</span><br><span class="line">rm -rf jdk-8u102-linux-x64.rpm</span><br><span class="line"></span><br><span class="line">wget http://archive.apache.org/dist/hbase/hbase-0.98.8/hbase-0.98.8-hadoop2-bin.tar.gz</span><br><span class="line">tar xzf hbase-0.98.8-hadoop2-bin.tar.gz</span><br><span class="line">rm -rf hbase-0.98.8-hadoop2-bin.tar.gz</span><br><span class="line">mv hbase-0.98.8-hadoop2 /usr/hbase</span><br><span class="line"></span><br><span class="line">wget http://www-eu.apache.org/dist/nutch/2.3.1/apache-nutch-2.3.1-src.tar.gz</span><br><span class="line">tar xzf apache-nutch-2.3.1-src.tar.gz</span><br><span class="line">rm -rf apache-nutch-2.3.1-src.tar.gz</span><br><span class="line">mv apache-nutch-2.3.1 /usr/nutch-2</span><br><span class="line">chmod -R 777 /usr/nutch-2</span><br><span class="line"></span><br><span class="line">wget http://www-us.apache.org/dist/ant/binaries/apache-ant-1.9.7-bin.tar.gz</span><br><span class="line">tar xzf apache-ant-1.9.7-bin.tar.gz</span><br><span class="line">rm -rf apache-ant-1.9.7-bin.tar.gz</span><br><span class="line">mv apache-ant-1.9.7 /usr/ant</span><br><span class="line"></span><br><span class="line">wget http://archive.apache.org/dist/lucene/solr/5.2.1/solr-5.2.1.tgz</span><br><span class="line">tar xzf solr-5.2.1.tgz</span><br><span class="line">rm -rf solr-5.2.1.tgz</span><br><span class="line">mv solr-5.2.1 /usr/solr</span><br><span class="line"></span><br><span class="line">rm -rf ~/envtemp</span><br><span class="line">cat &gt; ~/envtemp&lt;&lt;<span class="string">&#x27;EOF&#x27;</span></span><br><span class="line"><span class="comment">#set JDK environment</span></span><br><span class="line">JAVA_HOME=/usr/java/jdk1.8.0_102</span><br><span class="line">JRE_HOME=<span class="variable">$JAVA_HOME</span>/jre</span><br><span class="line">CLASS_PATH=.:<span class="variable">$JAVA_HOME</span>/lib/dt.jar:<span class="variable">$JAVA_HOME</span>/lib/tools.jar:<span class="variable">$JRE_HOME</span>/lib</span><br><span class="line"><span class="comment">#set ANT environment</span></span><br><span class="line">ANT_HOME=/usr/ant</span><br><span class="line"><span class="comment">#set HBASE environment</span></span><br><span class="line">HBASE_HOME=/usr/hbase</span><br><span class="line"><span class="comment">#set LOCAL_NUTCH environment</span></span><br><span class="line">NUTCH_HOME=/usr/nutch-2/runtime/<span class="built_in">local</span></span><br><span class="line"><span class="comment">#set SOLR environment</span></span><br><span class="line">SOLR_HOME=/usr/solr</span><br><span class="line"><span class="comment">#set HADOOP environment</span></span><br><span class="line">HADOOP_HOME=/usr/hadoop</span><br><span class="line">HADOOP_INSTALL=<span class="variable">$HADOOP_HOME</span></span><br><span class="line">HADOOP_MAPRED_HOME=<span class="variable">$HADOOP_HOME</span></span><br><span class="line">HADOOP_COMMON_HOME=<span class="variable">$HADOOP_HOME</span></span><br><span class="line">HADOOP_HDFS_HOME=<span class="variable">$HADOOP_HOME</span></span><br><span class="line">YARN_HOME=<span class="variable">$HADOOP_HOME</span></span><br><span class="line">HADOOP_COMMON_LIB_NATIVE_DIR=<span class="variable">$HADOOP_HOME</span>/lib/native</span><br><span class="line">HADOOP_OPTS=<span class="string">&quot;-Djava.library.path=<span class="variable">$HADOOP_HOME</span>/lib:<span class="variable">$HADOOP_COMMON_LIB_NATIVE_DIR</span>&quot;</span></span><br><span class="line">PATH=<span class="variable">$PATH</span>:<span class="variable">$JAVA_HOME</span>/bin:<span class="variable">$JRE_HOME</span>/bin:<span class="variable">$ANT_HOME</span>/bin:<span class="variable">$HBASE_HOME</span>/bin:<span class="variable">$NUTCH_HOME</span>/bin:<span class="variable">$SOLR_HOME</span>/bin:<span class="variable">$HADOOP_HOME</span>/bin:<span class="variable">$HADOOP_HOME</span>/sbin</span><br><span class="line"><span class="built_in">export</span> JAVA_HOME JRE_HOMECLASS_PATH ANT_HOME HBASE_HOME NUTCH_HOME SOLR_HOME HADOOP_HOME HADOOP_INSTALL HADOOP_MAPRED_HOME HADOOP_COMMON_HOME HADOOP_HDFS_HOME YARN_HOME HADOOP_COMMON_LIB_NATIVE_DIR HADOOP_OPTS PATH</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">rm -rf ~/profile</span><br><span class="line">cp /etc/profile ~/profile</span><br><span class="line">cat ~/profile ~/envtemp &gt;/etc/profile</span><br><span class="line"></span><br><span class="line">rm -rf ~/envtemp ~/profile</span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> /etc/profile</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line">wget http://www.senra.me/nutch-solr/nutch-site.xml</span><br><span class="line">wget http://www.senra.me/nutch-solr/gora.properties</span><br><span class="line">wget http://www.senra.me/nutch-solr/ivy.xml</span><br><span class="line">wget http://www.senra.me/nutch-solr/hbase-site.xml</span><br><span class="line">wget http://www.senra.me/nutch-solr/solr.xml</span><br><span class="line">\cp -a ~/nutch-site.xml /usr/nutch-2/conf/</span><br><span class="line">\cp -a ~/gora.properties /usr/nutch-2/conf/</span><br><span class="line">\cp -a ~/ivy.xml /usr/nutch-2/ivy/</span><br><span class="line">\cp -a ~/hbase-site.xml /usr/hbase/conf/</span><br><span class="line">\cp -a ~/solr.xml /usr/solr/</span><br><span class="line">rm -rf ~/nutch-site.xml ~/gora.properties ~/ivy.xml ~/hbase-site.xml ~/solr.xml</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> /usr/nutch-2</span><br><span class="line">ant runtime</span><br><span class="line"></span><br><span class="line">/usr/hbase/bin/start-hbase.sh</span><br><span class="line">/usr/solr/bin/solr start</span><br><span class="line">/usr/solr/bin/solr create_core -c demo</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<ul>
+<li>20号之后的大创答辩加油！争取国家级！</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>markdown</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>nutch-2.3.1+hbase-0.94+eclipse 环境搭建教程</title>
+    <url>/2016/03/08/nutch-2.3.1+hbase-0.94+eclipse%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<h2 id="1-开发环境及软件版本"><a href="#1-开发环境及软件版本" class="headerlink" title="1.开发环境及软件版本"></a>1.开发环境及软件版本</h2><ul>
+<li>centos 6.7</li>
+<li>apache-nutch-2.3.1</li>
+<li>hbase-0.94</li>
+<li>eclipse javaEE</li>
+<li>jdk8</li>
+</ul>
+<h2 id="2-安装并配置jdk"><a href="#2-安装并配置jdk" class="headerlink" title="2.安装并配置jdk"></a>2.安装并配置jdk</h2><a id="more"></a>
+<h3 id="1-在Oracle网站wget下载jdk8"><a href="#1-在Oracle网站wget下载jdk8" class="headerlink" title="1) 在Oracle网站wget下载jdk8"></a>1) 在Oracle网站wget下载jdk8</h3><figure class="highlight plain"><figcaption><span>jdk8_installing</span></figcaption><table><tr><td class="code"><pre><span class="line">wget --no-check-certificate --no-cookies --header &quot;Cookie: oraclelicense&#x3D;accept-securebackup-cookie&quot; http:&#x2F;&#x2F;download.oracle.com&#x2F;otn-pub&#x2F;java&#x2F;jdk&#x2F;8u73-b02&#x2F;jdk-8u73-linux-x64.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p>由于Oracle需要点击accept licence的才能下载，所以必须使用下面的命令，才可以直接下载。<br>否则下载的jdk文件将无法解压缩。</p>
+<h3 id="2-配置JAVA-HOME"><a href="#2-配置JAVA-HOME" class="headerlink" title="2) 配置JAVA_HOME"></a>2) 配置JAVA_HOME</h3><figure class="highlight plain"><figcaption><span>jdk8_installing</span></figcaption><table><tr><td class="code"><pre><span class="line">mkdir&#x2F;usr&#x2F;java&#x2F;</span><br><span class="line">tar -zxf jdk-8u73-linux-x64.tar.gz &#x2F;&#x2F;不适用-v指令以加快解压缩速度</span><br><span class="line">mv jdk-8u73-linux-x64&#x2F; &#x2F;usr&#x2F;java&#x2F;</span><br><span class="line">vi &#x2F;etc&#x2F;profile  &#x2F;&#x2F;打开vi文本编辑器编辑环境变量</span><br></pre></td></tr></table></figure>
+
+<p>按i开始编辑，在文件的末尾输入</p>
+<figure class="highlight plain"><figcaption><span>jdk8_installing</span></figcaption><table><tr><td class="code"><pre><span class="line">  #set JDK environment</span><br><span class="line">  </span><br><span class="line">JAVA_HOME&#x3D;&#x2F;usr&#x2F;java&#x2F;jdk1.8.0_45</span><br><span class="line">JRE_HOME&#x3D;$JAVA_HOME&#x2F;jre</span><br><span class="line">CLASS_PATH&#x3D;.:$JAVA_HOME&#x2F;lib&#x2F;dt.jar:$JAVA_HOME&#x2F;lib&#x2F;tools.jar:$JRE_HOME&#x2F;lib</span><br><span class="line">PATH&#x3D;$PATH:$JAVA_HOME&#x2F;bin:$JRE_HOME&#x2F;bin</span><br><span class="line">export JAVA_HOME JRE_HOMECLASS_PATH PATH</span><br></pre></td></tr></table></figure>
+<p>先按Esc退出编辑模式，然后输入 :wq 保存退出</p>
+<figure class="highlight plain"><figcaption><span>jdk8_installing</span></figcaption><table><tr><td class="code"><pre><span class="line">source &#x2F;etc&#x2F;profile  &#x2F;&#x2F;使环境生效</span><br><span class="line">echo $JAVA_HOME &#x2F;&#x2F;检验是否安装成功</span><br><span class="line">&#x2F;usr&#x2F;java&#x2F;jdk1.8.0_45  &#x2F;&#x2F;环境生效！！！</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-安装并配置hbase-0-94"><a href="#3-安装并配置hbase-0-94" class="headerlink" title="3.安装并配置hbase-0.94"></a>3.安装并配置hbase-0.94</h2><h3 id="1-在hbase页面下载hbase-0-94解压缩并重命名"><a href="#1-在hbase页面下载hbase-0-94解压缩并重命名" class="headerlink" title="1) 在hbase页面下载hbase-0.94解压缩并重命名"></a>1) 在hbase页面下载hbase-0.94解压缩并重命名</h3><figure class="highlight plain"><figcaption><span>hbase_installing</span></figcaption><table><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;www-eu.apache.org&#x2F;dist&#x2F;hbase&#x2F;hbase-0.94.27&#x2F;</span><br><span class="line">tar -zxf hbase-0.94.27&#x2F;   &#x2F;&#x2F;减少输出，加快速度</span><br><span class="line">mv hbase-0.94.27&#x2F; hbase&#x2F;  &#x2F;&#x2F;重命名，简短文件名称</span><br><span class="line">mv hbase&#x2F; &#x2F;usr&#x2F;           &#x2F;&#x2F;将hbase&#x2F;文件夹移动到&#x2F;usr&#x2F;路径下</span><br><span class="line">cd &#x2F;usr&#x2F;                  &#x2F;&#x2F;进入&#x2F;usr目录</span><br><span class="line">chmod -R 777 hbase&#x2F;       &#x2F;&#x2F;给hbase目录分配权限</span><br><span class="line"></span><br><span class="line">cd hbase&#x2F;</span><br><span class="line">vi conf&#x2F;hbase-site.xml    &#x2F;&#x2F;配置hbase-site.xml文件</span><br><span class="line">&lt;configuration&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">    &lt;name&gt;hbase.rootdir&lt;&#x2F;name&gt;</span><br><span class="line">    &lt;value&gt;file:&#x2F;&#x2F;&#x2F;&#x2F;usr&#x2F;hbase&#x2F;hbase&lt;&#x2F;value&gt;</span><br><span class="line">  &lt;&#x2F;property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;hbase.zookeeper.property.dataDir&lt;&#x2F;name&gt;</span><br><span class="line">    &lt;value&gt;&#x2F;usr&#x2F;hbase&#x2F;zookeeper&lt;&#x2F;value&gt;</span><br><span class="line">  &lt;&#x2F;property&gt;</span><br><span class="line">&lt;&#x2F;configuration&gt;</span><br></pre></td></tr></table></figure>
+<p>之后的nutch爬出的数据将存储到rootdir文件夹中，所以必须配置zookeeper的同理。<br>测试是否安装成功</p>
+<figure class="highlight plain"><figcaption><span>hbase_installing</span></figcaption><table><tr><td class="code"><pre><span class="line">.&#x2F;bin&#x2F;start-hbase.sh &#x2F;&#x2F;打开hbase进程</span><br><span class="line">.&#x2F;bin&#x2F;hbase shell &#x2F;&#x2F;可以进入hbase命令行模式</span><br><span class="line">&#x2F;&#x2F;检验成功可以运行后暂时关闭hbase进程</span><br><span class="line">.&#x2F;stop-hbase.sh</span><br></pre></td></tr></table></figure>
+<p>至此hbase安装成功，hbase-0.94可以直接在本地运行，不需要hadoop集群（个人暂时是这么理解的欢迎指正）</p>
+<h2 id="4-安装并配置apache-nutch-2-3-1"><a href="#4-安装并配置apache-nutch-2-3-1" class="headerlink" title="4.安装并配置apache-nutch-2.3.1"></a>4.安装并配置apache-nutch-2.3.1</h2><h3 id="1-wget下载apache-nutch-2-3-1并解压缩"><a href="#1-wget下载apache-nutch-2-3-1并解压缩" class="headerlink" title="1)wget下载apache-nutch-2.3.1并解压缩"></a>1)wget下载apache-nutch-2.3.1并解压缩</h3><figure class="highlight plain"><figcaption><span>nutch-2_installing</span></figcaption><table><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;www-eu.apache.org&#x2F;dist&#x2F;nutch&#x2F;2.3.1&#x2F;apache-nutch-2.3.1-src.tar.gz</span><br><span class="line">&#x2F;&#x2F;速度不够的话去官网看他给你推荐的链接</span><br><span class="line">tar -zxf apache-nutch-2.3.1-src.tar.gz</span><br><span class="line">mv apache-nutch-2.3.1&#x2F; nutch-2&#x2F;</span><br><span class="line">mv nutch-2&#x2F; &#x2F;usr&#x2F; &#x2F;&#x2F;移动文件</span><br><span class="line">cd &#x2F;usr&#x2F;</span><br><span class="line">chmod -R 777 nutch-2</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>下面开始重头戏，配置nutch文件<h4 id="1-conf目录下的nutch-site-xml文件-我的配置"><a href="#1-conf目录下的nutch-site-xml文件-我的配置" class="headerlink" title="(1)conf目录下的nutch-site.xml文件(我的配置)"></a>(1)conf目录下的nutch-site.xml文件(我的配置)</h4><figure class="highlight plain"><figcaption><span>nutch-2_installing</span></figcaption><table><tr><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">&lt;name&gt;storage.data.store.class&lt;&#x2F;name&gt;</span><br><span class="line">&lt;value&gt;org.apache.gora.hbase.store.HBaseStore&lt;&#x2F;value&gt;</span><br><span class="line">&lt;description&gt;Default class for storing data&lt;&#x2F;description&gt;</span><br><span class="line">&lt;&#x2F;property&gt;</span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line">  &lt;name&gt;plugin.includes&lt;&#x2F;name&gt;</span><br><span class="line">  &lt;value&gt;protocol-httpclient|urlfilter-regex|index-(basic|more)|query-(basic|site|url|lang)|indexer-solr|nutch-extensionpoints|protocol-httpclient|urlfilter-regex|parse-(text|html|msexcel|msword|mspowerpoint|pdf)|summary-basic|scoring-opic|urlnormalizer-(pass|regex|basic)protocol-http|urlfilter-regex|parse-(html|tika|metatags)|index-(basic|anchor|more|metadata)&lt;&#x2F;value&gt;</span><br><span class="line">&lt;&#x2F;property&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> &lt;property&gt;</span><br><span class="line">    &lt;name&gt;http.agent.name&lt;&#x2F;name&gt;</span><br><span class="line">    &lt;value&gt;Mozilla&#x2F;5.0 (Windows NT 6.1; WOW64) AppleWebKit&#x2F;537.36 (KHTML, like Gecko) Chrome&#x2F;33.0.1750.117 Safari&lt;&#x2F;value&gt;</span><br><span class="line">&lt;&#x2F;property&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">    &lt;name&gt;http.agent.version&lt;&#x2F;name&gt;</span><br><span class="line">    &lt;value&gt;537.36&lt;&#x2F;value&gt;</span><br><span class="line">&lt;&#x2F;property&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line">   &lt;name&gt;http.robots.agents&lt;&#x2F;name&gt;</span><br><span class="line">   &lt;value&gt;Test-Crawler&lt;&#x2F;value&gt;</span><br><span class="line"> &lt;&#x2F;property&gt;</span><br><span class="line"> </span><br><span class="line"> &lt;property&gt;</span><br><span class="line"> </span><br><span class="line"> &lt;property&gt;</span><br><span class="line">  &lt;name&gt;plugin.folders&lt;&#x2F;name&gt;</span><br><span class="line">  &lt;value&gt;.&#x2F;build&#x2F;plugins&lt;&#x2F;value&gt;</span><br><span class="line">  &lt;description&gt;Directories where nutch plugins are located.  Each</span><br><span class="line">  element may be a relative or absolute path.  If absolute, it is used</span><br><span class="line">  as is.  If relative, it is searched for on the classpath.&lt;&#x2F;description&gt;</span><br><span class="line">&lt;&#x2F;property&gt;</span><br><span class="line"> &lt;&#x2F;property&gt;</span><br><span class="line"> </span><br><span class="line"> &lt;property&gt;</span><br><span class="line">  &lt;name&gt;plugin.includes&lt;&#x2F;name&gt;</span><br><span class="line"> &lt;value&gt;protocol-http|urlfilter-regex|parse-(html|tika)|index-(basic|anchor)|urlnormalizer-(pass|regex|basic)|scoring-opic|index-anchor|index-more|languageidentifier|subcollection|feed|creativecommons|tld&lt;&#x2F;value&gt;</span><br><span class="line"> </span><br><span class="line">&lt;&#x2F;property&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;&#x2F;configuration&gt;</span><br></pre></td></tr></table></figure></li>
+<li>留心plugin.folders，配置不对花式报错</li>
+</ul>
+<h4 id="2-修改conf-gora-properties"><a href="#2-修改conf-gora-properties" class="headerlink" title="(2)修改conf/gora.properties"></a>(2)修改conf/gora.properties</h4><p>加入<pre><code>gora.datastore.default=org.apache.gora.hbase.store.HBaseStore</code></pre><br>之后注释掉所有其他内容</p>
+<h4 id="3-修改ivy-ivy-xml文件"><a href="#3-修改ivy-ivy-xml文件" class="headerlink" title="(3)修改ivy/ivy.xml文件"></a>(3)修改ivy/ivy.xml文件</h4><p>取消注释</p>
+<pre><code><dependency org="org.apache.gora" name="gora-hbase" rev="0.5" conf="*->default"></dependency></code></pre>
+<p>表示使用hbase数据库</p>
+<ul>
+<li><p>另外regex-urlfliter.txt网页内容过滤等可以暂时不进行配置</p>
+</li>
+<li><p>返回nutch-2根目录</p>
+<figure class="highlight plain"><figcaption><span>nutch-2_installing</span></figcaption><table><tr><td class="code"><pre><span class="line">yum -y install ant &#x2F;&#x2F;yum直接安装ant，对nutch进行搭建</span><br><span class="line">ant eclipse</span><br><span class="line">ant runtime &#x2F;&#x2F;命令行操作方式构建，进入runtime&#x2F;local&#x2F;bin&#x2F;文件夹中有nutch和crawl感兴趣的关注文章结尾处推荐链接</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<blockquote><p>maven资源被墙了，建议翻墙使用<br>maven资源被墙了，建议翻墙使用<br>maven资源被墙了，建议翻墙使用</p>
+<footer><strong>重要的事情说三遍</strong></footer></blockquote>
+<p>安装完成之后就可以导入eclipse中了</p>
+<blockquote><ul>
+<li>革命尚未成功，同志仍需努力。</li>
+<li>行百里者半九十</li>
+<li>最后一步不认真的话可能会超级麻烦的！！（认真脸）</li>
+</ul>
+</blockquote>
+<ul>
+<li>别忘了最后一步</li>
+<li>在nutch根目录中新建文件夹urls/，在文件夹中新建seed.txt文件 <a href="http://www.zi-c.wang/">http://www.zi-c.wang</a> 保存退出</li>
+</ul>
+<h2 id="5-导入eclipse中（想导入idea也可以这样玩，貌似）"><a href="#5-导入eclipse中（想导入idea也可以这样玩，貌似）" class="headerlink" title="5.导入eclipse中（想导入idea也可以这样玩，貌似）"></a>5.导入eclipse中（想导入idea也可以这样玩，貌似）</h2><h3 id="1-创建工程java-project"><a href="#1-创建工程java-project" class="headerlink" title="1)创建工程java project"></a>1)创建工程java project</h3><p>进入eclipse-&gt;file-&gt;new-&gt;project-&gt;java project<br>直接修改项目路径（/usr/nutch-2）<br>点击next，在build path配置中order&amp;export选项卡，选中nutch-2/conf文件夹，单击top</p>
+<h3 id="2-配置run-configuration"><a href="#2-配置run-configuration" class="headerlink" title="2)配置run configuration"></a>2)配置run configuration</h3><p>点击run configurations，进入页面。<br>右键java application，新建application命名为injectJob<br>project：nutch-2<br>main class：org.apache.nutch.crawl.InjectorJob<br>进入run configurations的arguments标签中，在Program Arguments中添加<br>urls/seed.txt -crawlId search<br>点击apply</p>
+<p>同理<br>application：generateJob<br>main class：org.apache.nutch.crawl.GeneratorJob<br>arguments:-topN 10 -crawlId search</p>
+<p>application：fetcheJob<br>main class：org.apache.nutch.fetcher.FetcherJob<br>arguments:-all -crawlId search -thread 10</p>
+<p>application：parseJob<br>main class：org.apache.nutch.parse.ParserJob<br>arguments:-all -crawlId search</p>
+<p>application：updatedbJob<br>main class：org.apache.nutch.crawl.DbUpdaterJob<br>arguments:-all -crawlId search</p>
+<h3 id="3-跑起来吧！！奔放的eclipse"><a href="#3-跑起来吧！！奔放的eclipse" class="headerlink" title="3)跑起来吧！！奔放的eclipse"></a>3)跑起来吧！！奔放的eclipse</h3><h3 id="4-查看爬取得数据"><a href="#4-查看爬取得数据" class="headerlink" title="4)查看爬取得数据"></a>4)查看爬取得数据</h3><figure class="highlight plain"><figcaption><span>nutch-2_installing</span></figcaption><table><tr><td class="code"><pre><span class="line">cd &#x2F;usr&#x2F;hbase&#x2F;</span><br><span class="line">.&#x2F;bin&#x2F;hbase shell</span><br><span class="line">list &#x2F;&#x2F;hbase指令请参考我的上一篇文章 hbase常用指令</span><br><span class="line">scan &#39;search_webpage&#39; &#x2F;&#x2F;灰常灰常壮观的数据闪过去了&#x3D;_+</span><br><span class="line">exit</span><br></pre></td></tr></table></figure>
+<p>成功！！！</p>
+<h2 id="6-感想"><a href="#6-感想" class="headerlink" title="6.感想"></a>6.感想</h2><p>  搭建这套环境对我来说是很大的一个修行！！<br>  前前后后使用的时间可能超过50h了，真是笨死了。<br>  耗时这么长的原因：主要是我太粗心了，很多应该完成的配置并没有实现成功，浪费了很多时间<br>  另一方面：不会看log<br>  现在看起来非常可笑的事情就是我的环境一旦搭建失败了首先看的是文档而不是日志，真是笨死了<br>  同时我也终于意识到Android application中为什么强调写好log。</p>
+<p>  搭建这套环境确实提升了个人能力一大截，超级期待下一步的搜索引擎实践！！<br>  加油奔放的少年！！！</p>
+<h2 id="7-推荐链接"><a href="#7-推荐链接" class="headerlink" title="7.推荐链接"></a>7.推荐链接</h2><p>1.<a href="https://wiki.apache.org/nutch/#Nutch_2.X_tutorial.28s.29">Apache Nutch Wiki</a><br>2.<a href="http://blog.csdn.net/jediael_lu/article/details/37329731">【Nutch2.2.1基础教程之2.1】集成Nutch/Hbase/Solr构建搜索引擎之一：安装及运行【单机环境】</a><br>3.<a href="http://blog.csdn.net/jediael_lu/article/details/43232449">在Eclipse中运行Nutch2.3</a><br>4.<a href="http://www.aboutyun.com/forum.php">about云社区</a><br>5.<a href="https://hbase.apache.org/book.html">hbase wiki</a><br>6. 杨尚川老师的nutch系列视频（虽然有点旧，但是给你仔细分析每个过程）<br>7.<a href="http://www.oschina.net/code/snippet_875267_44726">Linux 使用wget 命令下载JDK的方法</a><br>8.<a href="http://stackoverflow.com/">神圣网站stackoverflow，救过我无数次</a></p>
+]]></content>
+      <tags>
+        <tag>hbase</tag>
+        <tag>nutch</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hbase的常用shell</title>
+    <url>/2016/01/20/hbase%E5%B8%B8%E7%94%A8shell/</url>
+    <content><![CDATA[<h2 id="1-打开hbase并进入hbase-shell-console"><a href="#1-打开hbase并进入hbase-shell-console" class="headerlink" title="1.打开hbase并进入hbase shell console"></a>1.打开hbase并进入hbase shell console</h2><pre><code>
+$HBASE_HOME/bin/start-hbase.sh
+$HBASE_HOME/bin/hbase shell
+hbase(main)> whoami
+</code></pre>
+<a id="more"></a>
+<h2 id="2-表的管理"><a href="#2-表的管理" class="headerlink" title="2.表的管理"></a>2.表的管理</h2><h3 id="1）查看有哪些表"><a href="#1）查看有哪些表" class="headerlink" title="1）查看有哪些表"></a>1）查看有哪些表</h3><pre><code>
+hbase(main)> list
+</code></pre>
+
+<h3 id="2）创建表"><a href="#2）创建表" class="headerlink" title="2）创建表"></a>2）创建表</h3><blockquote><ul>
+<li>语法：create <table>, {NAME =&gt; <family>, VERSIONS =&gt; <VERSIONS>}</VERSIONS></family></table></li>
+</ul>
+</blockquote>
+<pre><code>
+//例如：创建表t1，有两个family name：f1，f2，且版本数均为2
+hbase(main)> create 't1',&#123;NAME => 'f1', VERSIONS => 2&#125;,&#123;NAME => 'f2', VERSIONS => 2&#125;
+</code></pre>
+
+<h3 id="3）删除表"><a href="#3）删除表" class="headerlink" title="3）删除表"></a>3）删除表</h3><blockquote><ul>
+<li> 分两步：首先disable，然后drop</li>
+</ul>
+</blockquote>
+<pre><code>
+//例如：删除表t1
+hbase(main)> disable 't1'
+hbase(main)> drop 't1'
+</code></pre>
+
+<h3 id="4）查看表的结构"><a href="#4）查看表的结构" class="headerlink" title="4）查看表的结构"></a>4）查看表的结构</h3><blockquote><ul>
+<li>语法：describe <table></table></li>
+</ul>
+</blockquote>
+<pre><code>
+//例如：查看表t1的结构
+hbase(main)> describe 't1'
+</code></pre>
+
+<h3 id="5）修改表结构"><a href="#5）修改表结构" class="headerlink" title="5）修改表结构"></a>5）修改表结构</h3><blockquote><ul>
+<li>修改表结构必须先disable</li>
+<li>语法：alter ‘t1’, {NAME =&gt; ‘f1’}, {NAME =&gt; ‘f2’, METHOD =&gt; ‘delete’}</li>
+</ul>
+</blockquote>
+
+<pre><code>
+hbase(main)> disable 'test1'
+hbase(main)> alter 'test1',&#123;NAME=>'body',TTL=>'15552000'&#125;,&#123;NAME=>'meta', TTL=>'15552000'&#125;
+hbase(main)> enable 'test1'
+</code></pre>
+
+<h2 id="3-表数据的增删改查"><a href="#3-表数据的增删改查" class="headerlink" title="3.表数据的增删改查"></a>3.表数据的增删改查</h2><h3 id="1）添加数据"><a href="#1）添加数据" class="headerlink" title="1）添加数据"></a>1）添加数据</h3><blockquote><ul>
+<li>语法：put <table>,<rowkey>,<a href="family:column">family:column</a>,<value>,<timestamp></timestamp></value></rowkey></table></li>
+</ul>
+</blockquote>
+<pre><code>
+//例如：给表t1的添加一行记录：rowkey是rowkey001，family name：f1，column name：col1，value：value01，timestamp：系统默认
+hbase(main)> put 't1','rowkey001','f1:col1','value01'
+//用法比较单一。
+</code></pre>
+
+<h3 id="2）查询数据"><a href="#2）查询数据" class="headerlink" title="2）查询数据"></a>2）查询数据</h3><h4 id="a）查询某行记录"><a href="#a）查询某行记录" class="headerlink" title="a）查询某行记录"></a>a）查询某行记录</h4><blockquote><ul>
+<li>语法：get <table>,<rowkey>,[<a href="family:column">family:column</a>,….]</rowkey></table></li>
+</ul>
+</blockquote>
+<pre><code>
+//例如：查询表t1，rowkey001中的f1下的col1的值
+hbase(main)> get 't1','rowkey001', 'f1:col1'
+//或者：
+hbase(main)> get 't1','rowkey001', &#123;COLUMN=>'f1:col1'&#125;
+//查询表t1，rowke002中的f1下的所有列值
+hbase(main)> get 't1','rowkey001'
+</code></pre>
+
+<h4 id="b）扫描表"><a href="#b）扫描表" class="headerlink" title="b）扫描表"></a>b）扫描表</h4><blockquote><ul>
+<li>语法：scan <table>, {COLUMNS =&gt; [ <a href="family:column">family:column</a>,…. ], LIMIT =&gt; num}</table></li>
+<li>另外，还可以添加STARTROW、TIMERANGE和FITLER等高级功能</li>
+</ul>
+</blockquote>
+<pre><code>
+//例如：扫描表t1的前5条数据
+</code></pre>
+<p>hbase(main)&gt; scan ‘t1’,{LIMIT=&gt;5}<br></p>
+<h4 id="c）查询表中的数据行数"><a href="#c）查询表中的数据行数" class="headerlink" title="c）查询表中的数据行数"></a>c）查询表中的数据行数</h4><blockquote><ul>
+<li>语法：count <table>, {INTERVAL =&gt; intervalNum, CACHE =&gt; cacheNum}</table></li>
+<li>INTERVAL设置多少行显示一次及对应的rowkey，默认1000；CACHE每次去取的缓存区大小，默认是10，调整该参数可提高查询速度</li>
+</ul>
+</blockquote>
+<pre><code>
+//例如，查询表t1中的行数，每100条显示一次，缓存区为500
+hbase(main)> count 't1', &#123;INTERVAL => 100, CACHE => 500&#125;
+</code></pre>
+<h3 id="3）删除数据"><a href="#3）删除数据" class="headerlink" title="3）删除数据"></a>3）删除数据</h3><h4 id="a-删除行中的某个列值"><a href="#a-删除行中的某个列值" class="headerlink" title="a )删除行中的某个列值"></a>a )删除行中的某个列值</h4><blockquote><ul>
+<li>语法：delete <table>, <rowkey>,  <a href="family:column">family:column</a> , <timestamp>,必须指定列名</timestamp></rowkey></table></li>
+</ul>
+</blockquote>
+<pre><code>
+//例如：删除表t1，rowkey001中的f1:col1的数据
+hbase(main)> delete 't1','rowkey001','f1:col1'
+//注：将删除改行f1:col1列所有版本的数据
+</code></pre>
+
+<h4 id="b-删除行"><a href="#b-删除行" class="headerlink" title="b )删除行"></a>b )删除行</h4><blockquote><ul>
+<li>语法：deleteall <table>, <rowkey>,  <a href="family:column">family:column</a> , <timestamp>，可以不指定列名，删除整行数据</timestamp></rowkey></table></li>
+</ul>
+</blockquote>
+<pre><code>
+//例如：删除表t1，rowk001的数据
+hbase(main)> deleteall 't1','rowkey001'
+</code></pre>
+
+<h4 id="c）删除表中的所有数据"><a href="#c）删除表中的所有数据" class="headerlink" title="c）删除表中的所有数据"></a>c）删除表中的所有数据</h4><blockquote><ul>
+<li>语法： truncate <table></table></li>
+<li>其具体过程是：disable table -&gt; drop table -&gt; create table</li>
+</ul>
+</blockquote>
+<pre><code>
+//例如：删除表t1的所有数据
+hbase(main)> truncate 't1'
+</code></pre>
+]]></content>
+      <tags>
+        <tag>markdown</tag>
+        <tag>hbase</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>可能经常用到的markdown语法和标签插件</title>
+    <url>/2016/01/20/%E5%8F%AF%E8%83%BD%E7%BB%8F%E5%B8%B8%E7%94%A8%E5%88%B0%E7%9A%84markdown%E8%AF%AD%E6%B3%95%E5%92%8C%E6%A0%87%E7%AD%BE%E6%8F%92%E4%BB%B6/</url>
+    <content><![CDATA[<h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><ul>
+<li>本文没有系统介绍markdown语法和标签插件，而是仅仅列举的可能经常使用的markdown语法和标签插件样式</li>
+</ul>
+<p>l&gt;&lt;li&gt;1&lt;/li&gt;&lt;li&gt;2&lt;/li&gt;&lt;/ol&gt;“ 都可以表示分点</p>
+<ul>
+<li>First</li>
+<li>Second</li>
+<li>Third</li>
+<li>false<a id="more"></a>
+<h2 id="关于换行"><a href="#关于换行" class="headerlink" title="关于换行"></a>关于换行</h2></li>
+</ul>
+<ul>
+<li>单一段落( &lt;p&gt;) 用一个空白行</li>
+<li>连续两个空格 会变成一个 &lt;br&gt;</li>
+<li>连续3个符号，然后是空行，表示 hr横线</li>
+</ul>
+<h2 id="关于插入代码"><a href="#关于插入代码" class="headerlink" title="关于插入代码"></a>关于插入代码</h2><p> 可以是使用&lt;pre&gt;&lt;code&gt;code&lt;/code&gt;&lt;/pre&gt;形式插入代码，不过比较简陋</p>
+<pre><code>cout << "Hello World!!" << endl; </code></pre>
+<p> 另外的一种插入代码的方法</p>
+<p> <figure class="highlight plain"><figcaption><span>[title] [lang:language] [url] [link text]</span></figcaption><table><tr><td class="code"><pre><span class="line">&lt;br&gt;code snippet&lt;br&gt;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight c++"><figcaption><span>HelloWorld</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;Hello World!!&quot;</span> &lt;&lt; <span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="关于插入链接"><a href="#关于插入链接" class="headerlink" title="关于插入链接"></a>关于插入链接</h2><p> 直接写 [锚文本](url “可选的title”)<br> <a href="http://www.zi-c.wang/" title="紫城君的Blog">www.zi-c.wang</a></p>
+<h2 id="关于插入图片url"><a href="#关于插入图片url" class="headerlink" title="关于插入图片url"></a>关于插入图片url</h2><p>![alt_text](url “可选的title”)<br><img src="http://i8.tietuku.com/78a8923ba6584002.jpg" alt="LiveLongAndProsper" title="LiveLongAndProsper"></p>
+<h2 id="特殊符号"><a href="#特殊符号" class="headerlink" title="特殊符号"></a>特殊符号</h2><p>直接在文本前面加上转义符 \ 就可以</p>
+<h2 id="插入Youtube视频"><a href="#插入Youtube视频" class="headerlink" title="插入Youtube视频"></a>插入Youtube视频</h2><p><div class="video-container"><iframe src="https://www.youtube.com/embed/video_id" frameborder="0" loading="lazy" allowfullscreen></iframe></div></p>
+<div class="video-container"><iframe src="https://www.youtube.com/embed/https://www.youtube.com/watch?v=YG77IYQquB0" frameborder="0" loading="lazy" allowfullscreen></iframe></div>
+
+
+]]></content>
+      <tags>
+        <tag>markdown</tag>
+      </tags>
+  </entry>
 </search>
