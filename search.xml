@@ -765,21 +765,33 @@ hbase(main)> truncate 't1'
       </tags>
   </entry>
   <entry>
-    <title>二叉树非递归便利</title>
-    <url>/2020/11/24/%E4%BA%8C%E5%8F%89%E6%A0%91%E9%9D%9E%E9%80%92%E5%BD%92%E4%BE%BF%E5%88%A9/</url>
+    <title>二叉树非递归遍历</title>
+    <url>/2020/11/24/%E4%BA%8C%E5%8F%89%E6%A0%91%E9%9D%9E%E9%80%92%E5%BD%92%E9%81%8D%E5%8E%86/</url>
     <content><![CDATA[<p>二叉树非递归遍历总是容易忘，这次从原理出发理解一次。</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">    1</span><br><span class="line">   &#x2F; \</span><br><span class="line">  2   3</span><br><span class="line"> &#x2F; \ &#x2F;</span><br><span class="line">4  5 6</span><br></pre></td></tr></table></figure>
 <a id="more"></a>
 <h1 id="preorder"><a href="#preorder" class="headerlink" title="preorder"></a>preorder</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">handle(p-&gt;val);</span><br><span class="line">preorder(root-&gt;left);</span><br><span class="line">preorder(root-&gt;right);</span><br></pre></td></tr></table></figure>
 
 <p>1-&gt;2-&gt;4-&gt;5-&gt;3-&gt;6 </p>
+<p>先序输出顺序是中左右，因此首先输出，其次要保存左子树，穷尽左子树之后弹出节点，最后输出右子树</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">stack&lt;TreeNode*&gt; st;</span><br><span class="line">TreeNode* p &#x3D; root;</span><br><span class="line">while (p !&#x3D; NULL || !st.empty()）&#123;</span><br><span class="line">    while (p !&#x3D; NULL) &#123;</span><br><span class="line">        handle(p-&gt;val);</span><br><span class="line">        st.push(p);</span><br><span class="line">        p &#x3D; p-&gt;left;</span><br><span class="line">    &#125;</span><br><span class="line">    if (!st.empty()) &#123;</span><br><span class="line">        p &#x3D; st.top();</span><br><span class="line">        st.pop();</span><br><span class="line">        p &#x3D; p-&gt;right;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
 <h1 id="inorder"><a href="#inorder" class="headerlink" title="inorder"></a>inorder</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">inorder(p-&gt;left);</span><br><span class="line">handle(p-&gt;val);</span><br><span class="line">inorder(p-&gt;right);</span><br></pre></td></tr></table></figure>
 
 <p>4-&gt;2-&gt;5-&gt;1-&gt;6-&gt;3</p>
+<p>中序遍历的输出顺序是左中右，和先序遍历有相似性，因为也需要先保存左子树，再弹出左子树找到中和右。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">stack&lt;TreeNode*&gt; st;</span><br><span class="line">TreeNode* p &#x3D; root;</span><br><span class="line">while (p !&#x3D; NULL || !st.empty()) &#123;</span><br><span class="line">    st.push(p);</span><br><span class="line">    p &#x3D; p-&gt;left;</span><br><span class="line">&#125;</span><br><span class="line">if (!st.empty()) &#123;</span><br><span class="line">    p &#x3D; st.top();</span><br><span class="line">    st.pop();</span><br><span class="line">    handle(p-&gt;val);</span><br><span class="line">    p &#x3D; p-&gt;right;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h1 id="postorder"><a href="#postorder" class="headerlink" title="postorder"></a>postorder</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">postorder(p-&gt;left);</span><br><span class="line">postorder(p-&gt;right);</span><br><span class="line">handle(p-&gt;val);</span><br></pre></td></tr></table></figure>
 
 <p>4-&gt;5-&gt;2-&gt;6-&gt;3-&gt;1</p>
-]]></content>
+<p>后序遍历输出顺序是左右中，先保存左侧节点，然后检查右侧节点，当右子树为空或者已经被访问了，可以访问这个节点</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">stack&lt;TreeNode*&gt; st;</span><br><span class="line">TreeNode* p &#x3D; root;</span><br><span class="line">while (p !&#x3D; NULL || !st.empty()) &#123;</span><br><span class="line">    while (p !&#x3D; NULL) &#123;</span><br><span class="line">        st.push(p);</span><br><span class="line">        p &#x3D; p-&gt;left;</span><br><span class="line">    &#125;</span><br><span class="line">    p &#x3D; s.top();</span><br><span class="line">    TreeNode* tmp &#x3D; NULL;</span><br><span class="line">    while (!st.empty() &amp;&amp; (p-&gt;right &#x3D;&#x3D; NULL || p-&gt;right &#x3D;&#x3D; tmp)) &#123;</span><br><span class="line">        st.pop();</span><br><span class="line">        if (!st.empty()) &#123;</span><br><span class="line">            tmp &#x3D; p;</span><br><span class="line">            p &#x3D; st.top();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    if (st.emtpy()) break;</span><br><span class="line">    p &#x3D; p-&gt;right;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="BFS"><a href="#BFS" class="headerlink" title="BFS"></a>BFS</h1><p>1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;6</p>
+<p>广度优先按照层次每次保存一层，当输出的时候记录当前队列长度，该长度即为上层被保存的节点数量，依次遍历即为按层次输出</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">queue&lt;TreeNode*&gt; q;</span><br><span class="line">TreeNode* p &#x3D; NULL;</span><br><span class="line">q.push(p);</span><br><span class="line">while (!q.emtpy()) &#123;</span><br><span class="line">    int size &#x3D; q.size();</span><br><span class="line">    for (int i &#x3D; 0;i &lt; size;i++) &#123;</span><br><span class="line">        p &#x3D; q.front();</span><br><span class="line">        q.pop();</span><br><span class="line"></span><br><span class="line">        handle(p-&gt;val);</span><br><span class="line"></span><br><span class="line">        if (p-&gt;left !&#x3D; NULL) q.push(p-&gt;left);</span><br><span class="line">        if (p-&gt;right !&#x3D; NULL) q.push(p-&gt;right);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
       <tags>
         <tag>leetcode</tag>
         <tag>algorithm</tag>
