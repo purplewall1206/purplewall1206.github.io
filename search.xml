@@ -1,6 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>NJU研究生通知RSS</title>
+    <url>/2020/11/19/NJU%E7%A0%94%E7%A9%B6%E7%94%9F%E9%80%9A%E7%9F%A5RSS/</url>
+    <content><![CDATA[<h1 id="NJU-notifeed"><a href="#NJU-notifeed" class="headerlink" title="NJU-notifeed"></a>NJU-notifeed</h1><p>Nanjing University notification feed</p>
+<p><a href="https://github.com/purplewall1206/NJU-notifeed">https://github.com/purplewall1206/NJU-notifeed</a></p>
+<p><strong>直接订阅：</strong><br><a href="http://idcvz.zi-c.wang:8000/rss">http://idcvz.zi-c.wang:8000/rss</a></p>
+<a id="more"></a>
+
+
+<p>主要收集以下两个网站的最新通知，生成统一的feed提供给本地部署的RSS阅读器（i.e. Thunderbird） </p>
+<p><a href="https://grawww.nju.edu.cn/">https://grawww.nju.edu.cn</a></p>
+<p><a href="http://pyb.nju.edu.cn/">http://pyb.nju.edu.cn/</a></p>
+<h1 id="设计思路"><a href="#设计思路" class="headerlink" title="设计思路"></a>设计思路</h1><p>使用requests和beautifulsoup4制作爬虫，获取通知页面的信息条目news</p>
+<p>使用PyRSS2Gen生成feed条目，并写到feed.xml文件中（这里有个问题，lib好像只提供文件写入函数了，暂时没找到其他的output方式）</p>
+<p>使用Flask构建RESTful API，访问 <a href="http://url/rss">http://url/rss</a> 获取feed</p>
+<p>使用多线程其中一个线程运行爬虫，主线程（flask单线程）维护API</p>
+<p>文件结构：</p>
+<ul>
+<li>news.py news struct，存储消息的属性</li>
+<li>crawlerPYB/GRA.py 两个网站的爬虫策略</li>
+<li>__init__.py 主函数，通过多线程的方式每小时更新一次feed。</li>
+<li>logging.txt 记录调用日志</li>
+<li>requirement.txt 安装的python lib，<code>sudo pip install -r requirement.txt</code></li>
+</ul>
+<p>ubuntu 运行面对的问题 <code>sudo apt-get install python3-html5lib</code></p>
+<h1 id="启动问题"><a href="#启动问题" class="headerlink" title="启动问题"></a>启动问题</h1><p>加入description信息获取之后，服务器往往无法立即反应，需要等到logging中显示出爬虫已经完全获取信息的日志之后，才能通过网站访问。需要处理一下这个问题，应该是global被锁住，服务器比爬虫先启动导致的。</p>
+]]></content>
+      <categories>
+        <category>python</category>
+        <category>rss</category>
+        <category>github</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>rss</tag>
+        <tag>github</tag>
+        <tag>NJU</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Nutch2.3.1+hbase-0.98-hadoop+solr5.2.1的自动部署脚本</title>
+    <url>/2016/10/18/Nutch2.3.1+hbase-0.98-hadoop+solr5.2.1%E7%9A%84%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2%E8%84%9A%E6%9C%AC/</url>
+    <content><![CDATA[<p>在阳总的帮助下，终于搞出了这个自动部署脚本，感谢阳总让我第一次看到真人写的bash脚本，很涨姿势。</p>
+<ul>
+<li><p>hbase-0.98-hadoop 的选择原因是[<a href="http://wiki.apache.org/nutch/Nutch2Tutorial">http://wiki.apache.org/nutch/Nutch2Tutorial</a> ](nutch turorial)上这么推荐的</p>
+</li>
+<li><p>solr5.x 的玩法似乎和solr4.9 差别不小，之后应该会单独写一篇分析的</p>
+</li>
+<li><p>测试环境是 centos6环境，使用ubuntu或者其他发行版的兄弟记得改下 那堆yum，rpm</p>
+<a id="more"></a>
+<pre><code> #!/bin/bash </code></pre>
+<p>这个写到一开头表示这是<strong>.sh</strong>那一类文件，剩下的就是用重定向之类的linux下的特殊写法追加写入文本的</p>
+</li>
+<li><p>脚本中的所有文件都将被部署到 <strong>/usr</strong> 目录下，如果改目录需要连着配置文件一起改，权限不够加<strong>sudo</strong></p>
+</li>
+<li><p>nutch crawl solr hbase 都写入环境变量，可以在任何目录下运行。</p>
+</li>
+<li><p>nutch 执行的是 /usr/nutch-2/runtime/local/bin/nutch 目录的文件，而不是deploy中</p>
+</li>
+<li><p>之后集成hadoop再修改配置文件。</p>
+</li>
+</ul>
+<p>以下是自动部署脚本，需要复制下来制作成 <strong>.sh</strong> 文件，使用 <pre><code> sudo bash xxx.sh </code></pre> 执行</p>
+<figure class="highlight bash"><figcaption><span>自动部署脚本</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">rpm -Uvh https://centos6.iuscommunity.org/ius-release.rpm</span><br><span class="line">yum install epel-release -y</span><br><span class="line">yum install git wget screen vim -y</span><br><span class="line">yum update -y</span><br><span class="line"></span><br><span class="line">iptables -F</span><br><span class="line">iptables-save</span><br><span class="line">service iptables save</span><br><span class="line">ip6tables -F</span><br><span class="line">ip6tables-save</span><br><span class="line">service ip6tables save</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> /opt</span><br><span class="line">wget --no-cookies --no-check-certificate --header <span class="string">&quot;Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie&quot;</span> <span class="string">&quot;http://download.oracle.com/otn-pub/java/jdk/8u102-b14/jdk-8u102-linux-x64.rpm&quot;</span></span><br><span class="line">rpm -ivh jdk-8u102-linux-x64.rpm</span><br><span class="line">rm -rf jdk-8u102-linux-x64.rpm</span><br><span class="line"></span><br><span class="line">wget http://archive.apache.org/dist/hbase/hbase-0.98.8/hbase-0.98.8-hadoop2-bin.tar.gz</span><br><span class="line">tar xzf hbase-0.98.8-hadoop2-bin.tar.gz</span><br><span class="line">rm -rf hbase-0.98.8-hadoop2-bin.tar.gz</span><br><span class="line">mv hbase-0.98.8-hadoop2 /usr/hbase</span><br><span class="line"></span><br><span class="line">wget http://www-eu.apache.org/dist/nutch/2.3.1/apache-nutch-2.3.1-src.tar.gz</span><br><span class="line">tar xzf apache-nutch-2.3.1-src.tar.gz</span><br><span class="line">rm -rf apache-nutch-2.3.1-src.tar.gz</span><br><span class="line">mv apache-nutch-2.3.1 /usr/nutch-2</span><br><span class="line">chmod -R 777 /usr/nutch-2</span><br><span class="line"></span><br><span class="line">wget http://www-us.apache.org/dist/ant/binaries/apache-ant-1.9.7-bin.tar.gz</span><br><span class="line">tar xzf apache-ant-1.9.7-bin.tar.gz</span><br><span class="line">rm -rf apache-ant-1.9.7-bin.tar.gz</span><br><span class="line">mv apache-ant-1.9.7 /usr/ant</span><br><span class="line"></span><br><span class="line">wget http://archive.apache.org/dist/lucene/solr/5.2.1/solr-5.2.1.tgz</span><br><span class="line">tar xzf solr-5.2.1.tgz</span><br><span class="line">rm -rf solr-5.2.1.tgz</span><br><span class="line">mv solr-5.2.1 /usr/solr</span><br><span class="line"></span><br><span class="line">rm -rf ~/envtemp</span><br><span class="line">cat &gt; ~/envtemp&lt;&lt;<span class="string">&#x27;EOF&#x27;</span></span><br><span class="line"><span class="comment">#set JDK environment</span></span><br><span class="line">JAVA_HOME=/usr/java/jdk1.8.0_102</span><br><span class="line">JRE_HOME=<span class="variable">$JAVA_HOME</span>/jre</span><br><span class="line">CLASS_PATH=.:<span class="variable">$JAVA_HOME</span>/lib/dt.jar:<span class="variable">$JAVA_HOME</span>/lib/tools.jar:<span class="variable">$JRE_HOME</span>/lib</span><br><span class="line"><span class="comment">#set ANT environment</span></span><br><span class="line">ANT_HOME=/usr/ant</span><br><span class="line"><span class="comment">#set HBASE environment</span></span><br><span class="line">HBASE_HOME=/usr/hbase</span><br><span class="line"><span class="comment">#set LOCAL_NUTCH environment</span></span><br><span class="line">NUTCH_HOME=/usr/nutch-2/runtime/<span class="built_in">local</span></span><br><span class="line"><span class="comment">#set SOLR environment</span></span><br><span class="line">SOLR_HOME=/usr/solr</span><br><span class="line"><span class="comment">#set HADOOP environment</span></span><br><span class="line">HADOOP_HOME=/usr/hadoop</span><br><span class="line">HADOOP_INSTALL=<span class="variable">$HADOOP_HOME</span></span><br><span class="line">HADOOP_MAPRED_HOME=<span class="variable">$HADOOP_HOME</span></span><br><span class="line">HADOOP_COMMON_HOME=<span class="variable">$HADOOP_HOME</span></span><br><span class="line">HADOOP_HDFS_HOME=<span class="variable">$HADOOP_HOME</span></span><br><span class="line">YARN_HOME=<span class="variable">$HADOOP_HOME</span></span><br><span class="line">HADOOP_COMMON_LIB_NATIVE_DIR=<span class="variable">$HADOOP_HOME</span>/lib/native</span><br><span class="line">HADOOP_OPTS=<span class="string">&quot;-Djava.library.path=<span class="variable">$HADOOP_HOME</span>/lib:<span class="variable">$HADOOP_COMMON_LIB_NATIVE_DIR</span>&quot;</span></span><br><span class="line">PATH=<span class="variable">$PATH</span>:<span class="variable">$JAVA_HOME</span>/bin:<span class="variable">$JRE_HOME</span>/bin:<span class="variable">$ANT_HOME</span>/bin:<span class="variable">$HBASE_HOME</span>/bin:<span class="variable">$NUTCH_HOME</span>/bin:<span class="variable">$SOLR_HOME</span>/bin:<span class="variable">$HADOOP_HOME</span>/bin:<span class="variable">$HADOOP_HOME</span>/sbin</span><br><span class="line"><span class="built_in">export</span> JAVA_HOME JRE_HOMECLASS_PATH ANT_HOME HBASE_HOME NUTCH_HOME SOLR_HOME HADOOP_HOME HADOOP_INSTALL HADOOP_MAPRED_HOME HADOOP_COMMON_HOME HADOOP_HDFS_HOME YARN_HOME HADOOP_COMMON_LIB_NATIVE_DIR HADOOP_OPTS PATH</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">rm -rf ~/profile</span><br><span class="line">cp /etc/profile ~/profile</span><br><span class="line">cat ~/profile ~/envtemp &gt;/etc/profile</span><br><span class="line"></span><br><span class="line">rm -rf ~/envtemp ~/profile</span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> /etc/profile</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line">wget http://www.senra.me/nutch-solr/nutch-site.xml</span><br><span class="line">wget http://www.senra.me/nutch-solr/gora.properties</span><br><span class="line">wget http://www.senra.me/nutch-solr/ivy.xml</span><br><span class="line">wget http://www.senra.me/nutch-solr/hbase-site.xml</span><br><span class="line">wget http://www.senra.me/nutch-solr/solr.xml</span><br><span class="line">\cp -a ~/nutch-site.xml /usr/nutch-2/conf/</span><br><span class="line">\cp -a ~/gora.properties /usr/nutch-2/conf/</span><br><span class="line">\cp -a ~/ivy.xml /usr/nutch-2/ivy/</span><br><span class="line">\cp -a ~/hbase-site.xml /usr/hbase/conf/</span><br><span class="line">\cp -a ~/solr.xml /usr/solr/</span><br><span class="line">rm -rf ~/nutch-site.xml ~/gora.properties ~/ivy.xml ~/hbase-site.xml ~/solr.xml</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> /usr/nutch-2</span><br><span class="line">ant runtime</span><br><span class="line"></span><br><span class="line">/usr/hbase/bin/start-hbase.sh</span><br><span class="line">/usr/solr/bin/solr start</span><br><span class="line">/usr/solr/bin/solr create_core -c demo</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<ul>
+<li>20号之后的大创答辩加油！争取国家级！</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>markdown</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Raspberry Pi 内核编译</title>
+    <url>/2020/11/16/Raspberry-Pi-%E5%86%85%E6%A0%B8%E7%BC%96%E8%AF%91/</url>
+    <content><![CDATA[<p><strong>我的版本 : 树莓派3</strong></p>
+<h1 id="1-内核获取"><a href="#1-内核获取" class="headerlink" title="1.内核获取"></a>1.内核获取</h1><h2 id="1-1-软件下载"><a href="#1-1-软件下载" class="headerlink" title="1.1.软件下载"></a>1.1.软件下载</h2><p><code>sudo apt install git bc bison flex libssl-dev make</code></p>
+<a id="more"></a>
+
+<h3 id="关于libssl-dev的小问题"><a href="#关于libssl-dev的小问题" class="headerlink" title="关于libssl-dev的小问题"></a>关于libssl-dev的小问题</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt-get install aptitude</span><br><span class="line"></span><br><span class="line">dpkg -l *libssl*</span><br><span class="line"></span><br><span class="line">sudo aptitude install libssl-dev</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="1-2-源码获取"><a href="#1-2-源码获取" class="headerlink" title="1.2.源码获取"></a>1.2.源码获取</h2><p><code>git clone --depth=1 https://github.com/raspberrypi/linux</code></p>
+<h1 id="2-内核编译"><a href="#2-内核编译" class="headerlink" title="2.内核编译"></a>2.内核编译</h1><p>预设环境</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd linux</span><br><span class="line">KERNEL&#x3D;kernel7</span><br><span class="line">make bcm2709_defconfig</span><br><span class="line">或者 zcat &#x2F;proc&#x2F;config.gz &gt; .config   #从现在原有版本的内核中复制配置文件</span><br></pre></td></tr></table></figure>
+
+<p>编译</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">make -j4 zImage modules dtbs</span><br><span class="line">sudo make modules_install</span><br><span class="line">sudo cp arch&#x2F;arm&#x2F;boot&#x2F;dts&#x2F;*.dtb &#x2F;boot&#x2F;</span><br><span class="line">sudo cp arch&#x2F;arm&#x2F;boot&#x2F;dts&#x2F;overlays&#x2F;*.dtb* &#x2F;boot&#x2F;overlays&#x2F;</span><br><span class="line">sudo cp arch&#x2F;arm&#x2F;boot&#x2F;dts&#x2F;overlays&#x2F;README &#x2F;boot&#x2F;overlays&#x2F;</span><br><span class="line">sudo cp arch&#x2F;arm&#x2F;boot&#x2F;zImage &#x2F;boot&#x2F;$KERNEL.img</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-更换内核"><a href="#3-更换内核" class="headerlink" title="3.更换内核"></a>3.更换内核</h1><p>修改 <code>/boot/config.txt</code> 文件中内容</p>
+<p><code>kernel=kernel-myconfig.img</code></p>
+<p>myconfig的版本在<code>/lib/modules/</code> 文件夹中。</p>
+<h1 id="4-参考文件"><a href="#4-参考文件" class="headerlink" title="4.参考文件"></a>4.参考文件</h1><p><a href="https://www.raspberrypi.org/documentation/linux/kernel/building.md" title="building">DOCUMENTATION &gt; LINUX &gt; KERNEL &gt; BUILDING</a></p>
+]]></content>
+      <categories>
+        <category>kernel</category>
+        <category>raspberryPi</category>
+      </categories>
+      <tags>
+        <tag>kernel</tag>
+        <tag>raspberryPi</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>dynamicprogramming.md</title>
     <url>/2020/11/15/dynamicprogramming-md/</url>
     <content><![CDATA[<h1 id="动态规划-Dynamic-Programming"><a href="#动态规划-Dynamic-Programming" class="headerlink" title="动态规划 Dynamic Programming"></a>动态规划 Dynamic Programming</h1><p>动态规划(dynamic programming)是运筹学的一个分支，是求解决策过程(decision process)最优化的数学方法。20世纪50年代初美国数学家R.E.Bellman等人在研究多阶段决策过程(multistep decision process)的优化问题时，提出了著名的最优化原理(principle of optimality)，把多阶段过程转化为一系列单阶段问题，利用各阶段之间的关系，逐个求解，创立了解决这类过程优化问题的新方法——动态规划。1957年出版了他的名著《Dynamic Programming》，这是该领域的第一本著作。</p>
@@ -87,515 +192,6 @@
       </categories>
       <tags>
         <tag>eBPF</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2020/11/14/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-<h3 id="Next-theme-Config"><a href="#Next-theme-Config" class="headerlink" title="Next-theme Config"></a>Next-theme Config</h3><p><a href="https://tding.top/archives/42c38b10.html">Hexo-NexT (v7.0+) 主题配置</a></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>io_uring 系统性整理</title>
-    <url>/2020/11/15/io-uring-%E7%B3%BB%E7%BB%9F%E6%80%A7%E6%95%B4%E7%90%86/</url>
-    <content><![CDATA[<h1 id="io-uring-系统性整理"><a href="#io-uring-系统性整理" class="headerlink" title="io_uring 系统性整理"></a>io_uring 系统性整理</h1><ul>
-<li><a href="#io_uring-%E7%B3%BB%E7%BB%9F%E6%80%A7%E6%95%B4%E7%90%86">io_uring 系统性整理</a><ul>
-<li><a href="#io-%E6%A8%A1%E5%9E%8B">I/O 模型</a><ul>
-<li><a href="#comparison">comparison</a></li>
-</ul>
-</li>
-<li><a href="#asynchronous-io">Asynchronous I/O</a></li>
-<li><a href="#io_uring">io_uring</a></li>
-<li><a href="#%E6%80%BB%E7%BB%93%E9%82%AE%E4%BB%B6">总结邮件</a></li>
-</ul>
-</li>
-</ul>
-<p>这里有个误解，I/O模型其实是针对整个系统的所有I/O操作的，但是平时很少对文件系统使用异步读写，同步或直接映射的情况比较多。更别提多路复用了，这个机制基本只用在network中。</p>
-<p><a href="https://lwn.net/Kernel/Index/">lwn Kernel article index</a></p>
-<a id="more"></a>
-<h2 id="I-O-模型"><a href="#I-O-模型" class="headerlink" title="I/O 模型"></a>I/O 模型</h2><ul>
-<li>blocking I/O</li>
-</ul>
-<p><img src="/2020/11/15/io-uring-%E7%B3%BB%E7%BB%9F%E6%80%A7%E6%95%B4%E7%90%86/io-blocking.gif" alt="blocking"></p>
-<p>同步阻塞，直到内核收到数据返回给线程。</p>
-<ul>
-<li>nonblocking I/O</li>
-</ul>
-<p><img src="/2020/11/15/io-uring-%E7%B3%BB%E7%BB%9F%E6%80%A7%E6%95%B4%E7%90%86/io-nonblocking.gif" alt="nonblocking"></p>
-<p>同步不阻塞，但是如果内核没收到数据会返回一个 <code>EWOULDBLOCK</code></p>
-<ul>
-<li>I/O multiplexing (select and poll)</li>
-</ul>
-<p><img src="/2020/11/15/io-uring-%E7%B3%BB%E7%BB%9F%E6%80%A7%E6%95%B4%E7%90%86/io-multiplex.gif" alt="multiplex"></p>
-<p>异步阻塞，使用selet（using select requires two system calls instead of one）、poll系统调用循环等待socket可读时，使用recvfrom收取数据。主要优势在于能够在单线程监控多个文件描述符fd。</p>
-<p>初次之外还有epoll,使用一个文件描述符管理多个描述符，将用户关系的文件描述符的事件存放到内核的一个事件表中，这样在用户空间和内核空间的copy只需一次</p>
-<p>优点有：<br>    没有最大并发连接的限制，能打开的FD的上限远大于1024（1G的内存上能监听约10万个端口）。<br>    效率提升，不是轮询的方式，不会随着FD数目的增加效率下降。只有活跃可用的FD才会调用callback函数；即Epoll最大的优点就在于它只管你“活跃”的连接，而跟连接总数无关，因此在实际的网络环境中，Epoll的效率就会远远高于select和poll。<br>    内存拷贝，利用mmap()文件映射内存加速与内核空间的消息传递；即epoll使用mmap减少复制开销。</p>
-<p>这种方法基本等价于 一个进程创建多个线程，每个线程维护一个blocking I/O</p>
-<ul>
-<li>signal driven I/O (SIGIO)</li>
-</ul>
-<p><img src="/2020/11/15/io-uring-%E7%B3%BB%E7%BB%9F%E6%80%A7%E6%95%B4%E7%90%86/io-sigio.gif" alt="multiplex"></p>
-<p>非阻塞，通过sigaction系统调用安装signal handler，当datagram数据报可读时，向I/O接收进程发送SIGIO信号，可以在signal handler里面读这个数据，然后通知main loop；也可以先通知main loop，让main loop去读这个数据。</p>
-<ul>
-<li>asynchronous I/O (the POSIX aio_functions)</li>
-</ul>
-<p><img src="/2020/11/15/io-uring-%E7%B3%BB%E7%BB%9F%E6%80%A7%E6%95%B4%E7%90%86/io-aio.gif" alt="aio"></p>
-<p>异步非阻塞，也是调用aio_read之后立刻返回，和SIGIO的区别是直到接收到数据并将数据传输到用户时，才产生完成信号。</p>
-<h3 id="comparison"><a href="#comparison" class="headerlink" title="comparison"></a>comparison</h3><p><img src="/2020/11/15/io-uring-%E7%B3%BB%E7%BB%9F%E6%80%A7%E6%95%B4%E7%90%86/io-comparison.gif" alt="comparison"></p>
-<p>参考:<br><a href="http://www.masterraghu.com/subjects/np/introduction/unix_network_programming_v1.3/ch06lev1sec2.html">io models</a><br><a href="https://juejin.im/post/6844904200141438984">彻底理解 IO多路复用</a><br><a href="https://www.jianshu.com/p/dfd940e7fca2">聊聊IO多路复用之select、poll、epoll详解</a></p>
-<h2 id="Asynchronous-I-O"><a href="#Asynchronous-I-O" class="headerlink" title="Asynchronous I/O"></a>Asynchronous I/O</h2><p>首先确定这里的AIO是内核态的，由libaio封装的系统调用运行库，而不是glibc用户态AIO，使用多线程模拟的。</p>
-<p>linux kernel AIO的主要缺点在于项目泥潭，bug太多，项目设计和领导更换，而且实现比较复杂，直到现在只能比较稳定支持以O_DIRECT（直接映射修改，bypass page cache）方式打开文件，需要自己处理buffer、offset对其这些问题，不能用page cache层以bio的方式读写block数据。</p>
-<p>因为使用page buffer层时涉及到block driver里面的队列，相比O_DIRECT多出很多阻塞点，因此实现起来比较令人恼火。因此这个项目根本就没实现起来。</p>
-<p>因此io_uring的主要对比对象是多路复用和DPDK、SPDK，是一个事实上的新异步IO API</p>
-<p>Linux AIO does suffer from a number of ailments. The subsystem is quite complex and requires explicit code in any I/O target for it to be supported.</p>
-<p>实现不了的地方基本上都开一个kernel thread跑，感觉开销更大了。</p>
-<p>参考：<br><a href="https://oxnz.github.io/2016/10/13/linux-aio/">Linux Asynchronous I/O</a>   </p>
-<p><a href="https://lwn.net/Articles/671649/">Fixing asynchronous I/O, again</a><br><a href="https://www.aikaiyuan.com/4556.html">Linux kernel AIO这个奇葩</a><br><a href="https://lwn.net/Articles/724198/">2017Toward non-blocking asynchronous I/O</a>   </p>
-<h2 id="io-uring"><a href="#io-uring" class="headerlink" title="io_uring"></a>io_uring</h2><p>参考：<br><a href="https://www.youtube.com/watch?v=-5T4Cjw46ys">Kernel Recipes 2019 - Faster IO through io_uring</a><br><a href="https://lwn.net/Articles/776703/">20190115Ringing in a new asynchronous I/O API</a><br><a href="https://lwn.net/Articles/826053/">20200715Operations restrictions for io_uring</a><br><a href="https://lwn.net/Articles/815491/">20200320Automatic buffer selection for io_uring</a><br><a href="https://lwn.net/Articles/810414/">20200124The rapid growth of io_uring</a><br><a href="https://lwn.net/Articles/820220/">20200511Hussain: Lord of the io_uring</a><br><a href="https://kernel.taobao.org/2019/06/io_uring-a-new-linux-asynchronous-io-API/">Linux异步IO新时代：io_uring</a><br><a href="https://lwn.net/Articles/826255/">20200716io_uring: add restrictions to support untrusted applications and guests</a><br><a href="https://lwn.net/Articles/813311/">20200225io_uring support for automatic buffers</a><br><a href="https://www.byteisland.com/io_uring%EF%BC%881%EF%BC%89-%E6%88%91%E4%BB%AC%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E9%9C%80%E8%A6%81-io_uring/">io_uring（1） – 我们为什么会需要 io_uring</a><br><a href="https://www.anquanke.com/post/id/200486">linux “io_uring” 提权漏洞(CVE-2019-19241)分析</a><br><a href="https://www.byteisland.com/io_uring%ef%bc%882%ef%bc%89-%e4%bb%8e%e5%88%9b%e5%bb%ba%e5%bf%85%e8%a6%81%e7%9a%84%e6%96%87%e4%bb%b6%e6%8f%8f%e8%bf%b0%e7%ac%a6-fd-%e5%bc%80%e5%a7%8b/">io_uring（2）- 从创建必要的文件描述符 fd 开始</a><br><a href></a>   </p>
-<p>uring这个词没有翻译”something that looks a little less like io_urine”.</p>
-<p>这是一个为了高速I/O提出的新的一系列系统调用，简单来说就是新的ring buffer。之前的异步I/O策略是libaio，这个机制饱受诟病，于是Jens Axboe直接提出io_uring，性能远超aio。</p>
-<p>从5.7开始超出纯I/O的范畴，io_uring开始为一部接口提供FAST POLL机制，用户无需再像使用select、event poll等多路复用机制来监听文件句柄，只要把读写请求直接丢到io_uring的submission queue中提交 ，当文件句柄不可读写时，内核会主动添加poll handler，当文件句柄可读写时主动调用poll handler再次下发读写请求，从而减少系统调用次数提高性能</p>
-<p>这是一个线程粒度的异步I/O机制，分为 submission queue和completion queue，在使用系统调用申请之后，直接返回可以使用mmap映射的file discriptor。</p>
-<p>应用程序可以直接使用mmap映射的两个ring buffer直接与内核进行I/O数据传输交换，减少了大量系统调用的开销。</p>
-<p>具体流程：</p>
-<ul>
-<li>setup <code>int io_uring_setup(int entries, struct io_uring_params *params);</code></li>
-</ul>
-<p>其中entries表示submission and completion queues两个队列的大小</p>
-<p>param中设置两个队列和具体的状态</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">struct io_uring_params &#123;</span><br><span class="line">	__u32 sq_entries;</span><br><span class="line">	__u32 cq_entries;</span><br><span class="line">	__u32 flags;</span><br><span class="line">	__u16 resv[10];</span><br><span class="line">	struct io_sqring_offsets sq_off;</span><br><span class="line">	struct io_cqring_offsets cq_off;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>最终实现目的通过file descriptor与内核共享ring buffer</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">subqueue &#x3D; mmap(0, params.sq_off.array + params.sq_entries*sizeof(__u32),</span><br><span class="line">    PROT_READ|PROT_WRITE|MAP_SHARED|MAP_POPULATE,</span><br><span class="line">             ring_fd, IORING_OFF_SQ_RING);</span><br><span class="line"></span><br><span class="line">sqentries &#x3D; mmap(0, params.sq_entries*sizeof(struct io_uring_sqe),</span><br><span class="line">    PROT_READ|PROT_WRITE|MAP_SHARED|MAP_POPULATE,</span><br><span class="line">		    ring_fd, IORING_OFF_SQES);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">cqentries &#x3D; mmap(0, params.cq_off.cqes + params.cq_entries*sizeof(struct io_uring_cqe),</span><br><span class="line">      PROT_READ|PROT_WRITE|MAP_SHARED|MAP_POPULATE,</span><br><span class="line">		    ring_fd, IORING_OFF_CQ_RING);</span><br></pre></td></tr></table></figure>
-
-<p>相关资料：<br><a href="https://lwn.net/Articles/776703/">Ringing in a new asynchronous I/O API</a><br><a href="https://lwn.net/Articles/810414/">The rapid growth of io_uring</a>  </p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &lt;liburing.h&gt;</span><br><span class="line">#include &lt;unistd.h&gt;</span><br><span class="line">#include &lt;fcntl.h&gt;</span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    struct io_uring ring;</span><br><span class="line">    io_uring_queue_init(32, &amp;ring, 0);</span><br><span class="line"></span><br><span class="line">    struct io_uring_sqe *sqe &#x3D; io_uring_get_sqe(&amp;ring);</span><br><span class="line">    int fd &#x3D; open(&quot;&#x2F;home&#x2F;carter&#x2F;test.txt&quot;, O_WRONLY | O_CREAT);</span><br><span class="line">    struct iovec iov &#x3D; &#123;</span><br><span class="line">        .iov_base &#x3D; &quot;Hello world&quot;,</span><br><span class="line">        .iov_len &#x3D; strlen(&quot;Hello world&quot;),</span><br><span class="line">    &#125;;</span><br><span class="line">    io_uring_prep_writev(sqe, fd, &amp;iov, 1, 0);</span><br><span class="line">    io_uring_submit(&amp;ring);</span><br><span class="line"></span><br><span class="line">    struct io_uring_cqe *cqe;</span><br><span class="line"></span><br><span class="line">    for (;;) &#123;</span><br><span class="line">        io_uring_peek_cqe(&amp;ring, &amp;cqe);</span><br><span class="line">        if (!cqe) &#123;</span><br><span class="line">            puts(&quot;Waiting...&quot;);</span><br><span class="line">            &#x2F;&#x2F; accept 新连接，做其他事</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            puts(&quot;Finished.&quot;);</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    io_uring_cqe_seen(&amp;ring, cqe);</span><br><span class="line">    io_uring_queue_exit(&amp;ring);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="总结邮件"><a href="#总结邮件" class="headerlink" title="总结邮件"></a>总结邮件</h2><p>今天重新思考了一下IO模型，并阅读了io_uring和多路复用相关代码，感觉突然想通了。io_uring取代了AIO而不是取代了usercopy，usercopy部署的安全策略未必适用擅长传输大量数据的io_uring，这个工作可以推后再进行。具体如下。</p>
-<p>一、将I/O模型的设计和实现分离</p>
-<p>I/O在操作系统中含义包括与I/O设备通信和输入输出数据，I/O模型是针对第一种含义提出的解决方案。</p>
-<p>linux在实现I/O的过程中参考了这些模型进行实现，但并没有在同一层次进行实现。例如LKM开发中定义的file_operations实际只包括 read（同步）/read_iter（异步）/mmap/poll 等函数指针，在I/O模型中的阻塞同步和非阻塞同步的情况可以通过使用read/read_iter 附加O_NONBLOCK的方式实现。</p>
-<p>select epoll 多路复用和AIO这些I/O模型，则是分别在与之相同或不同的层次对底层函数进行封装。</p>
-<p>例如 select 系统调用是在内核层通过vfs_poll遍历相关的file_descriptor，glibc实现的AIO是在用户空间多线程调用这些阻塞/非阻塞的同步/异步系统调用，epoll（更像是一个通知机制）是将select/poll中需要每次都传递的file descriptor都保存在内核中，减少了usercopy；通过event监听callback进行通知，减少了对fd的遍历开销。</p>
-<p>二、思考io_uring的设计和实现</p>
-<p>io_uring的设计借鉴了以上的优点，在内核空间通过kthread实现对阻塞读写任务的托管，并加入了zero copy特性，开发者可以通过一次系统调用唤醒线程一直向共享ringbuffer中写数据，而不是每次写数据都需要系统调用，这在内核和用户通信范畴内很大程度上减少了系统调用的次数，消除了usercopy的负担。</p>
-<p>但无法否认io_uring是对下层file_operations的封装，下层函数又是device driver file_operations的封装（甚至对buffer I/O中间还有一层page cache、一层block layer、一层I/O schedule），因此io_uring在许多情况无法获得SPDK用户空间直通driver的性能优势。</p>
-<p>三、对安全问题的思考</p>
-<p>我目前理解的安全风险主要来自于usercopy造成的out-of-bound、information/pointer leakage和race情况，尤其是struct结构可能存在的函数/数据指针，但是io_uring消除掉的usercopy主要负责大量I/O数据的传输，而非带有指针的控制数据结构（io_uring中的控制数据也在用copy_*_user传输，如图），因此对安全问题的认识比我预期要复杂一些（主要问题可能是OOB和Iago攻击），需要加深对漏洞形式的理解，但好处是急迫程度下降了。</p>
-<p>我只能继续积累漏洞阅读量提升认知水平，思考copy_*_user可以部署的安全机制和策略。</p>
-<p><img src="/2020/11/15/io-uring-%E7%B3%BB%E7%BB%9F%E6%80%A7%E6%95%B4%E7%90%86/usercopy.PNG" alt="usercopy"></p>
-<p>四、总结</p>
-<p>我这阶段应该继续把重点放在kernel extension问题的描述上，对这个问题我已经基本有了一定想法，大致是将威胁模型定位为kernel rootkits，通过修改页表或切换地址空间构建运行时沙箱，使用可信基截获、保护gateway，使用hook方式监控driver相关函数和数据I/O。可以将性能的提升和对DPDK/SPDK使用的UIO和VFIO保护作为贡献点（这可能是这次突发奇想的意外收获），现在面临的问题是不确定相关方案是否有实现、近期driver保护方案相关只有四篇。</p>
-]]></content>
-      <categories>
-        <category>kernel</category>
-      </categories>
-      <tags>
-        <tag>io_uring</tag>
-        <tag>kernel</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>内核近期改变</title>
-    <url>/2020/11/15/%E5%86%85%E6%A0%B8%E8%BF%91%E6%9C%9F%E6%94%B9%E5%8F%98/</url>
-    <content><![CDATA[<h1 id="内核近期改变"><a href="#内核近期改变" class="headerlink" title="内核近期改变"></a>内核近期改变</h1><ul>
-<li><a href="#%E5%86%85%E6%A0%B8%E8%BF%91%E6%9C%9F%E6%94%B9%E5%8F%98">内核近期改变</a><ul>
-<li><a href="#ioctl">ioctl</a><ul>
-<li><a href="#1%E5%8E%9F%E5%A7%8B%E7%89%88%E6%9C%AC%E7%9A%84ioctl">1.原始版本的ioctl</a></li>
-<li><a href="#2%E5%86%85%E6%A0%B8%E6%94%B9%E8%BF%9B%E5%90%8E%E7%9A%84ioctl">2.内核改进后的ioctl</a></li>
-<li><a href="#3%E5%9C%A8%E7%BC%96%E5%86%99%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84%E5%A4%84%E7%90%86%E5%8A%9E%E6%B3%95">3.在编写过程中的处理办法</a></li>
-<li><a href="#4-%E5%8E%9F%E5%9B%A0%E5%88%86%E6%9E%90">4. 原因分析</a></li>
-</ul>
-</li>
-<li><a href="#%E5%BC%82%E6%AD%A5io-read_iter">异步I/O read_iter</a><ul>
-<li><a href="#1%E5%85%B7%E4%BD%93%E5%8F%98%E5%8C%96">1.具体变化</a></li>
-<li><a href="#2%E5%8E%9F%E5%9B%A0%E5%88%86%E6%9E%90">2.原因分析</a></li>
-<li><a href="#3%E9%97%AE%E9%A2%98">3.问题</a></li>
-</ul>
-</li>
-<li><a href="#timer%E8%AE%A1%E6%97%B6%E5%99%A8%E5%8F%91%E7%94%9F%E6%94%B9%E5%8F%98">timer计时器发生改变</a></li>
-<li><a href="#block-%E9%A9%B1%E5%8A%A8%E5%9C%A850%E5%90%8E%E8%BF%9B%E8%A1%8C%E4%BA%86%E9%9D%9E%E5%B8%B8%E5%A4%A7%E7%9A%84%E5%8F%98%E5%8C%96">block 驱动在5.0后进行了非常大的变化</a><ul>
-<li><a href="#%E5%8E%9F%E5%9B%A0">原因</a></li>
-<li><a href="#blk-mq-%E8%AE%BE%E8%AE%A1%E4%BA%86%E4%B8%A4%E5%B1%82%E9%98%9F%E5%88%97">blk-mq 设计了两层队列</a></li>
-<li><a href="#%E5%9C%A8%E6%9E%B6%E6%9E%84%E5%B1%82%E9%9D%A2">在架构层面</a></li>
-<li><a href="#%E5%85%B7%E4%BD%93%E5%88%B0%E5%87%BD%E6%95%B0">具体到函数</a></li>
-</ul>
-</li>
-<li><a href="#%E5%86%85%E6%A0%B8%E8%AE%A1%E6%97%B6%E6%8E%A5%E5%8F%A3%E5%8F%91%E7%94%9F%E5%8F%98%E5%8C%96">内核计时接口发生变化</a></li>
-<li><a href="#%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%88%9D%E5%A7%8B%E5%8C%96%E6%8E%A5%E5%8F%A3%E5%8F%98%E5%8C%96%E6%9C%AA%E8%A7%A3%E5%86%B3">系统调用初始化接口变化（未解决）</a></li>
-<li><a href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%87%8F%E5%B0%91%E5%AE%9A%E4%B9%89%E6%95%B0%E9%87%8F-%E6%9C%AA%E8%A7%A3%E5%86%B3">文件系统减少定义数量 （未解决）</a></li>
-<li><a href="#jprobe-%E8%A2%AB%E5%8F%96%E6%B6%88">jprobe 被取消</a></li>
-</ul>
-</li>
-</ul>
-<a id="more"></a>
-<h2 id="ioctl"><a href="#ioctl" class="headerlink" title="ioctl"></a>ioctl</h2><h3 id="1-原始版本的ioctl"><a href="#1-原始版本的ioctl" class="headerlink" title="1.原始版本的ioctl"></a>1.原始版本的ioctl</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">int (*ioctl)(struct inode *, struct file *, unsigned int, unsigned long);</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-内核改进后的ioctl"><a href="#2-内核改进后的ioctl" class="headerlink" title="2.内核改进后的ioctl"></a>2.内核改进后的ioctl</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">long (*unlocked_ioctl) (struct file *, unsigned int, unsigned long);</span><br><span class="line"></span><br><span class="line">long (*compat_ioctl) (struct file *, unsigned int, unsigned long);</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-在编写过程中的处理办法"><a href="#3-在编写过程中的处理办法" class="headerlink" title="3.在编写过程中的处理办法"></a>3.在编写过程中的处理办法</h3><ul>
-<li><p>将原先的写的 ioctl 函数声明给改成下面的 unlocked_ioctl 或者 compat_ioctl,</p>
-</li>
-<li><p>在 file_operations 结构体的初始化中也是一样. 修改为unlocked_ioctl 或者 compat_ioctl,</p>
-</li>
-<li><p>注意参数的兼容性问题, 新的ioctl() 接口没有 struct inode* 参数, 如果ioctl 接口中使用了 inode, 因此需要通过其他方式获取 inode</p>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2, 6, 36)</span><br><span class="line">static int XXX_ioctl(</span><br><span class="line">        struct inode *indoe,</span><br><span class="line">        struct file *filp,</span><br><span class="line">        unsigned int cmd,</span><br><span class="line">        unsigned long arg)</span><br><span class="line">&#123;</span><br><span class="line">#else</span><br><span class="line">&#x2F;&#x2F;long (*unlocked_ioctl) (struct file *, unsigned int, unsigned long);</span><br><span class="line">&#x2F;&#x2F;long (*compat_ioctl) (struct file *, unsigned int cmd, unsigned long arg)</span><br><span class="line">static long XXX_unlocked_ioctl(</span><br><span class="line">        struct file *filp,</span><br><span class="line">        unsigned int cmd,</span><br><span class="line">        unsigned long arg)</span><br><span class="line">&#123;</span><br><span class="line">    &#x2F;&#x2F;struct inode *inode &#x3D; filp-&gt;f_dentry-&gt;d_inode;</span><br><span class="line">    &#x2F;&#x2F;struct inode *inode &#x3D; filp-&gt;d_inode;</span><br><span class="line">    struct inode *inode &#x3D; inode &#x3D; file_inode(filp);</span><br><span class="line">#endif</span><br><span class="line">    &#x2F;*  此处是ioctl() 函数结构的具体实现  *&#x2F;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>同理，file_operations中也进行同样修改。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">static struct file_operations fpga_fops &#x3D; &#123;</span><br><span class="line">    .owner  &#x3D; THIS_MODULE,</span><br><span class="line">    .open   &#x3D; fpga_open,</span><br><span class="line">    .read   &#x3D; fpga_read,</span><br><span class="line">    .write &#x3D; fpga_write,</span><br><span class="line">    .llseek &#x3D; fpga_llseek,</span><br><span class="line">#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2, 6, 36)</span><br><span class="line">    .ioctl &#x3D; XXX_ioctl,</span><br><span class="line">#else</span><br><span class="line">    .unlocked_ioctl &#x3D; XXX_unlocked_ioctl,</span><br><span class="line">#endif</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-
-<h3 id="4-原因分析"><a href="#4-原因分析" class="headerlink" title="4. 原因分析"></a>4. 原因分析</h3><p><code>file_operations (include/linux/fs.h)</code> 结构变化,ioctl本身并不安全，且之前的ioctl使用了大内核锁延迟太大，因此进行修改。具体内容见<br><a href="https://lwn.net/Articles/119652/">The new way of ioctl()</a></p>
-<h2 id="异步I-O-read-iter"><a href="#异步I-O-read-iter" class="headerlink" title="异步I/O read_iter"></a>异步I/O read_iter</h2><h3 id="1-具体变化"><a href="#1-具体变化" class="headerlink" title="1.具体变化"></a>1.具体变化</h3><p><code>file_operations (include/linux/fs.h)</code> 结构变化，导致</p>
-<p><code>read_iter</code> 和 <code>write_iter</code> 负责设备驱动的异步读写，取代了之前的 <code>aio_read</code> 和 <code>aio_write</code>,只需要将资料中二者进行转换即可。</p>
-<h3 id="2-原因分析"><a href="#2-原因分析" class="headerlink" title="2.原因分析"></a>2.原因分析</h3><p><a href="https://lwn.net/Articles/625077/">The iov_iter interface</a></p>
-<p>iov_iter 功能增强了，并且试图合并 read(write)_iter 和 splice_read(write)，不过截至2020年5月13日来看这俩似乎还存在着</p>
-<h3 id="3-问题"><a href="#3-问题" class="headerlink" title="3.问题"></a>3.问题</h3><p><code>fs/ramfs/file-mmu.c</code> 中为什么 <code>file_operations</code> 里面没有定义 read 和 write， 而只有异步I/O。</p>
-<h2 id="timer计时器发生改变"><a href="#timer计时器发生改变" class="headerlink" title="timer计时器发生改变"></a>timer计时器发生改变</h2><p><a href="https://lwn.net/Articles/735887/">Improving the kernel timers API</a><br>用 <code>timer_setup</code> 替换了 <code>init_timer</code>,替换内核版本为4.14(2017)，属于较新的替换</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(4,14,0)</span><br><span class="line">    init_timer(&amp;dev-&gt;getIntrTimer);</span><br><span class="line">    dev-&gt;getIntrTimer.data &#x3D; (unsigned long) dev;</span><br><span class="line">    dev-&gt;getIntrTimer.function &#x3D; GetIntrTimerCallback;</span><br><span class="line">    &#x2F;* ... *&#x2F;</span><br><span class="line">    add_timer(&amp;dev-&gt;getIntrTimer);</span><br><span class="line">#else</span><br><span class="line">    timer_setup(&amp;dev-&gt;getIntrTimer, GetIntrTimerCallback, 0);</span><br><span class="line">    &#x2F;* the third argument may include TIMER_* flags *&#x2F;</span><br><span class="line">    &#x2F;* ... *&#x2F;</span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
-
-<p>callback function的变化 <strong>参数类型发生变化，否则会编译失败</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(4,14,0)</span><br><span class="line">void GetIntrTimerCallback(unsigned long devAddr)</span><br><span class="line">&#123;</span><br><span class="line">    myDevice *dev &#x3D; (myDevice *) devAddr;</span><br><span class="line">#else</span><br><span class="line">void GetIntrTimerCallback(struct timer_list *t)</span><br><span class="line">&#123;</span><br><span class="line">    myDevice *dev &#x3D; from_timer(dev, t, getIntrTimer);</span><br><span class="line">#endif</span><br><span class="line">    &#x2F;* Do something with &quot;dev&quot; *&#x2F;</span><br></pre></td></tr></table></figure>
-
-<h2 id="block-驱动在5-0后进行了非常大的变化"><a href="#block-驱动在5-0后进行了非常大的变化" class="headerlink" title="block 驱动在5.0后进行了非常大的变化"></a>block 驱动在5.0后进行了非常大的变化</h2><p><a href="https://www.linuxquestions.org/questions/linux-kernel-70/in-kernel-v5-blk_fetch_request-and-blk_init_queue-gone-now-what-4175670215/">In kernel V5 blk_fetch_request() and blk_init_queue() gone. Now What?</a>  </p>
-<p><a href="https://prog.world/linux-kernel-5-0-we-write-simple-block-device-under-blk-mq/">Linux Kernel 5.0 – we write Simple Block Device under blk-mq</a>  </p>
-<p><a href="https://patchwork.kernel.org/patch/10048915/">block: remove __bio_kmap_atomic</a></p>
-<p><strong>内核工匠 公众号 Multiqueue架构分析</strong></p>
-<p>block 驱动在5.0后进行了非常大的变化</p>
-<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>是使用了 multi-queue block layer 即 blk-mq 完全取代了之前的 blk-sq（single-queue），<br>因为从前的IO速度瓶颈在硬件方面，因此可以使用单一队列，即使多个cpu竞争自旋锁获取队列写入权限依旧不过分影响性能。<br>而最近的高IOPS（io per second）硬件逐渐增多比如ssd，nvme等硬件设备开始大量使用，那么从前的single queue在高IOPS场景下80% cpu时间耗费在锁获取上了，因此设计了新的blk-mq 获取锁仅占用 3% cpu时间。</p>
-<h3 id="blk-mq-设计了两层队列"><a href="#blk-mq-设计了两层队列" class="headerlink" title="blk-mq 设计了两层队列"></a>blk-mq 设计了两层队列</h3><ol>
-<li><p>首先为每个cpu分配了一个软件暂存队列（software staging queue），负责完成bio 提交/完成处理，IO请求暂存（合并、排序等）、IO请求标记、调度、记账（和新的IO调度算法BFS有关）</p>
-</li>
-<li><p>硬件派发队列（Hardware Dispatch Queue） 为每个硬件队列分派一个硬件派发队列，负责存放软件队列向硬件派发的IO请求，一个和多个软件队列和一个硬件队列存在固定映射关系</p>
-</li>
-</ol>
-<h3 id="在架构层面"><a href="#在架构层面" class="headerlink" title="在架构层面"></a>在架构层面</h3><p>mq 将 request 和 tag 绑定，request内存分配在块设备驱动初始化时完成（调用blk_mq_alloc_tag_set）避免IO时分配request内存带来消耗</p>
-<p>tag作为request（static_rqs/rqs）的索引。</p>
-<h3 id="具体到函数"><a href="#具体到函数" class="headerlink" title="具体到函数"></a>具体到函数</h3><p>有 <code>blk_fetch_request</code> , <code>__blk_end_request_cur</code>  ,<code>blk_init_queue</code>, <code>__bio_kmap_atomic(bio, iter)</code> , <code>__bio_kunmap_atomic(buffer)</code> 等</p>
-<p>其中 取代 <code>__bio_kmap_atomic(bio, iter)</code> , <code>__bio_kunmap_atomic(buffer)</code> 如下</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">-		char *buffer &#x3D; __bio_kmap_atomic(bio, iter);</span><br><span class="line">+		char *buffer &#x3D; kmap_atomic(bvec.bv_page) + bvec.bv_offset;</span><br><span class="line"> 		unsigned len &#x3D; bvec.bv_len &gt;&gt; SECTOR_SHIFT;</span><br><span class="line"> </span><br><span class="line"> 		simdisk_transfer(dev, sector, len, buffer,</span><br><span class="line"> 				bio_data_dir(bio) &#x3D;&#x3D; WRITE);</span><br><span class="line"> 		sector +&#x3D; len;</span><br><span class="line">-		__bio_kunmap_atomic(buffer);</span><br><span class="line">+		kunmap_atomic(buffer)</span><br></pre></td></tr></table></figure>
-
-<p>除此之外 <code>BLK_MQ_F_SG_MERGE</code> 和 <code>QUEUE_FLAG_NO_SG_MERGE</code>  都可以被省略了<br><a href="https://lore.kernel.org/patchwork/patch/1042759/">block: kill BLK_MQ_F_SG_MERGE</a></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">-	lo-&gt;tag_set.flags &#x3D; BLK_MQ_F_SHOULD_MERGE | BLK_MQ_F_SG_MERGE;</span><br><span class="line">+	lo-&gt;tag_set.flags &#x3D; BLK_MQ_F_SHOULD_MERGE;</span><br></pre></td></tr></table></figure>
-
-<h2 id="内核计时接口发生变化"><a href="#内核计时接口发生变化" class="headerlink" title="内核计时接口发生变化"></a>内核计时接口发生变化</h2><p>64位系统中,由于<a href="https://en.wikipedia.org/wiki/Year_2038_problem">2038问题</a> 时间戳 timespec 在 inode数据结构中的i_*time 中弃用，转而使用 timespec64</p>
-<p>相应的 getnstimeofday 等函数也被弃用， 转而使用 <code>ktime_get_ts64(struct timespec64 *ts)</code> 等函数获取时间，另外需要注意 这个函数必须使用 GPL协议才能成功加载。</p>
-<p>详见内核时间api文件，<br><a href="https://www.kernel.org/doc/html/latest/core-api/timekeeping.html">ktime accessors</a></p>
-<p>最新设计的时间数据结构为 <code>ktime_t</code> 获取方式为 <code>ktime_t ktime_get(void)</code></p>
-<h2 id="系统调用初始化接口变化（未解决）"><a href="#系统调用初始化接口变化（未解决）" class="headerlink" title="系统调用初始化接口变化（未解决）"></a>系统调用初始化接口变化（未解决）</h2><p>系统调用初始化接口代码越变越少，而且有点难以理解，除了在<code>arch/x86/entry/syscall</code> 目录下定义之外，还用了同目录下的脚本直接生成了ni代码</p>
-<p>具体的解决办法是直接ftrace跟踪一波，看看syscall最新的调用路径</p>
-<h2 id="文件系统减少定义数量-（未解决）"><a href="#文件系统减少定义数量-（未解决）" class="headerlink" title="文件系统减少定义数量 （未解决）"></a>文件系统减少定义数量 （未解决）</h2><p>文件系统减少了大量file_operations定义数量，例如 aio_read  aio_write 等异步代码直接被省略掉，read 和 write 接口基本也不定义了， 似乎使用了 read_iter 和 write_iter 替代了前两类接口</p>
-<p>具体原因还没搞清楚，但是在 <a href="https://lore.kernel.org/patchwork/patch/350494/">[V5,17/30] fs: use read_iter and write_iter rather than aio_read and aio_write</a> 中显示 aio被明确删除掉，用iter替代。</p>
-<p>此外 <code>file_operations</code> 当中的 readdir 等接口也被取消，直接由read/read_iter和 iterate 替代,iterate基本上可以理解为负责执行ls命令， filldentry_t 由 dir_context 替代。</p>
-<h2 id="jprobe-被取消"><a href="#jprobe-被取消" class="headerlink" title="jprobe 被取消"></a>jprobe 被取消</h2><p>在 kprobe中只剩下kprobe和kretprobe，jprobe及相关的一套函数被取消，替代方式如下：</p>
-<p><code>/source/samples/kprobes/kprobe_example.c</code> 和 <code>/source/samples/kprobes/kretprobe_example.c</code> 中示例</p>
-<p>使用kprobe中的handler_pre和handler_post替代。</p>
-]]></content>
-      <categories>
-        <category>kernel</category>
-      </categories>
-      <tags>
-        <tag>kernel</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>kernel contribution 统计</title>
-    <url>/2020/11/16/kernel-contribution-%E7%BB%9F%E8%AE%A1/</url>
-    <content><![CDATA[<p>保存lwn.net发布的新版本开发统计文章，目前来看还是华为最屌。</p>
-<p><a href="https://lwn.net/Articles/780271/">Development statistics for the 5.0 kernel</a><br>As of this writing, 12,517 non-merge changesets have been pulled into the mainline repository for the 5.0 release</p>
-<p><a href="https://lwn.net/Articles/810639/">Some 5.5 kernel development statistics</a><br>5.5 saw the merging of 14,350 non-merge changesets from 1,885 developers</p>
-<a id="more"></a>
-
-<p><a href="https://lwn.net/Articles/816162/">Some 5.6 kernel development statistics</a><br>12,665 non-merge changesets had been accepted from 1,712 developers</p>
-<p><a href="https://lwn.net/Articles/821813/">Development statistics for the 5.7 kernel</a><br>Work on 5.7 arrived in the form of 13,901 non-merge changesets contributed by 1,878 developers;</p>
-]]></content>
-      <categories>
-        <category>kernel</category>
-      </categories>
-      <tags>
-        <tag>kernel</tag>
-        <tag>lwn.net</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>三剑客sed/awk/grep常用速查</title>
-    <url>/2020/11/16/%E4%B8%89%E5%89%91%E5%AE%A2sed-awk-grep%E5%B8%B8%E7%94%A8%E9%80%9F%E6%9F%A5/</url>
-    <content><![CDATA[<p>sed和awk的区别，都是按行读入，但是awk会拆分行里面的元素，sed则直接用正则做匹配，基本上sed可以做到的awk都可以。</p>
-<h1 id="awk"><a href="#awk" class="headerlink" title="awk"></a>awk</h1><p><code>awk &#39;&#123;printf &quot;%-8s %-8s %-8s %-18s %-22s %-15s\n&quot;,$1,$2,$3,$4,$5,$6&#125;&#39; netstat.txt</code> awk 使用print和printf打印每行中按列分布的元素。</p>
-<p><code>awk &#39;$3==0 &amp;&amp; $6==&quot;ESTABLISHED&quot;&#39; netstat.txt</code> 过滤记录</p>
-<p><code>awk &#39;$3==0 &amp;&amp; $6==&quot;ESTABLISHED&quot; || NR==1 &#123;printf &quot;%02s %s %-20s %-20s %s\n&quot;,NR, FNR, $4,$5,$6&#125;&#39; netstat.txt</code> 其中NR，FNR为内建变量</p>
-<a id="more"></a>
-<ul>
-<li>$0    当前记录（这个变量中存放着整个行的内容）</li>
-<li>$1~$n    当前记录的第n个字段，字段间由FS分隔</li>
-<li>FS    输入字段分隔符 默认是空格或Tab</li>
-<li>NF    当前记录中的字段个数，就是有多少列</li>
-<li>NR    已经读出的记录数，就是行号，从1开始，如果有多个文件话，这个值也是不断累加中。</li>
-<li>FNR    当前记录数，与NR不同的是，这个值会是各个文件自己的行号</li>
-<li>RS    输入的记录分隔符， 默认为换行符</li>
-<li>OFS    输出字段分隔符， 默认也是空格</li>
-<li>ORS    输出的记录分隔符，默认为换行符</li>
-<li>FILENAME    当前输入文件的名字</li>
-</ul>
-<p><code>awk  &#39;BEGIN&#123;FS=&quot;:&quot;&#125; &#123;print $1,$3,$6&#125;&#39; /etc/passwd</code> 指定分隔符</p>
-<p><code>awk &#39;$6 ~ /E/ || NR==1 &#123;print NR, $4,$5,$6&#125;&#39; netstat.txt</code> ~表示开始，//表示匹配，这行命令表示匹配第六个元素开始包含E的行和第一行，然后输出行数和第456个元素。</p>
-<p><code>awk &#39;NR!=1&#123;print $4,$5 &gt; $6&#125;&#39; netstat.txt</code> 不处理第一行，按照第六列元素分类拆分成若干个文件，文件的内容是第45列元素。</p>
-<h2 id="awk-脚本"><a href="#awk-脚本" class="headerlink" title="awk 脚本"></a>awk 脚本</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#!&#x2F;bin&#x2F;awk -f</span><br><span class="line"># 运行前</span><br><span class="line">BEGIN &#123;</span><br><span class="line">	math &#x3D; 0</span><br><span class="line">	english &#x3D; 0</span><br><span class="line">	computer &#x3D; 0</span><br><span class="line"></span><br><span class="line">	printf &quot;NAME    NO.   MATH  ENGLISH  COMPUTER   TOTAL\n&quot;</span><br><span class="line">	printf &quot;---------------------------------------------\n&quot;</span><br><span class="line">&#125;</span><br><span class="line"># 运行中</span><br><span class="line">&#123;</span><br><span class="line">	math +&#x3D; $3</span><br><span class="line">	english +&#x3D; $4</span><br><span class="line">	computer +&#x3D; $5</span><br><span class="line">	printf &quot;%-6s %-6s %4d %8d %8d %8d\n&quot;, $1, $2, $3,$4,$5, $3+$4+$5</span><br><span class="line">&#125;</span><br><span class="line"># 运行之后</span><br><span class="line">END &#123;</span><br><span class="line">	printf &quot;---------------------------------------------\n&quot;</span><br><span class="line">	printf &quot;  TOTAL:%10d %8d %8d \n&quot;, math, english, computer</span><br><span class="line">	printf &quot;AVERAGE:%10.2f %8.2f %8.2f\n&quot;, math&#x2F;NR, english&#x2F;NR, computer&#x2F;NR</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p><code>awk -v val=$x &#39;&#123;print $1, $2, $3, $4+val, $5+ENVIRON[&quot;y&quot;]&#125;&#39; OFS=&quot;\t&quot; score.txt</code> 其中x，y为环境变量，为了使用环境变量需要 -v</p>
-<p><code>echo $PATH| awk &#39;BEGIN&#123;RS=&quot;:&quot;&#125;&#123;print NR,$0&#125;&#39;</code> 把单行拆分成多行</p>
-<h1 id="sed"><a href="#sed" class="headerlink" title="sed"></a>sed</h1><p><code>sed [-hnV][-e&lt;script&gt;][-f&lt;script文件&gt;][文本文件]</code></p>
-<ul>
-<li><p>e&lt;script&gt;或–expression=&lt;script&gt; 以选项中指定的script来处理输入的文本文件。</p>
-</li>
-<li><p>f&lt;script文件&gt;或–file=&lt;script文件&gt; 以选项中指定的script文件来处理输入的文本文件。</p>
-</li>
-<li><p>h或–help 显示帮助。</p>
-</li>
-<li><p>n或–quiet或–silent 仅显示script处理后的结果。</p>
-</li>
-<li><p>V或–version 显示版本信息。</p>
-</li>
-<li><p>a ：新增， a 的后面可以接字串，而这些字串会在新的一行出现(目前的下一行)～</p>
-</li>
-<li><p>c ：取代， c 的后面可以接字串，这些字串可以取代 n1,n2 之间的行！</p>
-</li>
-<li><p>d ：删除，因为是删除啊，所以 d 后面通常不接任何咚咚；</p>
-</li>
-<li><p>i ：插入， i 的后面可以接字串，而这些字串会在新的一行出现(目前的上一行)；</p>
-</li>
-<li><p>p ：打印，亦即将某个选择的数据印出。通常 p 会与参数 sed -n 一起运行～</p>
-</li>
-<li><p>s ：取代，可以直接进行取代的工作哩！通常这个 s 的动作可以搭配正规表示法！例如 1,20s/old/new/g 就是啦！</p>
-</li>
-</ul>
-<p><code>sed &quot;s/my/ppw &#39;s/g&quot; pets.txt</code> 把pets.txt文件的my改成ppw’s，并不修改文件。/g 表示一行上的替换所有的匹配</p>
-<p>加入-i <code>sed -i &quot;s/my/ppw &#39;s/g&quot; pets.txt</code>可以直接修改文件</p>
-<p><code>sed &#39;s/^/---/g&#39; pets.txt</code> 在开头加上—</p>
-<p><code>sed &#39;s/$/---/g&#39; pets.txt</code> 在结尾加上—</p>
-<p>同理类似的有：</p>
-<ul>
-<li>\&lt; 表示词首。 如：&lt;abc 表示以 abc 为首的詞。</li>
-<li>\&gt; 表示词尾。 如：abc&gt; 表示以 abc 結尾的詞。</li>
-<li>. 表示任何单个字符。</li>
-<li>* 表示某个字符出现了0次或多次。</li>
-<li><input disabled type="checkbox"> 字符集合。 如：[abc] 表示匹配a或b或c，还有 [a-zA-Z] 表示匹配所有的26个字符。如果其中有^表示反，如 [^a] 表示非a的字符</li>
-</ul>
-<p><code>sed &#39;s/&lt;[^&gt;]*&gt;//g&#39; html.txt</code> 取消html文件中的&lt;&gt;tags,不能使用<code>&#39;s/&lt;.*&gt;&#39;//g</code>，因为会贪婪匹配掉第一个《和最后一个》之间所有的内容，现在给出的示例是匹配除了&gt;意外的字符。</p>
-<p><code>sed &#39;3s/my/your/g&#39; pets.txt</code> 和 <code>sed &#39;3,6s/my/your/g&#39; pets.txt</code>，分别表示匹配第三行和第三到六行。</p>
-<p><code>sed &#39;s/s/S/1&#39; pets.txt</code> 匹配每一行的第一个s</p>
-<p><code>sed &#39;1,3s/my/your/g; 3,$s/This/That/g&#39; pets.txt</code> 匹配多个</p>
-<p><code>sed &#39;s/my/[&amp;]/g&#39; pets.txt</code> 使用&amp;来当做被匹配的变量，然后可以在基本左右加点东西</p>
-<p><code>sed &#39;s/This is my \([^,]*\),.*is \(.*\)/\1:\2/g&#39; my.txt</code> 圆括号括起来的正则表达式所匹配的字符串会可以当成变量来使用，sed中使用的是\1,\2…</p>
-<p><code>sed &#39;N;s/my/your/&#39; pets.txt</code> 原文本中的偶数行纳入奇数行匹配，而s只匹配并替换一次，所以最后只有奇数行被修改。 N命令把下一行的内容纳入当成缓冲区做匹配。</p>
-<p><code>sed &quot;1 i This is my monkey, my monkey&#39;s name is wukong&quot; my.txt</code> 和 <code>sed &quot;$ a This is my monkey, my monkey&#39;s name is wukong&quot; my.txt</code>  命令i和a分别表示insert 和 append，添加行</p>
-<p><code>sed &quot;/my/a ----&quot; my.txt</code> 在每行结尾都添加 —-</p>
-<p><code>sed &quot;2 c This is my monkey, my monkey&#39;s name is wukong&quot; my.txt</code> 和 <code>sed &quot;/fish/c This is my monkey, my monkey&#39;s name is wukong&quot; my.txt</code> 命令c表示替换，这两个命令分别表示替换第二行和有’fish’存在的那一行。</p>
-<p><code>sed &#39;/fish/d&#39; my.txt</code> 和 <code>sed &#39;2d&#39; my.txt</code> 和 <code>sed &#39;2,$d&#39; my.txt</code> 命令d表示删除匹配行，这三个命令分别表示删除有fish的一行，删除第二行和删除第二到最后的所有行。</p>
-<p><code>sed -n &#39;/dog/,/fish/p&#39; my.txt</code> 命令-n表示只显示处理后的结果，命令p表示打印，图中命令表示打印有dog的一行和有fish的一行。</p>
-<h1 id="grep"><a href="#grep" class="headerlink" title="grep"></a>grep</h1><p><code>grep -i -c &#39;.*ret.*&#39; linux-exec.s</code> 统计内核二级制文件中ret命令的个数，不区分大小写，直接输出匹配行数。</p>
-]]></content>
-      <categories>
-        <category>linux</category>
-        <category>bash</category>
-      </categories>
-      <tags>
-        <tag>bash</tag>
-        <tag>linux</tag>
-        <tag>tool</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Raspberry Pi 内核编译</title>
-    <url>/2020/11/16/Raspberry-Pi-%E5%86%85%E6%A0%B8%E7%BC%96%E8%AF%91/</url>
-    <content><![CDATA[<p><strong>我的版本 : 树莓派3</strong></p>
-<h1 id="1-内核获取"><a href="#1-内核获取" class="headerlink" title="1.内核获取"></a>1.内核获取</h1><h2 id="1-1-软件下载"><a href="#1-1-软件下载" class="headerlink" title="1.1.软件下载"></a>1.1.软件下载</h2><p><code>sudo apt install git bc bison flex libssl-dev make</code></p>
-<a id="more"></a>
-
-<h3 id="关于libssl-dev的小问题"><a href="#关于libssl-dev的小问题" class="headerlink" title="关于libssl-dev的小问题"></a>关于libssl-dev的小问题</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt-get install aptitude</span><br><span class="line"></span><br><span class="line">dpkg -l *libssl*</span><br><span class="line"></span><br><span class="line">sudo aptitude install libssl-dev</span><br></pre></td></tr></table></figure>
-
-
-<h2 id="1-2-源码获取"><a href="#1-2-源码获取" class="headerlink" title="1.2.源码获取"></a>1.2.源码获取</h2><p><code>git clone --depth=1 https://github.com/raspberrypi/linux</code></p>
-<h1 id="2-内核编译"><a href="#2-内核编译" class="headerlink" title="2.内核编译"></a>2.内核编译</h1><p>预设环境</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd linux</span><br><span class="line">KERNEL&#x3D;kernel7</span><br><span class="line">make bcm2709_defconfig</span><br><span class="line">或者 zcat &#x2F;proc&#x2F;config.gz &gt; .config   #从现在原有版本的内核中复制配置文件</span><br></pre></td></tr></table></figure>
-
-<p>编译</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">make -j4 zImage modules dtbs</span><br><span class="line">sudo make modules_install</span><br><span class="line">sudo cp arch&#x2F;arm&#x2F;boot&#x2F;dts&#x2F;*.dtb &#x2F;boot&#x2F;</span><br><span class="line">sudo cp arch&#x2F;arm&#x2F;boot&#x2F;dts&#x2F;overlays&#x2F;*.dtb* &#x2F;boot&#x2F;overlays&#x2F;</span><br><span class="line">sudo cp arch&#x2F;arm&#x2F;boot&#x2F;dts&#x2F;overlays&#x2F;README &#x2F;boot&#x2F;overlays&#x2F;</span><br><span class="line">sudo cp arch&#x2F;arm&#x2F;boot&#x2F;zImage &#x2F;boot&#x2F;$KERNEL.img</span><br></pre></td></tr></table></figure>
-
-<h1 id="3-更换内核"><a href="#3-更换内核" class="headerlink" title="3.更换内核"></a>3.更换内核</h1><p>修改 <code>/boot/config.txt</code> 文件中内容</p>
-<p><code>kernel=kernel-myconfig.img</code></p>
-<p>myconfig的版本在<code>/lib/modules/</code> 文件夹中。</p>
-<h1 id="4-参考文件"><a href="#4-参考文件" class="headerlink" title="4.参考文件"></a>4.参考文件</h1><p><a href="https://www.raspberrypi.org/documentation/linux/kernel/building.md" title="building">DOCUMENTATION &gt; LINUX &gt; KERNEL &gt; BUILDING</a></p>
-]]></content>
-      <categories>
-        <category>kernel</category>
-        <category>raspberryPi</category>
-      </categories>
-      <tags>
-        <tag>kernel</tag>
-        <tag>raspberryPi</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>NJU研究生通知RSS</title>
-    <url>/2020/11/19/NJU%E7%A0%94%E7%A9%B6%E7%94%9F%E9%80%9A%E7%9F%A5RSS/</url>
-    <content><![CDATA[<h1 id="NJU-notifeed"><a href="#NJU-notifeed" class="headerlink" title="NJU-notifeed"></a>NJU-notifeed</h1><p>Nanjing University notification feed</p>
-<p><a href="https://github.com/purplewall1206/NJU-notifeed">https://github.com/purplewall1206/NJU-notifeed</a></p>
-<p><strong>直接订阅：</strong><br><a href="http://idcvz.zi-c.wang:8000/rss">http://idcvz.zi-c.wang:8000/rss</a></p>
-<a id="more"></a>
-
-
-<p>主要收集以下两个网站的最新通知，生成统一的feed提供给本地部署的RSS阅读器（i.e. Thunderbird） </p>
-<p><a href="https://grawww.nju.edu.cn/">https://grawww.nju.edu.cn</a></p>
-<p><a href="http://pyb.nju.edu.cn/">http://pyb.nju.edu.cn/</a></p>
-<h1 id="设计思路"><a href="#设计思路" class="headerlink" title="设计思路"></a>设计思路</h1><p>使用requests和beautifulsoup4制作爬虫，获取通知页面的信息条目news</p>
-<p>使用PyRSS2Gen生成feed条目，并写到feed.xml文件中（这里有个问题，lib好像只提供文件写入函数了，暂时没找到其他的output方式）</p>
-<p>使用Flask构建RESTful API，访问 <a href="http://url/rss">http://url/rss</a> 获取feed</p>
-<p>使用多线程其中一个线程运行爬虫，主线程（flask单线程）维护API</p>
-<p>文件结构：</p>
-<ul>
-<li>news.py news struct，存储消息的属性</li>
-<li>crawlerPYB/GRA.py 两个网站的爬虫策略</li>
-<li>__init__.py 主函数，通过多线程的方式每小时更新一次feed。</li>
-<li>logging.txt 记录调用日志</li>
-<li>requirement.txt 安装的python lib，<code>sudo pip install -r requirement.txt</code></li>
-</ul>
-<p>ubuntu 运行面对的问题 <code>sudo apt-get install python3-html5lib</code></p>
-<h1 id="启动问题"><a href="#启动问题" class="headerlink" title="启动问题"></a>启动问题</h1><p>加入description信息获取之后，服务器往往无法立即反应，需要等到logging中显示出爬虫已经完全获取信息的日志之后，才能通过网站访问。需要处理一下这个问题，应该是global被锁住，服务器比爬虫先启动导致的。</p>
-]]></content>
-      <categories>
-        <category>python</category>
-        <category>rss</category>
-        <category>github</category>
-      </categories>
-      <tags>
-        <tag>python</tag>
-        <tag>rss</tag>
-        <tag>github</tag>
-        <tag>NJU</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Nutch2.3.1+hbase-0.98-hadoop+solr5.2.1的自动部署脚本</title>
-    <url>/2016/10/18/Nutch2.3.1+hbase-0.98-hadoop+solr5.2.1%E7%9A%84%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2%E8%84%9A%E6%9C%AC/</url>
-    <content><![CDATA[<p>在阳总的帮助下，终于搞出了这个自动部署脚本，感谢阳总让我第一次看到真人写的bash脚本，很涨姿势。</p>
-<ul>
-<li><p>hbase-0.98-hadoop 的选择原因是[<a href="http://wiki.apache.org/nutch/Nutch2Tutorial">http://wiki.apache.org/nutch/Nutch2Tutorial</a> ](nutch turorial)上这么推荐的</p>
-</li>
-<li><p>solr5.x 的玩法似乎和solr4.9 差别不小，之后应该会单独写一篇分析的</p>
-</li>
-<li><p>测试环境是 centos6环境，使用ubuntu或者其他发行版的兄弟记得改下 那堆yum，rpm</p>
-<a id="more"></a>
-<pre><code> #!/bin/bash </code></pre>
-<p>这个写到一开头表示这是<strong>.sh</strong>那一类文件，剩下的就是用重定向之类的linux下的特殊写法追加写入文本的</p>
-</li>
-<li><p>脚本中的所有文件都将被部署到 <strong>/usr</strong> 目录下，如果改目录需要连着配置文件一起改，权限不够加<strong>sudo</strong></p>
-</li>
-<li><p>nutch crawl solr hbase 都写入环境变量，可以在任何目录下运行。</p>
-</li>
-<li><p>nutch 执行的是 /usr/nutch-2/runtime/local/bin/nutch 目录的文件，而不是deploy中</p>
-</li>
-<li><p>之后集成hadoop再修改配置文件。</p>
-</li>
-</ul>
-<p>以下是自动部署脚本，需要复制下来制作成 <strong>.sh</strong> 文件，使用 <pre><code> sudo bash xxx.sh </code></pre> 执行</p>
-<figure class="highlight bash"><figcaption><span>自动部署脚本</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">rpm -Uvh https://centos6.iuscommunity.org/ius-release.rpm</span><br><span class="line">yum install epel-release -y</span><br><span class="line">yum install git wget screen vim -y</span><br><span class="line">yum update -y</span><br><span class="line"></span><br><span class="line">iptables -F</span><br><span class="line">iptables-save</span><br><span class="line">service iptables save</span><br><span class="line">ip6tables -F</span><br><span class="line">ip6tables-save</span><br><span class="line">service ip6tables save</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> /opt</span><br><span class="line">wget --no-cookies --no-check-certificate --header <span class="string">&quot;Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie&quot;</span> <span class="string">&quot;http://download.oracle.com/otn-pub/java/jdk/8u102-b14/jdk-8u102-linux-x64.rpm&quot;</span></span><br><span class="line">rpm -ivh jdk-8u102-linux-x64.rpm</span><br><span class="line">rm -rf jdk-8u102-linux-x64.rpm</span><br><span class="line"></span><br><span class="line">wget http://archive.apache.org/dist/hbase/hbase-0.98.8/hbase-0.98.8-hadoop2-bin.tar.gz</span><br><span class="line">tar xzf hbase-0.98.8-hadoop2-bin.tar.gz</span><br><span class="line">rm -rf hbase-0.98.8-hadoop2-bin.tar.gz</span><br><span class="line">mv hbase-0.98.8-hadoop2 /usr/hbase</span><br><span class="line"></span><br><span class="line">wget http://www-eu.apache.org/dist/nutch/2.3.1/apache-nutch-2.3.1-src.tar.gz</span><br><span class="line">tar xzf apache-nutch-2.3.1-src.tar.gz</span><br><span class="line">rm -rf apache-nutch-2.3.1-src.tar.gz</span><br><span class="line">mv apache-nutch-2.3.1 /usr/nutch-2</span><br><span class="line">chmod -R 777 /usr/nutch-2</span><br><span class="line"></span><br><span class="line">wget http://www-us.apache.org/dist/ant/binaries/apache-ant-1.9.7-bin.tar.gz</span><br><span class="line">tar xzf apache-ant-1.9.7-bin.tar.gz</span><br><span class="line">rm -rf apache-ant-1.9.7-bin.tar.gz</span><br><span class="line">mv apache-ant-1.9.7 /usr/ant</span><br><span class="line"></span><br><span class="line">wget http://archive.apache.org/dist/lucene/solr/5.2.1/solr-5.2.1.tgz</span><br><span class="line">tar xzf solr-5.2.1.tgz</span><br><span class="line">rm -rf solr-5.2.1.tgz</span><br><span class="line">mv solr-5.2.1 /usr/solr</span><br><span class="line"></span><br><span class="line">rm -rf ~/envtemp</span><br><span class="line">cat &gt; ~/envtemp&lt;&lt;<span class="string">&#x27;EOF&#x27;</span></span><br><span class="line"><span class="comment">#set JDK environment</span></span><br><span class="line">JAVA_HOME=/usr/java/jdk1.8.0_102</span><br><span class="line">JRE_HOME=<span class="variable">$JAVA_HOME</span>/jre</span><br><span class="line">CLASS_PATH=.:<span class="variable">$JAVA_HOME</span>/lib/dt.jar:<span class="variable">$JAVA_HOME</span>/lib/tools.jar:<span class="variable">$JRE_HOME</span>/lib</span><br><span class="line"><span class="comment">#set ANT environment</span></span><br><span class="line">ANT_HOME=/usr/ant</span><br><span class="line"><span class="comment">#set HBASE environment</span></span><br><span class="line">HBASE_HOME=/usr/hbase</span><br><span class="line"><span class="comment">#set LOCAL_NUTCH environment</span></span><br><span class="line">NUTCH_HOME=/usr/nutch-2/runtime/<span class="built_in">local</span></span><br><span class="line"><span class="comment">#set SOLR environment</span></span><br><span class="line">SOLR_HOME=/usr/solr</span><br><span class="line"><span class="comment">#set HADOOP environment</span></span><br><span class="line">HADOOP_HOME=/usr/hadoop</span><br><span class="line">HADOOP_INSTALL=<span class="variable">$HADOOP_HOME</span></span><br><span class="line">HADOOP_MAPRED_HOME=<span class="variable">$HADOOP_HOME</span></span><br><span class="line">HADOOP_COMMON_HOME=<span class="variable">$HADOOP_HOME</span></span><br><span class="line">HADOOP_HDFS_HOME=<span class="variable">$HADOOP_HOME</span></span><br><span class="line">YARN_HOME=<span class="variable">$HADOOP_HOME</span></span><br><span class="line">HADOOP_COMMON_LIB_NATIVE_DIR=<span class="variable">$HADOOP_HOME</span>/lib/native</span><br><span class="line">HADOOP_OPTS=<span class="string">&quot;-Djava.library.path=<span class="variable">$HADOOP_HOME</span>/lib:<span class="variable">$HADOOP_COMMON_LIB_NATIVE_DIR</span>&quot;</span></span><br><span class="line">PATH=<span class="variable">$PATH</span>:<span class="variable">$JAVA_HOME</span>/bin:<span class="variable">$JRE_HOME</span>/bin:<span class="variable">$ANT_HOME</span>/bin:<span class="variable">$HBASE_HOME</span>/bin:<span class="variable">$NUTCH_HOME</span>/bin:<span class="variable">$SOLR_HOME</span>/bin:<span class="variable">$HADOOP_HOME</span>/bin:<span class="variable">$HADOOP_HOME</span>/sbin</span><br><span class="line"><span class="built_in">export</span> JAVA_HOME JRE_HOMECLASS_PATH ANT_HOME HBASE_HOME NUTCH_HOME SOLR_HOME HADOOP_HOME HADOOP_INSTALL HADOOP_MAPRED_HOME HADOOP_COMMON_HOME HADOOP_HDFS_HOME YARN_HOME HADOOP_COMMON_LIB_NATIVE_DIR HADOOP_OPTS PATH</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">rm -rf ~/profile</span><br><span class="line">cp /etc/profile ~/profile</span><br><span class="line">cat ~/profile ~/envtemp &gt;/etc/profile</span><br><span class="line"></span><br><span class="line">rm -rf ~/envtemp ~/profile</span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> /etc/profile</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line">wget http://www.senra.me/nutch-solr/nutch-site.xml</span><br><span class="line">wget http://www.senra.me/nutch-solr/gora.properties</span><br><span class="line">wget http://www.senra.me/nutch-solr/ivy.xml</span><br><span class="line">wget http://www.senra.me/nutch-solr/hbase-site.xml</span><br><span class="line">wget http://www.senra.me/nutch-solr/solr.xml</span><br><span class="line">\cp -a ~/nutch-site.xml /usr/nutch-2/conf/</span><br><span class="line">\cp -a ~/gora.properties /usr/nutch-2/conf/</span><br><span class="line">\cp -a ~/ivy.xml /usr/nutch-2/ivy/</span><br><span class="line">\cp -a ~/hbase-site.xml /usr/hbase/conf/</span><br><span class="line">\cp -a ~/solr.xml /usr/solr/</span><br><span class="line">rm -rf ~/nutch-site.xml ~/gora.properties ~/ivy.xml ~/hbase-site.xml ~/solr.xml</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> /usr/nutch-2</span><br><span class="line">ant runtime</span><br><span class="line"></span><br><span class="line">/usr/hbase/bin/start-hbase.sh</span><br><span class="line">/usr/solr/bin/solr start</span><br><span class="line">/usr/solr/bin/solr create_core -c demo</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-<ul>
-<li>20号之后的大创答辩加油！争取国家级！</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>markdown</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>nutch-2.3.1+hbase-0.94+eclipse 环境搭建教程</title>
-    <url>/2016/03/08/nutch-2.3.1+hbase-0.94+eclipse%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</url>
-    <content><![CDATA[<h2 id="1-开发环境及软件版本"><a href="#1-开发环境及软件版本" class="headerlink" title="1.开发环境及软件版本"></a>1.开发环境及软件版本</h2><ul>
-<li>centos 6.7</li>
-<li>apache-nutch-2.3.1</li>
-<li>hbase-0.94</li>
-<li>eclipse javaEE</li>
-<li>jdk8</li>
-</ul>
-<h2 id="2-安装并配置jdk"><a href="#2-安装并配置jdk" class="headerlink" title="2.安装并配置jdk"></a>2.安装并配置jdk</h2><a id="more"></a>
-<h3 id="1-在Oracle网站wget下载jdk8"><a href="#1-在Oracle网站wget下载jdk8" class="headerlink" title="1) 在Oracle网站wget下载jdk8"></a>1) 在Oracle网站wget下载jdk8</h3><figure class="highlight plain"><figcaption><span>jdk8_installing</span></figcaption><table><tr><td class="code"><pre><span class="line">wget --no-check-certificate --no-cookies --header &quot;Cookie: oraclelicense&#x3D;accept-securebackup-cookie&quot; http:&#x2F;&#x2F;download.oracle.com&#x2F;otn-pub&#x2F;java&#x2F;jdk&#x2F;8u73-b02&#x2F;jdk-8u73-linux-x64.tar.gz</span><br></pre></td></tr></table></figure>
-
-<p>由于Oracle需要点击accept licence的才能下载，所以必须使用下面的命令，才可以直接下载。<br>否则下载的jdk文件将无法解压缩。</p>
-<h3 id="2-配置JAVA-HOME"><a href="#2-配置JAVA-HOME" class="headerlink" title="2) 配置JAVA_HOME"></a>2) 配置JAVA_HOME</h3><figure class="highlight plain"><figcaption><span>jdk8_installing</span></figcaption><table><tr><td class="code"><pre><span class="line">mkdir&#x2F;usr&#x2F;java&#x2F;</span><br><span class="line">tar -zxf jdk-8u73-linux-x64.tar.gz &#x2F;&#x2F;不适用-v指令以加快解压缩速度</span><br><span class="line">mv jdk-8u73-linux-x64&#x2F; &#x2F;usr&#x2F;java&#x2F;</span><br><span class="line">vi &#x2F;etc&#x2F;profile  &#x2F;&#x2F;打开vi文本编辑器编辑环境变量</span><br></pre></td></tr></table></figure>
-
-<p>按i开始编辑，在文件的末尾输入</p>
-<figure class="highlight plain"><figcaption><span>jdk8_installing</span></figcaption><table><tr><td class="code"><pre><span class="line">  #set JDK environment</span><br><span class="line">  </span><br><span class="line">JAVA_HOME&#x3D;&#x2F;usr&#x2F;java&#x2F;jdk1.8.0_45</span><br><span class="line">JRE_HOME&#x3D;$JAVA_HOME&#x2F;jre</span><br><span class="line">CLASS_PATH&#x3D;.:$JAVA_HOME&#x2F;lib&#x2F;dt.jar:$JAVA_HOME&#x2F;lib&#x2F;tools.jar:$JRE_HOME&#x2F;lib</span><br><span class="line">PATH&#x3D;$PATH:$JAVA_HOME&#x2F;bin:$JRE_HOME&#x2F;bin</span><br><span class="line">export JAVA_HOME JRE_HOMECLASS_PATH PATH</span><br></pre></td></tr></table></figure>
-<p>先按Esc退出编辑模式，然后输入 :wq 保存退出</p>
-<figure class="highlight plain"><figcaption><span>jdk8_installing</span></figcaption><table><tr><td class="code"><pre><span class="line">source &#x2F;etc&#x2F;profile  &#x2F;&#x2F;使环境生效</span><br><span class="line">echo $JAVA_HOME &#x2F;&#x2F;检验是否安装成功</span><br><span class="line">&#x2F;usr&#x2F;java&#x2F;jdk1.8.0_45  &#x2F;&#x2F;环境生效！！！</span><br></pre></td></tr></table></figure>
-
-<h2 id="3-安装并配置hbase-0-94"><a href="#3-安装并配置hbase-0-94" class="headerlink" title="3.安装并配置hbase-0.94"></a>3.安装并配置hbase-0.94</h2><h3 id="1-在hbase页面下载hbase-0-94解压缩并重命名"><a href="#1-在hbase页面下载hbase-0-94解压缩并重命名" class="headerlink" title="1) 在hbase页面下载hbase-0.94解压缩并重命名"></a>1) 在hbase页面下载hbase-0.94解压缩并重命名</h3><figure class="highlight plain"><figcaption><span>hbase_installing</span></figcaption><table><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;www-eu.apache.org&#x2F;dist&#x2F;hbase&#x2F;hbase-0.94.27&#x2F;</span><br><span class="line">tar -zxf hbase-0.94.27&#x2F;   &#x2F;&#x2F;减少输出，加快速度</span><br><span class="line">mv hbase-0.94.27&#x2F; hbase&#x2F;  &#x2F;&#x2F;重命名，简短文件名称</span><br><span class="line">mv hbase&#x2F; &#x2F;usr&#x2F;           &#x2F;&#x2F;将hbase&#x2F;文件夹移动到&#x2F;usr&#x2F;路径下</span><br><span class="line">cd &#x2F;usr&#x2F;                  &#x2F;&#x2F;进入&#x2F;usr目录</span><br><span class="line">chmod -R 777 hbase&#x2F;       &#x2F;&#x2F;给hbase目录分配权限</span><br><span class="line"></span><br><span class="line">cd hbase&#x2F;</span><br><span class="line">vi conf&#x2F;hbase-site.xml    &#x2F;&#x2F;配置hbase-site.xml文件</span><br><span class="line">&lt;configuration&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">    &lt;name&gt;hbase.rootdir&lt;&#x2F;name&gt;</span><br><span class="line">    &lt;value&gt;file:&#x2F;&#x2F;&#x2F;&#x2F;usr&#x2F;hbase&#x2F;hbase&lt;&#x2F;value&gt;</span><br><span class="line">  &lt;&#x2F;property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;hbase.zookeeper.property.dataDir&lt;&#x2F;name&gt;</span><br><span class="line">    &lt;value&gt;&#x2F;usr&#x2F;hbase&#x2F;zookeeper&lt;&#x2F;value&gt;</span><br><span class="line">  &lt;&#x2F;property&gt;</span><br><span class="line">&lt;&#x2F;configuration&gt;</span><br></pre></td></tr></table></figure>
-<p>之后的nutch爬出的数据将存储到rootdir文件夹中，所以必须配置zookeeper的同理。<br>测试是否安装成功</p>
-<figure class="highlight plain"><figcaption><span>hbase_installing</span></figcaption><table><tr><td class="code"><pre><span class="line">.&#x2F;bin&#x2F;start-hbase.sh &#x2F;&#x2F;打开hbase进程</span><br><span class="line">.&#x2F;bin&#x2F;hbase shell &#x2F;&#x2F;可以进入hbase命令行模式</span><br><span class="line">&#x2F;&#x2F;检验成功可以运行后暂时关闭hbase进程</span><br><span class="line">.&#x2F;stop-hbase.sh</span><br></pre></td></tr></table></figure>
-<p>至此hbase安装成功，hbase-0.94可以直接在本地运行，不需要hadoop集群（个人暂时是这么理解的欢迎指正）</p>
-<h2 id="4-安装并配置apache-nutch-2-3-1"><a href="#4-安装并配置apache-nutch-2-3-1" class="headerlink" title="4.安装并配置apache-nutch-2.3.1"></a>4.安装并配置apache-nutch-2.3.1</h2><h3 id="1-wget下载apache-nutch-2-3-1并解压缩"><a href="#1-wget下载apache-nutch-2-3-1并解压缩" class="headerlink" title="1)wget下载apache-nutch-2.3.1并解压缩"></a>1)wget下载apache-nutch-2.3.1并解压缩</h3><figure class="highlight plain"><figcaption><span>nutch-2_installing</span></figcaption><table><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;www-eu.apache.org&#x2F;dist&#x2F;nutch&#x2F;2.3.1&#x2F;apache-nutch-2.3.1-src.tar.gz</span><br><span class="line">&#x2F;&#x2F;速度不够的话去官网看他给你推荐的链接</span><br><span class="line">tar -zxf apache-nutch-2.3.1-src.tar.gz</span><br><span class="line">mv apache-nutch-2.3.1&#x2F; nutch-2&#x2F;</span><br><span class="line">mv nutch-2&#x2F; &#x2F;usr&#x2F; &#x2F;&#x2F;移动文件</span><br><span class="line">cd &#x2F;usr&#x2F;</span><br><span class="line">chmod -R 777 nutch-2</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>下面开始重头戏，配置nutch文件<h4 id="1-conf目录下的nutch-site-xml文件-我的配置"><a href="#1-conf目录下的nutch-site-xml文件-我的配置" class="headerlink" title="(1)conf目录下的nutch-site.xml文件(我的配置)"></a>(1)conf目录下的nutch-site.xml文件(我的配置)</h4><figure class="highlight plain"><figcaption><span>nutch-2_installing</span></figcaption><table><tr><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">&lt;name&gt;storage.data.store.class&lt;&#x2F;name&gt;</span><br><span class="line">&lt;value&gt;org.apache.gora.hbase.store.HBaseStore&lt;&#x2F;value&gt;</span><br><span class="line">&lt;description&gt;Default class for storing data&lt;&#x2F;description&gt;</span><br><span class="line">&lt;&#x2F;property&gt;</span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line">  &lt;name&gt;plugin.includes&lt;&#x2F;name&gt;</span><br><span class="line">  &lt;value&gt;protocol-httpclient|urlfilter-regex|index-(basic|more)|query-(basic|site|url|lang)|indexer-solr|nutch-extensionpoints|protocol-httpclient|urlfilter-regex|parse-(text|html|msexcel|msword|mspowerpoint|pdf)|summary-basic|scoring-opic|urlnormalizer-(pass|regex|basic)protocol-http|urlfilter-regex|parse-(html|tika|metatags)|index-(basic|anchor|more|metadata)&lt;&#x2F;value&gt;</span><br><span class="line">&lt;&#x2F;property&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> &lt;property&gt;</span><br><span class="line">    &lt;name&gt;http.agent.name&lt;&#x2F;name&gt;</span><br><span class="line">    &lt;value&gt;Mozilla&#x2F;5.0 (Windows NT 6.1; WOW64) AppleWebKit&#x2F;537.36 (KHTML, like Gecko) Chrome&#x2F;33.0.1750.117 Safari&lt;&#x2F;value&gt;</span><br><span class="line">&lt;&#x2F;property&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">    &lt;name&gt;http.agent.version&lt;&#x2F;name&gt;</span><br><span class="line">    &lt;value&gt;537.36&lt;&#x2F;value&gt;</span><br><span class="line">&lt;&#x2F;property&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line">   &lt;name&gt;http.robots.agents&lt;&#x2F;name&gt;</span><br><span class="line">   &lt;value&gt;Test-Crawler&lt;&#x2F;value&gt;</span><br><span class="line"> &lt;&#x2F;property&gt;</span><br><span class="line"> </span><br><span class="line"> &lt;property&gt;</span><br><span class="line"> </span><br><span class="line"> &lt;property&gt;</span><br><span class="line">  &lt;name&gt;plugin.folders&lt;&#x2F;name&gt;</span><br><span class="line">  &lt;value&gt;.&#x2F;build&#x2F;plugins&lt;&#x2F;value&gt;</span><br><span class="line">  &lt;description&gt;Directories where nutch plugins are located.  Each</span><br><span class="line">  element may be a relative or absolute path.  If absolute, it is used</span><br><span class="line">  as is.  If relative, it is searched for on the classpath.&lt;&#x2F;description&gt;</span><br><span class="line">&lt;&#x2F;property&gt;</span><br><span class="line"> &lt;&#x2F;property&gt;</span><br><span class="line"> </span><br><span class="line"> &lt;property&gt;</span><br><span class="line">  &lt;name&gt;plugin.includes&lt;&#x2F;name&gt;</span><br><span class="line"> &lt;value&gt;protocol-http|urlfilter-regex|parse-(html|tika)|index-(basic|anchor)|urlnormalizer-(pass|regex|basic)|scoring-opic|index-anchor|index-more|languageidentifier|subcollection|feed|creativecommons|tld&lt;&#x2F;value&gt;</span><br><span class="line"> </span><br><span class="line">&lt;&#x2F;property&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;&#x2F;configuration&gt;</span><br></pre></td></tr></table></figure></li>
-<li>留心plugin.folders，配置不对花式报错</li>
-</ul>
-<h4 id="2-修改conf-gora-properties"><a href="#2-修改conf-gora-properties" class="headerlink" title="(2)修改conf/gora.properties"></a>(2)修改conf/gora.properties</h4><p>加入<pre><code>gora.datastore.default=org.apache.gora.hbase.store.HBaseStore</code></pre><br>之后注释掉所有其他内容</p>
-<h4 id="3-修改ivy-ivy-xml文件"><a href="#3-修改ivy-ivy-xml文件" class="headerlink" title="(3)修改ivy/ivy.xml文件"></a>(3)修改ivy/ivy.xml文件</h4><p>取消注释</p>
-<pre><code><dependency org="org.apache.gora" name="gora-hbase" rev="0.5" conf="*->default"></dependency></code></pre>
-<p>表示使用hbase数据库</p>
-<ul>
-<li><p>另外regex-urlfliter.txt网页内容过滤等可以暂时不进行配置</p>
-</li>
-<li><p>返回nutch-2根目录</p>
-<figure class="highlight plain"><figcaption><span>nutch-2_installing</span></figcaption><table><tr><td class="code"><pre><span class="line">yum -y install ant &#x2F;&#x2F;yum直接安装ant，对nutch进行搭建</span><br><span class="line">ant eclipse</span><br><span class="line">ant runtime &#x2F;&#x2F;命令行操作方式构建，进入runtime&#x2F;local&#x2F;bin&#x2F;文件夹中有nutch和crawl感兴趣的关注文章结尾处推荐链接</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<blockquote><p>maven资源被墙了，建议翻墙使用<br>maven资源被墙了，建议翻墙使用<br>maven资源被墙了，建议翻墙使用</p>
-<footer><strong>重要的事情说三遍</strong></footer></blockquote>
-<p>安装完成之后就可以导入eclipse中了</p>
-<blockquote><ul>
-<li>革命尚未成功，同志仍需努力。</li>
-<li>行百里者半九十</li>
-<li>最后一步不认真的话可能会超级麻烦的！！（认真脸）</li>
-</ul>
-</blockquote>
-<ul>
-<li>别忘了最后一步</li>
-<li>在nutch根目录中新建文件夹urls/，在文件夹中新建seed.txt文件 <a href="http://www.zi-c.wang/">http://www.zi-c.wang</a> 保存退出</li>
-</ul>
-<h2 id="5-导入eclipse中（想导入idea也可以这样玩，貌似）"><a href="#5-导入eclipse中（想导入idea也可以这样玩，貌似）" class="headerlink" title="5.导入eclipse中（想导入idea也可以这样玩，貌似）"></a>5.导入eclipse中（想导入idea也可以这样玩，貌似）</h2><h3 id="1-创建工程java-project"><a href="#1-创建工程java-project" class="headerlink" title="1)创建工程java project"></a>1)创建工程java project</h3><p>进入eclipse-&gt;file-&gt;new-&gt;project-&gt;java project<br>直接修改项目路径（/usr/nutch-2）<br>点击next，在build path配置中order&amp;export选项卡，选中nutch-2/conf文件夹，单击top</p>
-<h3 id="2-配置run-configuration"><a href="#2-配置run-configuration" class="headerlink" title="2)配置run configuration"></a>2)配置run configuration</h3><p>点击run configurations，进入页面。<br>右键java application，新建application命名为injectJob<br>project：nutch-2<br>main class：org.apache.nutch.crawl.InjectorJob<br>进入run configurations的arguments标签中，在Program Arguments中添加<br>urls/seed.txt -crawlId search<br>点击apply</p>
-<p>同理<br>application：generateJob<br>main class：org.apache.nutch.crawl.GeneratorJob<br>arguments:-topN 10 -crawlId search</p>
-<p>application：fetcheJob<br>main class：org.apache.nutch.fetcher.FetcherJob<br>arguments:-all -crawlId search -thread 10</p>
-<p>application：parseJob<br>main class：org.apache.nutch.parse.ParserJob<br>arguments:-all -crawlId search</p>
-<p>application：updatedbJob<br>main class：org.apache.nutch.crawl.DbUpdaterJob<br>arguments:-all -crawlId search</p>
-<h3 id="3-跑起来吧！！奔放的eclipse"><a href="#3-跑起来吧！！奔放的eclipse" class="headerlink" title="3)跑起来吧！！奔放的eclipse"></a>3)跑起来吧！！奔放的eclipse</h3><h3 id="4-查看爬取得数据"><a href="#4-查看爬取得数据" class="headerlink" title="4)查看爬取得数据"></a>4)查看爬取得数据</h3><figure class="highlight plain"><figcaption><span>nutch-2_installing</span></figcaption><table><tr><td class="code"><pre><span class="line">cd &#x2F;usr&#x2F;hbase&#x2F;</span><br><span class="line">.&#x2F;bin&#x2F;hbase shell</span><br><span class="line">list &#x2F;&#x2F;hbase指令请参考我的上一篇文章 hbase常用指令</span><br><span class="line">scan &#39;search_webpage&#39; &#x2F;&#x2F;灰常灰常壮观的数据闪过去了&#x3D;_+</span><br><span class="line">exit</span><br></pre></td></tr></table></figure>
-<p>成功！！！</p>
-<h2 id="6-感想"><a href="#6-感想" class="headerlink" title="6.感想"></a>6.感想</h2><p>  搭建这套环境对我来说是很大的一个修行！！<br>  前前后后使用的时间可能超过50h了，真是笨死了。<br>  耗时这么长的原因：主要是我太粗心了，很多应该完成的配置并没有实现成功，浪费了很多时间<br>  另一方面：不会看log<br>  现在看起来非常可笑的事情就是我的环境一旦搭建失败了首先看的是文档而不是日志，真是笨死了<br>  同时我也终于意识到Android application中为什么强调写好log。</p>
-<p>  搭建这套环境确实提升了个人能力一大截，超级期待下一步的搜索引擎实践！！<br>  加油奔放的少年！！！</p>
-<h2 id="7-推荐链接"><a href="#7-推荐链接" class="headerlink" title="7.推荐链接"></a>7.推荐链接</h2><p>1.<a href="https://wiki.apache.org/nutch/#Nutch_2.X_tutorial.28s.29">Apache Nutch Wiki</a><br>2.<a href="http://blog.csdn.net/jediael_lu/article/details/37329731">【Nutch2.2.1基础教程之2.1】集成Nutch/Hbase/Solr构建搜索引擎之一：安装及运行【单机环境】</a><br>3.<a href="http://blog.csdn.net/jediael_lu/article/details/43232449">在Eclipse中运行Nutch2.3</a><br>4.<a href="http://www.aboutyun.com/forum.php">about云社区</a><br>5.<a href="https://hbase.apache.org/book.html">hbase wiki</a><br>6. 杨尚川老师的nutch系列视频（虽然有点旧，但是给你仔细分析每个过程）<br>7.<a href="http://www.oschina.net/code/snippet_875267_44726">Linux 使用wget 命令下载JDK的方法</a><br>8.<a href="http://stackoverflow.com/">神圣网站stackoverflow，救过我无数次</a></p>
-]]></content>
-      <tags>
-        <tag>hbase</tag>
-        <tag>nutch</tag>
       </tags>
   </entry>
   <entry>
@@ -727,6 +323,444 @@ hbase(main)> truncate 't1'
       </tags>
   </entry>
   <entry>
+    <title>Hello World</title>
+    <url>/2020/11/14/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+<h3 id="Next-theme-Config"><a href="#Next-theme-Config" class="headerlink" title="Next-theme Config"></a>Next-theme Config</h3><p><a href="https://tding.top/archives/42c38b10.html">Hexo-NexT (v7.0+) 主题配置</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>io_uring 系统性整理</title>
+    <url>/2020/11/15/io-uring-%E7%B3%BB%E7%BB%9F%E6%80%A7%E6%95%B4%E7%90%86/</url>
+    <content><![CDATA[<h1 id="io-uring-系统性整理"><a href="#io-uring-系统性整理" class="headerlink" title="io_uring 系统性整理"></a>io_uring 系统性整理</h1><ul>
+<li><a href="#io_uring-%E7%B3%BB%E7%BB%9F%E6%80%A7%E6%95%B4%E7%90%86">io_uring 系统性整理</a><ul>
+<li><a href="#io-%E6%A8%A1%E5%9E%8B">I/O 模型</a><ul>
+<li><a href="#comparison">comparison</a></li>
+</ul>
+</li>
+<li><a href="#asynchronous-io">Asynchronous I/O</a></li>
+<li><a href="#io_uring">io_uring</a></li>
+<li><a href="#%E6%80%BB%E7%BB%93%E9%82%AE%E4%BB%B6">总结邮件</a></li>
+</ul>
+</li>
+</ul>
+<p>这里有个误解，I/O模型其实是针对整个系统的所有I/O操作的，但是平时很少对文件系统使用异步读写，同步或直接映射的情况比较多。更别提多路复用了，这个机制基本只用在network中。</p>
+<p><a href="https://lwn.net/Kernel/Index/">lwn Kernel article index</a></p>
+<a id="more"></a>
+<h2 id="I-O-模型"><a href="#I-O-模型" class="headerlink" title="I/O 模型"></a>I/O 模型</h2><ul>
+<li>blocking I/O</li>
+</ul>
+<p><img src="/2020/11/15/io-uring-%E7%B3%BB%E7%BB%9F%E6%80%A7%E6%95%B4%E7%90%86/io-blocking.gif" alt="blocking"></p>
+<p>同步阻塞，直到内核收到数据返回给线程。</p>
+<ul>
+<li>nonblocking I/O</li>
+</ul>
+<p><img src="/2020/11/15/io-uring-%E7%B3%BB%E7%BB%9F%E6%80%A7%E6%95%B4%E7%90%86/io-nonblocking.gif" alt="nonblocking"></p>
+<p>同步不阻塞，但是如果内核没收到数据会返回一个 <code>EWOULDBLOCK</code></p>
+<ul>
+<li>I/O multiplexing (select and poll)</li>
+</ul>
+<p><img src="/2020/11/15/io-uring-%E7%B3%BB%E7%BB%9F%E6%80%A7%E6%95%B4%E7%90%86/io-multiplex.gif" alt="multiplex"></p>
+<p>异步阻塞，使用selet（using select requires two system calls instead of one）、poll系统调用循环等待socket可读时，使用recvfrom收取数据。主要优势在于能够在单线程监控多个文件描述符fd。</p>
+<p>初次之外还有epoll,使用一个文件描述符管理多个描述符，将用户关系的文件描述符的事件存放到内核的一个事件表中，这样在用户空间和内核空间的copy只需一次</p>
+<p>优点有：<br>    没有最大并发连接的限制，能打开的FD的上限远大于1024（1G的内存上能监听约10万个端口）。<br>    效率提升，不是轮询的方式，不会随着FD数目的增加效率下降。只有活跃可用的FD才会调用callback函数；即Epoll最大的优点就在于它只管你“活跃”的连接，而跟连接总数无关，因此在实际的网络环境中，Epoll的效率就会远远高于select和poll。<br>    内存拷贝，利用mmap()文件映射内存加速与内核空间的消息传递；即epoll使用mmap减少复制开销。</p>
+<p>这种方法基本等价于 一个进程创建多个线程，每个线程维护一个blocking I/O</p>
+<ul>
+<li>signal driven I/O (SIGIO)</li>
+</ul>
+<p><img src="/2020/11/15/io-uring-%E7%B3%BB%E7%BB%9F%E6%80%A7%E6%95%B4%E7%90%86/io-sigio.gif" alt="multiplex"></p>
+<p>非阻塞，通过sigaction系统调用安装signal handler，当datagram数据报可读时，向I/O接收进程发送SIGIO信号，可以在signal handler里面读这个数据，然后通知main loop；也可以先通知main loop，让main loop去读这个数据。</p>
+<ul>
+<li>asynchronous I/O (the POSIX aio_functions)</li>
+</ul>
+<p><img src="/2020/11/15/io-uring-%E7%B3%BB%E7%BB%9F%E6%80%A7%E6%95%B4%E7%90%86/io-aio.gif" alt="aio"></p>
+<p>异步非阻塞，也是调用aio_read之后立刻返回，和SIGIO的区别是直到接收到数据并将数据传输到用户时，才产生完成信号。</p>
+<h3 id="comparison"><a href="#comparison" class="headerlink" title="comparison"></a>comparison</h3><p><img src="/2020/11/15/io-uring-%E7%B3%BB%E7%BB%9F%E6%80%A7%E6%95%B4%E7%90%86/io-comparison.gif" alt="comparison"></p>
+<p>参考:<br><a href="http://www.masterraghu.com/subjects/np/introduction/unix_network_programming_v1.3/ch06lev1sec2.html">io models</a><br><a href="https://juejin.im/post/6844904200141438984">彻底理解 IO多路复用</a><br><a href="https://www.jianshu.com/p/dfd940e7fca2">聊聊IO多路复用之select、poll、epoll详解</a></p>
+<h2 id="Asynchronous-I-O"><a href="#Asynchronous-I-O" class="headerlink" title="Asynchronous I/O"></a>Asynchronous I/O</h2><p>首先确定这里的AIO是内核态的，由libaio封装的系统调用运行库，而不是glibc用户态AIO，使用多线程模拟的。</p>
+<p>linux kernel AIO的主要缺点在于项目泥潭，bug太多，项目设计和领导更换，而且实现比较复杂，直到现在只能比较稳定支持以O_DIRECT（直接映射修改，bypass page cache）方式打开文件，需要自己处理buffer、offset对其这些问题，不能用page cache层以bio的方式读写block数据。</p>
+<p>因为使用page buffer层时涉及到block driver里面的队列，相比O_DIRECT多出很多阻塞点，因此实现起来比较令人恼火。因此这个项目根本就没实现起来。</p>
+<p>因此io_uring的主要对比对象是多路复用和DPDK、SPDK，是一个事实上的新异步IO API</p>
+<p>Linux AIO does suffer from a number of ailments. The subsystem is quite complex and requires explicit code in any I/O target for it to be supported.</p>
+<p>实现不了的地方基本上都开一个kernel thread跑，感觉开销更大了。</p>
+<p>参考：<br><a href="https://oxnz.github.io/2016/10/13/linux-aio/">Linux Asynchronous I/O</a>   </p>
+<p><a href="https://lwn.net/Articles/671649/">Fixing asynchronous I/O, again</a><br><a href="https://www.aikaiyuan.com/4556.html">Linux kernel AIO这个奇葩</a><br><a href="https://lwn.net/Articles/724198/">2017Toward non-blocking asynchronous I/O</a>   </p>
+<h2 id="io-uring"><a href="#io-uring" class="headerlink" title="io_uring"></a>io_uring</h2><p>参考：<br><a href="https://www.youtube.com/watch?v=-5T4Cjw46ys">Kernel Recipes 2019 - Faster IO through io_uring</a><br><a href="https://lwn.net/Articles/776703/">20190115Ringing in a new asynchronous I/O API</a><br><a href="https://lwn.net/Articles/826053/">20200715Operations restrictions for io_uring</a><br><a href="https://lwn.net/Articles/815491/">20200320Automatic buffer selection for io_uring</a><br><a href="https://lwn.net/Articles/810414/">20200124The rapid growth of io_uring</a><br><a href="https://lwn.net/Articles/820220/">20200511Hussain: Lord of the io_uring</a><br><a href="https://kernel.taobao.org/2019/06/io_uring-a-new-linux-asynchronous-io-API/">Linux异步IO新时代：io_uring</a><br><a href="https://lwn.net/Articles/826255/">20200716io_uring: add restrictions to support untrusted applications and guests</a><br><a href="https://lwn.net/Articles/813311/">20200225io_uring support for automatic buffers</a><br><a href="https://www.byteisland.com/io_uring%EF%BC%881%EF%BC%89-%E6%88%91%E4%BB%AC%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E9%9C%80%E8%A6%81-io_uring/">io_uring（1） – 我们为什么会需要 io_uring</a><br><a href="https://www.anquanke.com/post/id/200486">linux “io_uring” 提权漏洞(CVE-2019-19241)分析</a><br><a href="https://www.byteisland.com/io_uring%ef%bc%882%ef%bc%89-%e4%bb%8e%e5%88%9b%e5%bb%ba%e5%bf%85%e8%a6%81%e7%9a%84%e6%96%87%e4%bb%b6%e6%8f%8f%e8%bf%b0%e7%ac%a6-fd-%e5%bc%80%e5%a7%8b/">io_uring（2）- 从创建必要的文件描述符 fd 开始</a><br><a href></a>   </p>
+<p>uring这个词没有翻译”something that looks a little less like io_urine”.</p>
+<p>这是一个为了高速I/O提出的新的一系列系统调用，简单来说就是新的ring buffer。之前的异步I/O策略是libaio，这个机制饱受诟病，于是Jens Axboe直接提出io_uring，性能远超aio。</p>
+<p>从5.7开始超出纯I/O的范畴，io_uring开始为一部接口提供FAST POLL机制，用户无需再像使用select、event poll等多路复用机制来监听文件句柄，只要把读写请求直接丢到io_uring的submission queue中提交 ，当文件句柄不可读写时，内核会主动添加poll handler，当文件句柄可读写时主动调用poll handler再次下发读写请求，从而减少系统调用次数提高性能</p>
+<p>这是一个线程粒度的异步I/O机制，分为 submission queue和completion queue，在使用系统调用申请之后，直接返回可以使用mmap映射的file discriptor。</p>
+<p>应用程序可以直接使用mmap映射的两个ring buffer直接与内核进行I/O数据传输交换，减少了大量系统调用的开销。</p>
+<p>具体流程：</p>
+<ul>
+<li>setup <code>int io_uring_setup(int entries, struct io_uring_params *params);</code></li>
+</ul>
+<p>其中entries表示submission and completion queues两个队列的大小</p>
+<p>param中设置两个队列和具体的状态</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">struct io_uring_params &#123;</span><br><span class="line">	__u32 sq_entries;</span><br><span class="line">	__u32 cq_entries;</span><br><span class="line">	__u32 flags;</span><br><span class="line">	__u16 resv[10];</span><br><span class="line">	struct io_sqring_offsets sq_off;</span><br><span class="line">	struct io_cqring_offsets cq_off;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>最终实现目的通过file descriptor与内核共享ring buffer</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">subqueue &#x3D; mmap(0, params.sq_off.array + params.sq_entries*sizeof(__u32),</span><br><span class="line">    PROT_READ|PROT_WRITE|MAP_SHARED|MAP_POPULATE,</span><br><span class="line">             ring_fd, IORING_OFF_SQ_RING);</span><br><span class="line"></span><br><span class="line">sqentries &#x3D; mmap(0, params.sq_entries*sizeof(struct io_uring_sqe),</span><br><span class="line">    PROT_READ|PROT_WRITE|MAP_SHARED|MAP_POPULATE,</span><br><span class="line">		    ring_fd, IORING_OFF_SQES);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">cqentries &#x3D; mmap(0, params.cq_off.cqes + params.cq_entries*sizeof(struct io_uring_cqe),</span><br><span class="line">      PROT_READ|PROT_WRITE|MAP_SHARED|MAP_POPULATE,</span><br><span class="line">		    ring_fd, IORING_OFF_CQ_RING);</span><br></pre></td></tr></table></figure>
+
+<p>相关资料：<br><a href="https://lwn.net/Articles/776703/">Ringing in a new asynchronous I/O API</a><br><a href="https://lwn.net/Articles/810414/">The rapid growth of io_uring</a>  </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#include &lt;liburing.h&gt;</span><br><span class="line">#include &lt;unistd.h&gt;</span><br><span class="line">#include &lt;fcntl.h&gt;</span><br><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    struct io_uring ring;</span><br><span class="line">    io_uring_queue_init(32, &amp;ring, 0);</span><br><span class="line"></span><br><span class="line">    struct io_uring_sqe *sqe &#x3D; io_uring_get_sqe(&amp;ring);</span><br><span class="line">    int fd &#x3D; open(&quot;&#x2F;home&#x2F;carter&#x2F;test.txt&quot;, O_WRONLY | O_CREAT);</span><br><span class="line">    struct iovec iov &#x3D; &#123;</span><br><span class="line">        .iov_base &#x3D; &quot;Hello world&quot;,</span><br><span class="line">        .iov_len &#x3D; strlen(&quot;Hello world&quot;),</span><br><span class="line">    &#125;;</span><br><span class="line">    io_uring_prep_writev(sqe, fd, &amp;iov, 1, 0);</span><br><span class="line">    io_uring_submit(&amp;ring);</span><br><span class="line"></span><br><span class="line">    struct io_uring_cqe *cqe;</span><br><span class="line"></span><br><span class="line">    for (;;) &#123;</span><br><span class="line">        io_uring_peek_cqe(&amp;ring, &amp;cqe);</span><br><span class="line">        if (!cqe) &#123;</span><br><span class="line">            puts(&quot;Waiting...&quot;);</span><br><span class="line">            &#x2F;&#x2F; accept 新连接，做其他事</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            puts(&quot;Finished.&quot;);</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    io_uring_cqe_seen(&amp;ring, cqe);</span><br><span class="line">    io_uring_queue_exit(&amp;ring);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结邮件"><a href="#总结邮件" class="headerlink" title="总结邮件"></a>总结邮件</h2><p>今天重新思考了一下IO模型，并阅读了io_uring和多路复用相关代码，感觉突然想通了。io_uring取代了AIO而不是取代了usercopy，usercopy部署的安全策略未必适用擅长传输大量数据的io_uring，这个工作可以推后再进行。具体如下。</p>
+<p>一、将I/O模型的设计和实现分离</p>
+<p>I/O在操作系统中含义包括与I/O设备通信和输入输出数据，I/O模型是针对第一种含义提出的解决方案。</p>
+<p>linux在实现I/O的过程中参考了这些模型进行实现，但并没有在同一层次进行实现。例如LKM开发中定义的file_operations实际只包括 read（同步）/read_iter（异步）/mmap/poll 等函数指针，在I/O模型中的阻塞同步和非阻塞同步的情况可以通过使用read/read_iter 附加O_NONBLOCK的方式实现。</p>
+<p>select epoll 多路复用和AIO这些I/O模型，则是分别在与之相同或不同的层次对底层函数进行封装。</p>
+<p>例如 select 系统调用是在内核层通过vfs_poll遍历相关的file_descriptor，glibc实现的AIO是在用户空间多线程调用这些阻塞/非阻塞的同步/异步系统调用，epoll（更像是一个通知机制）是将select/poll中需要每次都传递的file descriptor都保存在内核中，减少了usercopy；通过event监听callback进行通知，减少了对fd的遍历开销。</p>
+<p>二、思考io_uring的设计和实现</p>
+<p>io_uring的设计借鉴了以上的优点，在内核空间通过kthread实现对阻塞读写任务的托管，并加入了zero copy特性，开发者可以通过一次系统调用唤醒线程一直向共享ringbuffer中写数据，而不是每次写数据都需要系统调用，这在内核和用户通信范畴内很大程度上减少了系统调用的次数，消除了usercopy的负担。</p>
+<p>但无法否认io_uring是对下层file_operations的封装，下层函数又是device driver file_operations的封装（甚至对buffer I/O中间还有一层page cache、一层block layer、一层I/O schedule），因此io_uring在许多情况无法获得SPDK用户空间直通driver的性能优势。</p>
+<p>三、对安全问题的思考</p>
+<p>我目前理解的安全风险主要来自于usercopy造成的out-of-bound、information/pointer leakage和race情况，尤其是struct结构可能存在的函数/数据指针，但是io_uring消除掉的usercopy主要负责大量I/O数据的传输，而非带有指针的控制数据结构（io_uring中的控制数据也在用copy_*_user传输，如图），因此对安全问题的认识比我预期要复杂一些（主要问题可能是OOB和Iago攻击），需要加深对漏洞形式的理解，但好处是急迫程度下降了。</p>
+<p>我只能继续积累漏洞阅读量提升认知水平，思考copy_*_user可以部署的安全机制和策略。</p>
+<p><img src="/2020/11/15/io-uring-%E7%B3%BB%E7%BB%9F%E6%80%A7%E6%95%B4%E7%90%86/usercopy.PNG" alt="usercopy"></p>
+<p>四、总结</p>
+<p>我这阶段应该继续把重点放在kernel extension问题的描述上，对这个问题我已经基本有了一定想法，大致是将威胁模型定位为kernel rootkits，通过修改页表或切换地址空间构建运行时沙箱，使用可信基截获、保护gateway，使用hook方式监控driver相关函数和数据I/O。可以将性能的提升和对DPDK/SPDK使用的UIO和VFIO保护作为贡献点（这可能是这次突发奇想的意外收获），现在面临的问题是不确定相关方案是否有实现、近期driver保护方案相关只有四篇。</p>
+]]></content>
+      <categories>
+        <category>kernel</category>
+      </categories>
+      <tags>
+        <tag>kernel</tag>
+        <tag>io_uring</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>kernel contribution 统计</title>
+    <url>/2020/11/16/kernel-contribution-%E7%BB%9F%E8%AE%A1/</url>
+    <content><![CDATA[<p>保存lwn.net发布的新版本开发统计文章，目前来看还是华为最屌。</p>
+<p><a href="https://lwn.net/Articles/780271/">Development statistics for the 5.0 kernel</a><br>As of this writing, 12,517 non-merge changesets have been pulled into the mainline repository for the 5.0 release</p>
+<p><a href="https://lwn.net/Articles/810639/">Some 5.5 kernel development statistics</a><br>5.5 saw the merging of 14,350 non-merge changesets from 1,885 developers</p>
+<a id="more"></a>
+
+<p><a href="https://lwn.net/Articles/816162/">Some 5.6 kernel development statistics</a><br>12,665 non-merge changesets had been accepted from 1,712 developers</p>
+<p><a href="https://lwn.net/Articles/821813/">Development statistics for the 5.7 kernel</a><br>Work on 5.7 arrived in the form of 13,901 non-merge changesets contributed by 1,878 developers;</p>
+]]></content>
+      <categories>
+        <category>kernel</category>
+      </categories>
+      <tags>
+        <tag>kernel</tag>
+        <tag>lwn.net</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>nutch-2.3.1+hbase-0.94+eclipse 环境搭建教程</title>
+    <url>/2016/03/08/nutch-2.3.1+hbase-0.94+eclipse%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<h2 id="1-开发环境及软件版本"><a href="#1-开发环境及软件版本" class="headerlink" title="1.开发环境及软件版本"></a>1.开发环境及软件版本</h2><ul>
+<li>centos 6.7</li>
+<li>apache-nutch-2.3.1</li>
+<li>hbase-0.94</li>
+<li>eclipse javaEE</li>
+<li>jdk8</li>
+</ul>
+<h2 id="2-安装并配置jdk"><a href="#2-安装并配置jdk" class="headerlink" title="2.安装并配置jdk"></a>2.安装并配置jdk</h2><a id="more"></a>
+<h3 id="1-在Oracle网站wget下载jdk8"><a href="#1-在Oracle网站wget下载jdk8" class="headerlink" title="1) 在Oracle网站wget下载jdk8"></a>1) 在Oracle网站wget下载jdk8</h3><figure class="highlight plain"><figcaption><span>jdk8_installing</span></figcaption><table><tr><td class="code"><pre><span class="line">wget --no-check-certificate --no-cookies --header &quot;Cookie: oraclelicense&#x3D;accept-securebackup-cookie&quot; http:&#x2F;&#x2F;download.oracle.com&#x2F;otn-pub&#x2F;java&#x2F;jdk&#x2F;8u73-b02&#x2F;jdk-8u73-linux-x64.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p>由于Oracle需要点击accept licence的才能下载，所以必须使用下面的命令，才可以直接下载。<br>否则下载的jdk文件将无法解压缩。</p>
+<h3 id="2-配置JAVA-HOME"><a href="#2-配置JAVA-HOME" class="headerlink" title="2) 配置JAVA_HOME"></a>2) 配置JAVA_HOME</h3><figure class="highlight plain"><figcaption><span>jdk8_installing</span></figcaption><table><tr><td class="code"><pre><span class="line">mkdir&#x2F;usr&#x2F;java&#x2F;</span><br><span class="line">tar -zxf jdk-8u73-linux-x64.tar.gz &#x2F;&#x2F;不适用-v指令以加快解压缩速度</span><br><span class="line">mv jdk-8u73-linux-x64&#x2F; &#x2F;usr&#x2F;java&#x2F;</span><br><span class="line">vi &#x2F;etc&#x2F;profile  &#x2F;&#x2F;打开vi文本编辑器编辑环境变量</span><br></pre></td></tr></table></figure>
+
+<p>按i开始编辑，在文件的末尾输入</p>
+<figure class="highlight plain"><figcaption><span>jdk8_installing</span></figcaption><table><tr><td class="code"><pre><span class="line">  #set JDK environment</span><br><span class="line">  </span><br><span class="line">JAVA_HOME&#x3D;&#x2F;usr&#x2F;java&#x2F;jdk1.8.0_45</span><br><span class="line">JRE_HOME&#x3D;$JAVA_HOME&#x2F;jre</span><br><span class="line">CLASS_PATH&#x3D;.:$JAVA_HOME&#x2F;lib&#x2F;dt.jar:$JAVA_HOME&#x2F;lib&#x2F;tools.jar:$JRE_HOME&#x2F;lib</span><br><span class="line">PATH&#x3D;$PATH:$JAVA_HOME&#x2F;bin:$JRE_HOME&#x2F;bin</span><br><span class="line">export JAVA_HOME JRE_HOMECLASS_PATH PATH</span><br></pre></td></tr></table></figure>
+<p>先按Esc退出编辑模式，然后输入 :wq 保存退出</p>
+<figure class="highlight plain"><figcaption><span>jdk8_installing</span></figcaption><table><tr><td class="code"><pre><span class="line">source &#x2F;etc&#x2F;profile  &#x2F;&#x2F;使环境生效</span><br><span class="line">echo $JAVA_HOME &#x2F;&#x2F;检验是否安装成功</span><br><span class="line">&#x2F;usr&#x2F;java&#x2F;jdk1.8.0_45  &#x2F;&#x2F;环境生效！！！</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-安装并配置hbase-0-94"><a href="#3-安装并配置hbase-0-94" class="headerlink" title="3.安装并配置hbase-0.94"></a>3.安装并配置hbase-0.94</h2><h3 id="1-在hbase页面下载hbase-0-94解压缩并重命名"><a href="#1-在hbase页面下载hbase-0-94解压缩并重命名" class="headerlink" title="1) 在hbase页面下载hbase-0.94解压缩并重命名"></a>1) 在hbase页面下载hbase-0.94解压缩并重命名</h3><figure class="highlight plain"><figcaption><span>hbase_installing</span></figcaption><table><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;www-eu.apache.org&#x2F;dist&#x2F;hbase&#x2F;hbase-0.94.27&#x2F;</span><br><span class="line">tar -zxf hbase-0.94.27&#x2F;   &#x2F;&#x2F;减少输出，加快速度</span><br><span class="line">mv hbase-0.94.27&#x2F; hbase&#x2F;  &#x2F;&#x2F;重命名，简短文件名称</span><br><span class="line">mv hbase&#x2F; &#x2F;usr&#x2F;           &#x2F;&#x2F;将hbase&#x2F;文件夹移动到&#x2F;usr&#x2F;路径下</span><br><span class="line">cd &#x2F;usr&#x2F;                  &#x2F;&#x2F;进入&#x2F;usr目录</span><br><span class="line">chmod -R 777 hbase&#x2F;       &#x2F;&#x2F;给hbase目录分配权限</span><br><span class="line"></span><br><span class="line">cd hbase&#x2F;</span><br><span class="line">vi conf&#x2F;hbase-site.xml    &#x2F;&#x2F;配置hbase-site.xml文件</span><br><span class="line">&lt;configuration&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">    &lt;name&gt;hbase.rootdir&lt;&#x2F;name&gt;</span><br><span class="line">    &lt;value&gt;file:&#x2F;&#x2F;&#x2F;&#x2F;usr&#x2F;hbase&#x2F;hbase&lt;&#x2F;value&gt;</span><br><span class="line">  &lt;&#x2F;property&gt;</span><br><span class="line">  &lt;property&gt;</span><br><span class="line">    &lt;name&gt;hbase.zookeeper.property.dataDir&lt;&#x2F;name&gt;</span><br><span class="line">    &lt;value&gt;&#x2F;usr&#x2F;hbase&#x2F;zookeeper&lt;&#x2F;value&gt;</span><br><span class="line">  &lt;&#x2F;property&gt;</span><br><span class="line">&lt;&#x2F;configuration&gt;</span><br></pre></td></tr></table></figure>
+<p>之后的nutch爬出的数据将存储到rootdir文件夹中，所以必须配置zookeeper的同理。<br>测试是否安装成功</p>
+<figure class="highlight plain"><figcaption><span>hbase_installing</span></figcaption><table><tr><td class="code"><pre><span class="line">.&#x2F;bin&#x2F;start-hbase.sh &#x2F;&#x2F;打开hbase进程</span><br><span class="line">.&#x2F;bin&#x2F;hbase shell &#x2F;&#x2F;可以进入hbase命令行模式</span><br><span class="line">&#x2F;&#x2F;检验成功可以运行后暂时关闭hbase进程</span><br><span class="line">.&#x2F;stop-hbase.sh</span><br></pre></td></tr></table></figure>
+<p>至此hbase安装成功，hbase-0.94可以直接在本地运行，不需要hadoop集群（个人暂时是这么理解的欢迎指正）</p>
+<h2 id="4-安装并配置apache-nutch-2-3-1"><a href="#4-安装并配置apache-nutch-2-3-1" class="headerlink" title="4.安装并配置apache-nutch-2.3.1"></a>4.安装并配置apache-nutch-2.3.1</h2><h3 id="1-wget下载apache-nutch-2-3-1并解压缩"><a href="#1-wget下载apache-nutch-2-3-1并解压缩" class="headerlink" title="1)wget下载apache-nutch-2.3.1并解压缩"></a>1)wget下载apache-nutch-2.3.1并解压缩</h3><figure class="highlight plain"><figcaption><span>nutch-2_installing</span></figcaption><table><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;www-eu.apache.org&#x2F;dist&#x2F;nutch&#x2F;2.3.1&#x2F;apache-nutch-2.3.1-src.tar.gz</span><br><span class="line">&#x2F;&#x2F;速度不够的话去官网看他给你推荐的链接</span><br><span class="line">tar -zxf apache-nutch-2.3.1-src.tar.gz</span><br><span class="line">mv apache-nutch-2.3.1&#x2F; nutch-2&#x2F;</span><br><span class="line">mv nutch-2&#x2F; &#x2F;usr&#x2F; &#x2F;&#x2F;移动文件</span><br><span class="line">cd &#x2F;usr&#x2F;</span><br><span class="line">chmod -R 777 nutch-2</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>下面开始重头戏，配置nutch文件<h4 id="1-conf目录下的nutch-site-xml文件-我的配置"><a href="#1-conf目录下的nutch-site-xml文件-我的配置" class="headerlink" title="(1)conf目录下的nutch-site.xml文件(我的配置)"></a>(1)conf目录下的nutch-site.xml文件(我的配置)</h4><figure class="highlight plain"><figcaption><span>nutch-2_installing</span></figcaption><table><tr><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">&lt;name&gt;storage.data.store.class&lt;&#x2F;name&gt;</span><br><span class="line">&lt;value&gt;org.apache.gora.hbase.store.HBaseStore&lt;&#x2F;value&gt;</span><br><span class="line">&lt;description&gt;Default class for storing data&lt;&#x2F;description&gt;</span><br><span class="line">&lt;&#x2F;property&gt;</span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line">  &lt;name&gt;plugin.includes&lt;&#x2F;name&gt;</span><br><span class="line">  &lt;value&gt;protocol-httpclient|urlfilter-regex|index-(basic|more)|query-(basic|site|url|lang)|indexer-solr|nutch-extensionpoints|protocol-httpclient|urlfilter-regex|parse-(text|html|msexcel|msword|mspowerpoint|pdf)|summary-basic|scoring-opic|urlnormalizer-(pass|regex|basic)protocol-http|urlfilter-regex|parse-(html|tika|metatags)|index-(basic|anchor|more|metadata)&lt;&#x2F;value&gt;</span><br><span class="line">&lt;&#x2F;property&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> &lt;property&gt;</span><br><span class="line">    &lt;name&gt;http.agent.name&lt;&#x2F;name&gt;</span><br><span class="line">    &lt;value&gt;Mozilla&#x2F;5.0 (Windows NT 6.1; WOW64) AppleWebKit&#x2F;537.36 (KHTML, like Gecko) Chrome&#x2F;33.0.1750.117 Safari&lt;&#x2F;value&gt;</span><br><span class="line">&lt;&#x2F;property&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">    &lt;name&gt;http.agent.version&lt;&#x2F;name&gt;</span><br><span class="line">    &lt;value&gt;537.36&lt;&#x2F;value&gt;</span><br><span class="line">&lt;&#x2F;property&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;property&gt;</span><br><span class="line">   &lt;name&gt;http.robots.agents&lt;&#x2F;name&gt;</span><br><span class="line">   &lt;value&gt;Test-Crawler&lt;&#x2F;value&gt;</span><br><span class="line"> &lt;&#x2F;property&gt;</span><br><span class="line"> </span><br><span class="line"> &lt;property&gt;</span><br><span class="line"> </span><br><span class="line"> &lt;property&gt;</span><br><span class="line">  &lt;name&gt;plugin.folders&lt;&#x2F;name&gt;</span><br><span class="line">  &lt;value&gt;.&#x2F;build&#x2F;plugins&lt;&#x2F;value&gt;</span><br><span class="line">  &lt;description&gt;Directories where nutch plugins are located.  Each</span><br><span class="line">  element may be a relative or absolute path.  If absolute, it is used</span><br><span class="line">  as is.  If relative, it is searched for on the classpath.&lt;&#x2F;description&gt;</span><br><span class="line">&lt;&#x2F;property&gt;</span><br><span class="line"> &lt;&#x2F;property&gt;</span><br><span class="line"> </span><br><span class="line"> &lt;property&gt;</span><br><span class="line">  &lt;name&gt;plugin.includes&lt;&#x2F;name&gt;</span><br><span class="line"> &lt;value&gt;protocol-http|urlfilter-regex|parse-(html|tika)|index-(basic|anchor)|urlnormalizer-(pass|regex|basic)|scoring-opic|index-anchor|index-more|languageidentifier|subcollection|feed|creativecommons|tld&lt;&#x2F;value&gt;</span><br><span class="line"> </span><br><span class="line">&lt;&#x2F;property&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;&#x2F;configuration&gt;</span><br></pre></td></tr></table></figure></li>
+<li>留心plugin.folders，配置不对花式报错</li>
+</ul>
+<h4 id="2-修改conf-gora-properties"><a href="#2-修改conf-gora-properties" class="headerlink" title="(2)修改conf/gora.properties"></a>(2)修改conf/gora.properties</h4><p>加入<pre><code>gora.datastore.default=org.apache.gora.hbase.store.HBaseStore</code></pre><br>之后注释掉所有其他内容</p>
+<h4 id="3-修改ivy-ivy-xml文件"><a href="#3-修改ivy-ivy-xml文件" class="headerlink" title="(3)修改ivy/ivy.xml文件"></a>(3)修改ivy/ivy.xml文件</h4><p>取消注释</p>
+<pre><code><dependency org="org.apache.gora" name="gora-hbase" rev="0.5" conf="*->default"></dependency></code></pre>
+<p>表示使用hbase数据库</p>
+<ul>
+<li><p>另外regex-urlfliter.txt网页内容过滤等可以暂时不进行配置</p>
+</li>
+<li><p>返回nutch-2根目录</p>
+<figure class="highlight plain"><figcaption><span>nutch-2_installing</span></figcaption><table><tr><td class="code"><pre><span class="line">yum -y install ant &#x2F;&#x2F;yum直接安装ant，对nutch进行搭建</span><br><span class="line">ant eclipse</span><br><span class="line">ant runtime &#x2F;&#x2F;命令行操作方式构建，进入runtime&#x2F;local&#x2F;bin&#x2F;文件夹中有nutch和crawl感兴趣的关注文章结尾处推荐链接</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<blockquote><p>maven资源被墙了，建议翻墙使用<br>maven资源被墙了，建议翻墙使用<br>maven资源被墙了，建议翻墙使用</p>
+<footer><strong>重要的事情说三遍</strong></footer></blockquote>
+<p>安装完成之后就可以导入eclipse中了</p>
+<blockquote><ul>
+<li>革命尚未成功，同志仍需努力。</li>
+<li>行百里者半九十</li>
+<li>最后一步不认真的话可能会超级麻烦的！！（认真脸）</li>
+</ul>
+</blockquote>
+<ul>
+<li>别忘了最后一步</li>
+<li>在nutch根目录中新建文件夹urls/，在文件夹中新建seed.txt文件 <a href="http://www.zi-c.wang/">http://www.zi-c.wang</a> 保存退出</li>
+</ul>
+<h2 id="5-导入eclipse中（想导入idea也可以这样玩，貌似）"><a href="#5-导入eclipse中（想导入idea也可以这样玩，貌似）" class="headerlink" title="5.导入eclipse中（想导入idea也可以这样玩，貌似）"></a>5.导入eclipse中（想导入idea也可以这样玩，貌似）</h2><h3 id="1-创建工程java-project"><a href="#1-创建工程java-project" class="headerlink" title="1)创建工程java project"></a>1)创建工程java project</h3><p>进入eclipse-&gt;file-&gt;new-&gt;project-&gt;java project<br>直接修改项目路径（/usr/nutch-2）<br>点击next，在build path配置中order&amp;export选项卡，选中nutch-2/conf文件夹，单击top</p>
+<h3 id="2-配置run-configuration"><a href="#2-配置run-configuration" class="headerlink" title="2)配置run configuration"></a>2)配置run configuration</h3><p>点击run configurations，进入页面。<br>右键java application，新建application命名为injectJob<br>project：nutch-2<br>main class：org.apache.nutch.crawl.InjectorJob<br>进入run configurations的arguments标签中，在Program Arguments中添加<br>urls/seed.txt -crawlId search<br>点击apply</p>
+<p>同理<br>application：generateJob<br>main class：org.apache.nutch.crawl.GeneratorJob<br>arguments:-topN 10 -crawlId search</p>
+<p>application：fetcheJob<br>main class：org.apache.nutch.fetcher.FetcherJob<br>arguments:-all -crawlId search -thread 10</p>
+<p>application：parseJob<br>main class：org.apache.nutch.parse.ParserJob<br>arguments:-all -crawlId search</p>
+<p>application：updatedbJob<br>main class：org.apache.nutch.crawl.DbUpdaterJob<br>arguments:-all -crawlId search</p>
+<h3 id="3-跑起来吧！！奔放的eclipse"><a href="#3-跑起来吧！！奔放的eclipse" class="headerlink" title="3)跑起来吧！！奔放的eclipse"></a>3)跑起来吧！！奔放的eclipse</h3><h3 id="4-查看爬取得数据"><a href="#4-查看爬取得数据" class="headerlink" title="4)查看爬取得数据"></a>4)查看爬取得数据</h3><figure class="highlight plain"><figcaption><span>nutch-2_installing</span></figcaption><table><tr><td class="code"><pre><span class="line">cd &#x2F;usr&#x2F;hbase&#x2F;</span><br><span class="line">.&#x2F;bin&#x2F;hbase shell</span><br><span class="line">list &#x2F;&#x2F;hbase指令请参考我的上一篇文章 hbase常用指令</span><br><span class="line">scan &#39;search_webpage&#39; &#x2F;&#x2F;灰常灰常壮观的数据闪过去了&#x3D;_+</span><br><span class="line">exit</span><br></pre></td></tr></table></figure>
+<p>成功！！！</p>
+<h2 id="6-感想"><a href="#6-感想" class="headerlink" title="6.感想"></a>6.感想</h2><p>  搭建这套环境对我来说是很大的一个修行！！<br>  前前后后使用的时间可能超过50h了，真是笨死了。<br>  耗时这么长的原因：主要是我太粗心了，很多应该完成的配置并没有实现成功，浪费了很多时间<br>  另一方面：不会看log<br>  现在看起来非常可笑的事情就是我的环境一旦搭建失败了首先看的是文档而不是日志，真是笨死了<br>  同时我也终于意识到Android application中为什么强调写好log。</p>
+<p>  搭建这套环境确实提升了个人能力一大截，超级期待下一步的搜索引擎实践！！<br>  加油奔放的少年！！！</p>
+<h2 id="7-推荐链接"><a href="#7-推荐链接" class="headerlink" title="7.推荐链接"></a>7.推荐链接</h2><p>1.<a href="https://wiki.apache.org/nutch/#Nutch_2.X_tutorial.28s.29">Apache Nutch Wiki</a><br>2.<a href="http://blog.csdn.net/jediael_lu/article/details/37329731">【Nutch2.2.1基础教程之2.1】集成Nutch/Hbase/Solr构建搜索引擎之一：安装及运行【单机环境】</a><br>3.<a href="http://blog.csdn.net/jediael_lu/article/details/43232449">在Eclipse中运行Nutch2.3</a><br>4.<a href="http://www.aboutyun.com/forum.php">about云社区</a><br>5.<a href="https://hbase.apache.org/book.html">hbase wiki</a><br>6. 杨尚川老师的nutch系列视频（虽然有点旧，但是给你仔细分析每个过程）<br>7.<a href="http://www.oschina.net/code/snippet_875267_44726">Linux 使用wget 命令下载JDK的方法</a><br>8.<a href="http://stackoverflow.com/">神圣网站stackoverflow，救过我无数次</a></p>
+]]></content>
+      <tags>
+        <tag>hbase</tag>
+        <tag>nutch</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>三剑客sed/awk/grep常用速查</title>
+    <url>/2020/11/16/%E4%B8%89%E5%89%91%E5%AE%A2sed-awk-grep%E5%B8%B8%E7%94%A8%E9%80%9F%E6%9F%A5/</url>
+    <content><![CDATA[<p>sed和awk的区别，都是按行读入，但是awk会拆分行里面的元素，sed则直接用正则做匹配，基本上sed可以做到的awk都可以。</p>
+<h1 id="awk"><a href="#awk" class="headerlink" title="awk"></a>awk</h1><p><code>awk &#39;&#123;printf &quot;%-8s %-8s %-8s %-18s %-22s %-15s\n&quot;,$1,$2,$3,$4,$5,$6&#125;&#39; netstat.txt</code> awk 使用print和printf打印每行中按列分布的元素。</p>
+<p><code>awk &#39;$3==0 &amp;&amp; $6==&quot;ESTABLISHED&quot;&#39; netstat.txt</code> 过滤记录</p>
+<p><code>awk &#39;$3==0 &amp;&amp; $6==&quot;ESTABLISHED&quot; || NR==1 &#123;printf &quot;%02s %s %-20s %-20s %s\n&quot;,NR, FNR, $4,$5,$6&#125;&#39; netstat.txt</code> 其中NR，FNR为内建变量</p>
+<a id="more"></a>
+<ul>
+<li>$0    当前记录（这个变量中存放着整个行的内容）</li>
+<li>$1~$n    当前记录的第n个字段，字段间由FS分隔</li>
+<li>FS    输入字段分隔符 默认是空格或Tab</li>
+<li>NF    当前记录中的字段个数，就是有多少列</li>
+<li>NR    已经读出的记录数，就是行号，从1开始，如果有多个文件话，这个值也是不断累加中。</li>
+<li>FNR    当前记录数，与NR不同的是，这个值会是各个文件自己的行号</li>
+<li>RS    输入的记录分隔符， 默认为换行符</li>
+<li>OFS    输出字段分隔符， 默认也是空格</li>
+<li>ORS    输出的记录分隔符，默认为换行符</li>
+<li>FILENAME    当前输入文件的名字</li>
+</ul>
+<p><code>awk  &#39;BEGIN&#123;FS=&quot;:&quot;&#125; &#123;print $1,$3,$6&#125;&#39; /etc/passwd</code> 指定分隔符</p>
+<p><code>awk &#39;$6 ~ /E/ || NR==1 &#123;print NR, $4,$5,$6&#125;&#39; netstat.txt</code> ~表示开始，//表示匹配，这行命令表示匹配第六个元素开始包含E的行和第一行，然后输出行数和第456个元素。</p>
+<p><code>awk &#39;NR!=1&#123;print $4,$5 &gt; $6&#125;&#39; netstat.txt</code> 不处理第一行，按照第六列元素分类拆分成若干个文件，文件的内容是第45列元素。</p>
+<h2 id="awk-脚本"><a href="#awk-脚本" class="headerlink" title="awk 脚本"></a>awk 脚本</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#!&#x2F;bin&#x2F;awk -f</span><br><span class="line"># 运行前</span><br><span class="line">BEGIN &#123;</span><br><span class="line">	math &#x3D; 0</span><br><span class="line">	english &#x3D; 0</span><br><span class="line">	computer &#x3D; 0</span><br><span class="line"></span><br><span class="line">	printf &quot;NAME    NO.   MATH  ENGLISH  COMPUTER   TOTAL\n&quot;</span><br><span class="line">	printf &quot;---------------------------------------------\n&quot;</span><br><span class="line">&#125;</span><br><span class="line"># 运行中</span><br><span class="line">&#123;</span><br><span class="line">	math +&#x3D; $3</span><br><span class="line">	english +&#x3D; $4</span><br><span class="line">	computer +&#x3D; $5</span><br><span class="line">	printf &quot;%-6s %-6s %4d %8d %8d %8d\n&quot;, $1, $2, $3,$4,$5, $3+$4+$5</span><br><span class="line">&#125;</span><br><span class="line"># 运行之后</span><br><span class="line">END &#123;</span><br><span class="line">	printf &quot;---------------------------------------------\n&quot;</span><br><span class="line">	printf &quot;  TOTAL:%10d %8d %8d \n&quot;, math, english, computer</span><br><span class="line">	printf &quot;AVERAGE:%10.2f %8.2f %8.2f\n&quot;, math&#x2F;NR, english&#x2F;NR, computer&#x2F;NR</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><code>awk -v val=$x &#39;&#123;print $1, $2, $3, $4+val, $5+ENVIRON[&quot;y&quot;]&#125;&#39; OFS=&quot;\t&quot; score.txt</code> 其中x，y为环境变量，为了使用环境变量需要 -v</p>
+<p><code>echo $PATH| awk &#39;BEGIN&#123;RS=&quot;:&quot;&#125;&#123;print NR,$0&#125;&#39;</code> 把单行拆分成多行</p>
+<h1 id="sed"><a href="#sed" class="headerlink" title="sed"></a>sed</h1><p><code>sed [-hnV][-e&lt;script&gt;][-f&lt;script文件&gt;][文本文件]</code></p>
+<ul>
+<li><p>e&lt;script&gt;或–expression=&lt;script&gt; 以选项中指定的script来处理输入的文本文件。</p>
+</li>
+<li><p>f&lt;script文件&gt;或–file=&lt;script文件&gt; 以选项中指定的script文件来处理输入的文本文件。</p>
+</li>
+<li><p>h或–help 显示帮助。</p>
+</li>
+<li><p>n或–quiet或–silent 仅显示script处理后的结果。</p>
+</li>
+<li><p>V或–version 显示版本信息。</p>
+</li>
+<li><p>a ：新增， a 的后面可以接字串，而这些字串会在新的一行出现(目前的下一行)～</p>
+</li>
+<li><p>c ：取代， c 的后面可以接字串，这些字串可以取代 n1,n2 之间的行！</p>
+</li>
+<li><p>d ：删除，因为是删除啊，所以 d 后面通常不接任何咚咚；</p>
+</li>
+<li><p>i ：插入， i 的后面可以接字串，而这些字串会在新的一行出现(目前的上一行)；</p>
+</li>
+<li><p>p ：打印，亦即将某个选择的数据印出。通常 p 会与参数 sed -n 一起运行～</p>
+</li>
+<li><p>s ：取代，可以直接进行取代的工作哩！通常这个 s 的动作可以搭配正规表示法！例如 1,20s/old/new/g 就是啦！</p>
+</li>
+</ul>
+<p><code>sed &quot;s/my/ppw &#39;s/g&quot; pets.txt</code> 把pets.txt文件的my改成ppw’s，并不修改文件。/g 表示一行上的替换所有的匹配</p>
+<p>加入-i <code>sed -i &quot;s/my/ppw &#39;s/g&quot; pets.txt</code>可以直接修改文件</p>
+<p><code>sed &#39;s/^/---/g&#39; pets.txt</code> 在开头加上—</p>
+<p><code>sed &#39;s/$/---/g&#39; pets.txt</code> 在结尾加上—</p>
+<p>同理类似的有：</p>
+<ul>
+<li>\&lt; 表示词首。 如：&lt;abc 表示以 abc 为首的詞。</li>
+<li>\&gt; 表示词尾。 如：abc&gt; 表示以 abc 結尾的詞。</li>
+<li>. 表示任何单个字符。</li>
+<li>* 表示某个字符出现了0次或多次。</li>
+<li><input disabled type="checkbox"> 字符集合。 如：[abc] 表示匹配a或b或c，还有 [a-zA-Z] 表示匹配所有的26个字符。如果其中有^表示反，如 [^a] 表示非a的字符</li>
+</ul>
+<p><code>sed &#39;s/&lt;[^&gt;]*&gt;//g&#39; html.txt</code> 取消html文件中的&lt;&gt;tags,不能使用<code>&#39;s/&lt;.*&gt;&#39;//g</code>，因为会贪婪匹配掉第一个《和最后一个》之间所有的内容，现在给出的示例是匹配除了&gt;意外的字符。</p>
+<p><code>sed &#39;3s/my/your/g&#39; pets.txt</code> 和 <code>sed &#39;3,6s/my/your/g&#39; pets.txt</code>，分别表示匹配第三行和第三到六行。</p>
+<p><code>sed &#39;s/s/S/1&#39; pets.txt</code> 匹配每一行的第一个s</p>
+<p><code>sed &#39;1,3s/my/your/g; 3,$s/This/That/g&#39; pets.txt</code> 匹配多个</p>
+<p><code>sed &#39;s/my/[&amp;]/g&#39; pets.txt</code> 使用&amp;来当做被匹配的变量，然后可以在基本左右加点东西</p>
+<p><code>sed &#39;s/This is my \([^,]*\),.*is \(.*\)/\1:\2/g&#39; my.txt</code> 圆括号括起来的正则表达式所匹配的字符串会可以当成变量来使用，sed中使用的是\1,\2…</p>
+<p><code>sed &#39;N;s/my/your/&#39; pets.txt</code> 原文本中的偶数行纳入奇数行匹配，而s只匹配并替换一次，所以最后只有奇数行被修改。 N命令把下一行的内容纳入当成缓冲区做匹配。</p>
+<p><code>sed &quot;1 i This is my monkey, my monkey&#39;s name is wukong&quot; my.txt</code> 和 <code>sed &quot;$ a This is my monkey, my monkey&#39;s name is wukong&quot; my.txt</code>  命令i和a分别表示insert 和 append，添加行</p>
+<p><code>sed &quot;/my/a ----&quot; my.txt</code> 在每行结尾都添加 —-</p>
+<p><code>sed &quot;2 c This is my monkey, my monkey&#39;s name is wukong&quot; my.txt</code> 和 <code>sed &quot;/fish/c This is my monkey, my monkey&#39;s name is wukong&quot; my.txt</code> 命令c表示替换，这两个命令分别表示替换第二行和有’fish’存在的那一行。</p>
+<p><code>sed &#39;/fish/d&#39; my.txt</code> 和 <code>sed &#39;2d&#39; my.txt</code> 和 <code>sed &#39;2,$d&#39; my.txt</code> 命令d表示删除匹配行，这三个命令分别表示删除有fish的一行，删除第二行和删除第二到最后的所有行。</p>
+<p><code>sed -n &#39;/dog/,/fish/p&#39; my.txt</code> 命令-n表示只显示处理后的结果，命令p表示打印，图中命令表示打印有dog的一行和有fish的一行。</p>
+<h1 id="grep"><a href="#grep" class="headerlink" title="grep"></a>grep</h1><p><code>grep -i -c &#39;.*ret.*&#39; linux-exec.s</code> 统计内核二级制文件中ret命令的个数，不区分大小写，直接输出匹配行数。</p>
+]]></content>
+      <categories>
+        <category>linux</category>
+        <category>bash</category>
+      </categories>
+      <tags>
+        <tag>bash</tag>
+        <tag>linux</tag>
+        <tag>tool</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>二叉树非递归遍历</title>
+    <url>/2020/11/24/%E4%BA%8C%E5%8F%89%E6%A0%91%E9%9D%9E%E9%80%92%E5%BD%92%E9%81%8D%E5%8E%86/</url>
+    <content><![CDATA[<p>二叉树非递归遍历总是容易忘，这次从原理出发理解一次。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">    1</span><br><span class="line">   &#x2F; \</span><br><span class="line">  2   3</span><br><span class="line"> &#x2F; \ &#x2F;</span><br><span class="line">4  5 6</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h1 id="preorder"><a href="#preorder" class="headerlink" title="preorder"></a>preorder</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">handle(p-&gt;val);</span><br><span class="line">preorder(root-&gt;left);</span><br><span class="line">preorder(root-&gt;right);</span><br></pre></td></tr></table></figure>
+
+<p>1-&gt;2-&gt;4-&gt;5-&gt;3-&gt;6 </p>
+<p>先序输出顺序是中左右，因此首先输出，其次要保存左子树，穷尽左子树之后弹出节点，最后输出右子树</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">stack&lt;TreeNode*&gt; st;</span><br><span class="line">TreeNode* p &#x3D; root;</span><br><span class="line">while (p !&#x3D; NULL || !st.empty()）&#123;</span><br><span class="line">    while (p !&#x3D; NULL) &#123;</span><br><span class="line">        handle(p-&gt;val);</span><br><span class="line">        st.push(p);</span><br><span class="line">        p &#x3D; p-&gt;left;</span><br><span class="line">    &#125;</span><br><span class="line">    if (!st.empty()) &#123;</span><br><span class="line">        p &#x3D; st.top();</span><br><span class="line">        st.pop();</span><br><span class="line">        p &#x3D; p-&gt;right;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="inorder"><a href="#inorder" class="headerlink" title="inorder"></a>inorder</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">inorder(p-&gt;left);</span><br><span class="line">handle(p-&gt;val);</span><br><span class="line">inorder(p-&gt;right);</span><br></pre></td></tr></table></figure>
+
+<p>4-&gt;2-&gt;5-&gt;1-&gt;6-&gt;3</p>
+<p>中序遍历的输出顺序是左中右，和先序遍历有相似性，因为也需要先保存左子树，再弹出左子树找到中和右。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">stack&lt;TreeNode*&gt; st;</span><br><span class="line">TreeNode* p &#x3D; root;</span><br><span class="line">while (p !&#x3D; NULL || !st.empty()) &#123;</span><br><span class="line">    st.push(p);</span><br><span class="line">    p &#x3D; p-&gt;left;</span><br><span class="line">&#125;</span><br><span class="line">if (!st.empty()) &#123;</span><br><span class="line">    p &#x3D; st.top();</span><br><span class="line">    st.pop();</span><br><span class="line">    handle(p-&gt;val);</span><br><span class="line">    p &#x3D; p-&gt;right;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="postorder"><a href="#postorder" class="headerlink" title="postorder"></a>postorder</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">postorder(p-&gt;left);</span><br><span class="line">postorder(p-&gt;right);</span><br><span class="line">handle(p-&gt;val);</span><br></pre></td></tr></table></figure>
+
+<p>4-&gt;5-&gt;2-&gt;6-&gt;3-&gt;1</p>
+<p>后序遍历输出顺序是左右中，先保存左侧节点，然后检查右侧节点，当右子树为空或者已经被访问了，可以访问这个节点</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">stack&lt;TreeNode*&gt; st;</span><br><span class="line">TreeNode* p &#x3D; root;</span><br><span class="line">while (p !&#x3D; NULL || !st.empty()) &#123;</span><br><span class="line">    while (p !&#x3D; NULL) &#123;</span><br><span class="line">        st.push(p);</span><br><span class="line">        p &#x3D; p-&gt;left;</span><br><span class="line">    &#125;</span><br><span class="line">    p &#x3D; s.top();</span><br><span class="line">    TreeNode* tmp &#x3D; NULL;</span><br><span class="line">    while (!st.empty() &amp;&amp; (p-&gt;right &#x3D;&#x3D; NULL || p-&gt;right &#x3D;&#x3D; tmp)) &#123;</span><br><span class="line">        st.pop();</span><br><span class="line">        if (!st.empty()) &#123;</span><br><span class="line">            tmp &#x3D; p;</span><br><span class="line">            p &#x3D; st.top();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    if (st.emtpy()) break;</span><br><span class="line">    p &#x3D; p-&gt;right;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="BFS"><a href="#BFS" class="headerlink" title="BFS"></a>BFS</h1><p>1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;6</p>
+<p>广度优先按照层次每次保存一层，当输出的时候记录当前队列长度，该长度即为上层被保存的节点数量，依次遍历即为按层次输出</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">queue&lt;TreeNode*&gt; q;</span><br><span class="line">TreeNode* p &#x3D; NULL;</span><br><span class="line">q.push(p);</span><br><span class="line">while (!q.emtpy()) &#123;</span><br><span class="line">    int size &#x3D; q.size();</span><br><span class="line">    for (int i &#x3D; 0;i &lt; size;i++) &#123;</span><br><span class="line">        p &#x3D; q.front();</span><br><span class="line">        q.pop();</span><br><span class="line"></span><br><span class="line">        handle(p-&gt;val);</span><br><span class="line"></span><br><span class="line">        if (p-&gt;left !&#x3D; NULL) q.push(p-&gt;left);</span><br><span class="line">        if (p-&gt;right !&#x3D; NULL) q.push(p-&gt;right);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>leetcode</tag>
+        <tag>algorithm</tag>
+        <tag>binarytree</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>内核近期改变</title>
+    <url>/2020/11/15/%E5%86%85%E6%A0%B8%E8%BF%91%E6%9C%9F%E6%94%B9%E5%8F%98/</url>
+    <content><![CDATA[<h1 id="内核近期改变"><a href="#内核近期改变" class="headerlink" title="内核近期改变"></a>内核近期改变</h1><ul>
+<li><a href="#%E5%86%85%E6%A0%B8%E8%BF%91%E6%9C%9F%E6%94%B9%E5%8F%98">内核近期改变</a><ul>
+<li><a href="#ioctl">ioctl</a><ul>
+<li><a href="#1%E5%8E%9F%E5%A7%8B%E7%89%88%E6%9C%AC%E7%9A%84ioctl">1.原始版本的ioctl</a></li>
+<li><a href="#2%E5%86%85%E6%A0%B8%E6%94%B9%E8%BF%9B%E5%90%8E%E7%9A%84ioctl">2.内核改进后的ioctl</a></li>
+<li><a href="#3%E5%9C%A8%E7%BC%96%E5%86%99%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84%E5%A4%84%E7%90%86%E5%8A%9E%E6%B3%95">3.在编写过程中的处理办法</a></li>
+<li><a href="#4-%E5%8E%9F%E5%9B%A0%E5%88%86%E6%9E%90">4. 原因分析</a></li>
+</ul>
+</li>
+<li><a href="#%E5%BC%82%E6%AD%A5io-read_iter">异步I/O read_iter</a><ul>
+<li><a href="#1%E5%85%B7%E4%BD%93%E5%8F%98%E5%8C%96">1.具体变化</a></li>
+<li><a href="#2%E5%8E%9F%E5%9B%A0%E5%88%86%E6%9E%90">2.原因分析</a></li>
+<li><a href="#3%E9%97%AE%E9%A2%98">3.问题</a></li>
+</ul>
+</li>
+<li><a href="#timer%E8%AE%A1%E6%97%B6%E5%99%A8%E5%8F%91%E7%94%9F%E6%94%B9%E5%8F%98">timer计时器发生改变</a></li>
+<li><a href="#block-%E9%A9%B1%E5%8A%A8%E5%9C%A850%E5%90%8E%E8%BF%9B%E8%A1%8C%E4%BA%86%E9%9D%9E%E5%B8%B8%E5%A4%A7%E7%9A%84%E5%8F%98%E5%8C%96">block 驱动在5.0后进行了非常大的变化</a><ul>
+<li><a href="#%E5%8E%9F%E5%9B%A0">原因</a></li>
+<li><a href="#blk-mq-%E8%AE%BE%E8%AE%A1%E4%BA%86%E4%B8%A4%E5%B1%82%E9%98%9F%E5%88%97">blk-mq 设计了两层队列</a></li>
+<li><a href="#%E5%9C%A8%E6%9E%B6%E6%9E%84%E5%B1%82%E9%9D%A2">在架构层面</a></li>
+<li><a href="#%E5%85%B7%E4%BD%93%E5%88%B0%E5%87%BD%E6%95%B0">具体到函数</a></li>
+</ul>
+</li>
+<li><a href="#%E5%86%85%E6%A0%B8%E8%AE%A1%E6%97%B6%E6%8E%A5%E5%8F%A3%E5%8F%91%E7%94%9F%E5%8F%98%E5%8C%96">内核计时接口发生变化</a></li>
+<li><a href="#%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%88%9D%E5%A7%8B%E5%8C%96%E6%8E%A5%E5%8F%A3%E5%8F%98%E5%8C%96%E6%9C%AA%E8%A7%A3%E5%86%B3">系统调用初始化接口变化（未解决）</a></li>
+<li><a href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%87%8F%E5%B0%91%E5%AE%9A%E4%B9%89%E6%95%B0%E9%87%8F-%E6%9C%AA%E8%A7%A3%E5%86%B3">文件系统减少定义数量 （未解决）</a></li>
+<li><a href="#jprobe-%E8%A2%AB%E5%8F%96%E6%B6%88">jprobe 被取消</a></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<h2 id="ioctl"><a href="#ioctl" class="headerlink" title="ioctl"></a>ioctl</h2><h3 id="1-原始版本的ioctl"><a href="#1-原始版本的ioctl" class="headerlink" title="1.原始版本的ioctl"></a>1.原始版本的ioctl</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">int (*ioctl)(struct inode *, struct file *, unsigned int, unsigned long);</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-内核改进后的ioctl"><a href="#2-内核改进后的ioctl" class="headerlink" title="2.内核改进后的ioctl"></a>2.内核改进后的ioctl</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">long (*unlocked_ioctl) (struct file *, unsigned int, unsigned long);</span><br><span class="line"></span><br><span class="line">long (*compat_ioctl) (struct file *, unsigned int, unsigned long);</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-在编写过程中的处理办法"><a href="#3-在编写过程中的处理办法" class="headerlink" title="3.在编写过程中的处理办法"></a>3.在编写过程中的处理办法</h3><ul>
+<li><p>将原先的写的 ioctl 函数声明给改成下面的 unlocked_ioctl 或者 compat_ioctl,</p>
+</li>
+<li><p>在 file_operations 结构体的初始化中也是一样. 修改为unlocked_ioctl 或者 compat_ioctl,</p>
+</li>
+<li><p>注意参数的兼容性问题, 新的ioctl() 接口没有 struct inode* 参数, 如果ioctl 接口中使用了 inode, 因此需要通过其他方式获取 inode</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2, 6, 36)</span><br><span class="line">static int XXX_ioctl(</span><br><span class="line">        struct inode *indoe,</span><br><span class="line">        struct file *filp,</span><br><span class="line">        unsigned int cmd,</span><br><span class="line">        unsigned long arg)</span><br><span class="line">&#123;</span><br><span class="line">#else</span><br><span class="line">&#x2F;&#x2F;long (*unlocked_ioctl) (struct file *, unsigned int, unsigned long);</span><br><span class="line">&#x2F;&#x2F;long (*compat_ioctl) (struct file *, unsigned int cmd, unsigned long arg)</span><br><span class="line">static long XXX_unlocked_ioctl(</span><br><span class="line">        struct file *filp,</span><br><span class="line">        unsigned int cmd,</span><br><span class="line">        unsigned long arg)</span><br><span class="line">&#123;</span><br><span class="line">    &#x2F;&#x2F;struct inode *inode &#x3D; filp-&gt;f_dentry-&gt;d_inode;</span><br><span class="line">    &#x2F;&#x2F;struct inode *inode &#x3D; filp-&gt;d_inode;</span><br><span class="line">    struct inode *inode &#x3D; inode &#x3D; file_inode(filp);</span><br><span class="line">#endif</span><br><span class="line">    &#x2F;*  此处是ioctl() 函数结构的具体实现  *&#x2F;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>同理，file_operations中也进行同样修改。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">static struct file_operations fpga_fops &#x3D; &#123;</span><br><span class="line">    .owner  &#x3D; THIS_MODULE,</span><br><span class="line">    .open   &#x3D; fpga_open,</span><br><span class="line">    .read   &#x3D; fpga_read,</span><br><span class="line">    .write &#x3D; fpga_write,</span><br><span class="line">    .llseek &#x3D; fpga_llseek,</span><br><span class="line">#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(2, 6, 36)</span><br><span class="line">    .ioctl &#x3D; XXX_ioctl,</span><br><span class="line">#else</span><br><span class="line">    .unlocked_ioctl &#x3D; XXX_unlocked_ioctl,</span><br><span class="line">#endif</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="4-原因分析"><a href="#4-原因分析" class="headerlink" title="4. 原因分析"></a>4. 原因分析</h3><p><code>file_operations (include/linux/fs.h)</code> 结构变化,ioctl本身并不安全，且之前的ioctl使用了大内核锁延迟太大，因此进行修改。具体内容见<br><a href="https://lwn.net/Articles/119652/">The new way of ioctl()</a></p>
+<h2 id="异步I-O-read-iter"><a href="#异步I-O-read-iter" class="headerlink" title="异步I/O read_iter"></a>异步I/O read_iter</h2><h3 id="1-具体变化"><a href="#1-具体变化" class="headerlink" title="1.具体变化"></a>1.具体变化</h3><p><code>file_operations (include/linux/fs.h)</code> 结构变化，导致</p>
+<p><code>read_iter</code> 和 <code>write_iter</code> 负责设备驱动的异步读写，取代了之前的 <code>aio_read</code> 和 <code>aio_write</code>,只需要将资料中二者进行转换即可。</p>
+<h3 id="2-原因分析"><a href="#2-原因分析" class="headerlink" title="2.原因分析"></a>2.原因分析</h3><p><a href="https://lwn.net/Articles/625077/">The iov_iter interface</a></p>
+<p>iov_iter 功能增强了，并且试图合并 read(write)_iter 和 splice_read(write)，不过截至2020年5月13日来看这俩似乎还存在着</p>
+<h3 id="3-问题"><a href="#3-问题" class="headerlink" title="3.问题"></a>3.问题</h3><p><code>fs/ramfs/file-mmu.c</code> 中为什么 <code>file_operations</code> 里面没有定义 read 和 write， 而只有异步I/O。</p>
+<h2 id="timer计时器发生改变"><a href="#timer计时器发生改变" class="headerlink" title="timer计时器发生改变"></a>timer计时器发生改变</h2><p><a href="https://lwn.net/Articles/735887/">Improving the kernel timers API</a><br>用 <code>timer_setup</code> 替换了 <code>init_timer</code>,替换内核版本为4.14(2017)，属于较新的替换</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(4,14,0)</span><br><span class="line">    init_timer(&amp;dev-&gt;getIntrTimer);</span><br><span class="line">    dev-&gt;getIntrTimer.data &#x3D; (unsigned long) dev;</span><br><span class="line">    dev-&gt;getIntrTimer.function &#x3D; GetIntrTimerCallback;</span><br><span class="line">    &#x2F;* ... *&#x2F;</span><br><span class="line">    add_timer(&amp;dev-&gt;getIntrTimer);</span><br><span class="line">#else</span><br><span class="line">    timer_setup(&amp;dev-&gt;getIntrTimer, GetIntrTimerCallback, 0);</span><br><span class="line">    &#x2F;* the third argument may include TIMER_* flags *&#x2F;</span><br><span class="line">    &#x2F;* ... *&#x2F;</span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
+
+<p>callback function的变化 <strong>参数类型发生变化，否则会编译失败</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#if LINUX_VERSION_CODE &lt; KERNEL_VERSION(4,14,0)</span><br><span class="line">void GetIntrTimerCallback(unsigned long devAddr)</span><br><span class="line">&#123;</span><br><span class="line">    myDevice *dev &#x3D; (myDevice *) devAddr;</span><br><span class="line">#else</span><br><span class="line">void GetIntrTimerCallback(struct timer_list *t)</span><br><span class="line">&#123;</span><br><span class="line">    myDevice *dev &#x3D; from_timer(dev, t, getIntrTimer);</span><br><span class="line">#endif</span><br><span class="line">    &#x2F;* Do something with &quot;dev&quot; *&#x2F;</span><br></pre></td></tr></table></figure>
+
+<h2 id="block-驱动在5-0后进行了非常大的变化"><a href="#block-驱动在5-0后进行了非常大的变化" class="headerlink" title="block 驱动在5.0后进行了非常大的变化"></a>block 驱动在5.0后进行了非常大的变化</h2><p><a href="https://www.linuxquestions.org/questions/linux-kernel-70/in-kernel-v5-blk_fetch_request-and-blk_init_queue-gone-now-what-4175670215/">In kernel V5 blk_fetch_request() and blk_init_queue() gone. Now What?</a>  </p>
+<p><a href="https://prog.world/linux-kernel-5-0-we-write-simple-block-device-under-blk-mq/">Linux Kernel 5.0 – we write Simple Block Device under blk-mq</a>  </p>
+<p><a href="https://patchwork.kernel.org/patch/10048915/">block: remove __bio_kmap_atomic</a></p>
+<p><strong>内核工匠 公众号 Multiqueue架构分析</strong></p>
+<p>block 驱动在5.0后进行了非常大的变化</p>
+<h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>是使用了 multi-queue block layer 即 blk-mq 完全取代了之前的 blk-sq（single-queue），<br>因为从前的IO速度瓶颈在硬件方面，因此可以使用单一队列，即使多个cpu竞争自旋锁获取队列写入权限依旧不过分影响性能。<br>而最近的高IOPS（io per second）硬件逐渐增多比如ssd，nvme等硬件设备开始大量使用，那么从前的single queue在高IOPS场景下80% cpu时间耗费在锁获取上了，因此设计了新的blk-mq 获取锁仅占用 3% cpu时间。</p>
+<h3 id="blk-mq-设计了两层队列"><a href="#blk-mq-设计了两层队列" class="headerlink" title="blk-mq 设计了两层队列"></a>blk-mq 设计了两层队列</h3><ol>
+<li><p>首先为每个cpu分配了一个软件暂存队列（software staging queue），负责完成bio 提交/完成处理，IO请求暂存（合并、排序等）、IO请求标记、调度、记账（和新的IO调度算法BFS有关）</p>
+</li>
+<li><p>硬件派发队列（Hardware Dispatch Queue） 为每个硬件队列分派一个硬件派发队列，负责存放软件队列向硬件派发的IO请求，一个和多个软件队列和一个硬件队列存在固定映射关系</p>
+</li>
+</ol>
+<h3 id="在架构层面"><a href="#在架构层面" class="headerlink" title="在架构层面"></a>在架构层面</h3><p>mq 将 request 和 tag 绑定，request内存分配在块设备驱动初始化时完成（调用blk_mq_alloc_tag_set）避免IO时分配request内存带来消耗</p>
+<p>tag作为request（static_rqs/rqs）的索引。</p>
+<h3 id="具体到函数"><a href="#具体到函数" class="headerlink" title="具体到函数"></a>具体到函数</h3><p>有 <code>blk_fetch_request</code> , <code>__blk_end_request_cur</code>  ,<code>blk_init_queue</code>, <code>__bio_kmap_atomic(bio, iter)</code> , <code>__bio_kunmap_atomic(buffer)</code> 等</p>
+<p>其中 取代 <code>__bio_kmap_atomic(bio, iter)</code> , <code>__bio_kunmap_atomic(buffer)</code> 如下</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">-		char *buffer &#x3D; __bio_kmap_atomic(bio, iter);</span><br><span class="line">+		char *buffer &#x3D; kmap_atomic(bvec.bv_page) + bvec.bv_offset;</span><br><span class="line"> 		unsigned len &#x3D; bvec.bv_len &gt;&gt; SECTOR_SHIFT;</span><br><span class="line"> </span><br><span class="line"> 		simdisk_transfer(dev, sector, len, buffer,</span><br><span class="line"> 				bio_data_dir(bio) &#x3D;&#x3D; WRITE);</span><br><span class="line"> 		sector +&#x3D; len;</span><br><span class="line">-		__bio_kunmap_atomic(buffer);</span><br><span class="line">+		kunmap_atomic(buffer)</span><br></pre></td></tr></table></figure>
+
+<p>除此之外 <code>BLK_MQ_F_SG_MERGE</code> 和 <code>QUEUE_FLAG_NO_SG_MERGE</code>  都可以被省略了<br><a href="https://lore.kernel.org/patchwork/patch/1042759/">block: kill BLK_MQ_F_SG_MERGE</a></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">-	lo-&gt;tag_set.flags &#x3D; BLK_MQ_F_SHOULD_MERGE | BLK_MQ_F_SG_MERGE;</span><br><span class="line">+	lo-&gt;tag_set.flags &#x3D; BLK_MQ_F_SHOULD_MERGE;</span><br></pre></td></tr></table></figure>
+
+<h2 id="内核计时接口发生变化"><a href="#内核计时接口发生变化" class="headerlink" title="内核计时接口发生变化"></a>内核计时接口发生变化</h2><p>64位系统中,由于<a href="https://en.wikipedia.org/wiki/Year_2038_problem">2038问题</a> 时间戳 timespec 在 inode数据结构中的i_*time 中弃用，转而使用 timespec64</p>
+<p>相应的 getnstimeofday 等函数也被弃用， 转而使用 <code>ktime_get_ts64(struct timespec64 *ts)</code> 等函数获取时间，另外需要注意 这个函数必须使用 GPL协议才能成功加载。</p>
+<p>详见内核时间api文件，<br><a href="https://www.kernel.org/doc/html/latest/core-api/timekeeping.html">ktime accessors</a></p>
+<p>最新设计的时间数据结构为 <code>ktime_t</code> 获取方式为 <code>ktime_t ktime_get(void)</code></p>
+<h2 id="系统调用初始化接口变化（未解决）"><a href="#系统调用初始化接口变化（未解决）" class="headerlink" title="系统调用初始化接口变化（未解决）"></a>系统调用初始化接口变化（未解决）</h2><p>系统调用初始化接口代码越变越少，而且有点难以理解，除了在<code>arch/x86/entry/syscall</code> 目录下定义之外，还用了同目录下的脚本直接生成了ni代码</p>
+<p>具体的解决办法是直接ftrace跟踪一波，看看syscall最新的调用路径</p>
+<h2 id="文件系统减少定义数量-（未解决）"><a href="#文件系统减少定义数量-（未解决）" class="headerlink" title="文件系统减少定义数量 （未解决）"></a>文件系统减少定义数量 （未解决）</h2><p>文件系统减少了大量file_operations定义数量，例如 aio_read  aio_write 等异步代码直接被省略掉，read 和 write 接口基本也不定义了， 似乎使用了 read_iter 和 write_iter 替代了前两类接口</p>
+<p>具体原因还没搞清楚，但是在 <a href="https://lore.kernel.org/patchwork/patch/350494/">[V5,17/30] fs: use read_iter and write_iter rather than aio_read and aio_write</a> 中显示 aio被明确删除掉，用iter替代。</p>
+<p>此外 <code>file_operations</code> 当中的 readdir 等接口也被取消，直接由read/read_iter和 iterate 替代,iterate基本上可以理解为负责执行ls命令， filldentry_t 由 dir_context 替代。</p>
+<h2 id="jprobe-被取消"><a href="#jprobe-被取消" class="headerlink" title="jprobe 被取消"></a>jprobe 被取消</h2><p>在 kprobe中只剩下kprobe和kretprobe，jprobe及相关的一套函数被取消，替代方式如下：</p>
+<p><code>/source/samples/kprobes/kprobe_example.c</code> 和 <code>/source/samples/kprobes/kretprobe_example.c</code> 中示例</p>
+<p>使用kprobe中的handler_pre和handler_post替代。</p>
+]]></content>
+      <categories>
+        <category>kernel</category>
+      </categories>
+      <tags>
+        <tag>kernel</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>可能经常用到的markdown语法和标签插件</title>
     <url>/2016/01/20/%E5%8F%AF%E8%83%BD%E7%BB%8F%E5%B8%B8%E7%94%A8%E5%88%B0%E7%9A%84markdown%E8%AF%AD%E6%B3%95%E5%92%8C%E6%A0%87%E7%AD%BE%E6%8F%92%E4%BB%B6/</url>
     <content><![CDATA[<h2 id="摘要"><a href="#摘要" class="headerlink" title="摘要"></a>摘要</h2><ul>
@@ -762,40 +796,6 @@ hbase(main)> truncate 't1'
 ]]></content>
       <tags>
         <tag>markdown</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>二叉树非递归遍历</title>
-    <url>/2020/11/24/%E4%BA%8C%E5%8F%89%E6%A0%91%E9%9D%9E%E9%80%92%E5%BD%92%E9%81%8D%E5%8E%86/</url>
-    <content><![CDATA[<p>二叉树非递归遍历总是容易忘，这次从原理出发理解一次。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">    1</span><br><span class="line">   &#x2F; \</span><br><span class="line">  2   3</span><br><span class="line"> &#x2F; \ &#x2F;</span><br><span class="line">4  5 6</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<h1 id="preorder"><a href="#preorder" class="headerlink" title="preorder"></a>preorder</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">handle(p-&gt;val);</span><br><span class="line">preorder(root-&gt;left);</span><br><span class="line">preorder(root-&gt;right);</span><br></pre></td></tr></table></figure>
-
-<p>1-&gt;2-&gt;4-&gt;5-&gt;3-&gt;6 </p>
-<p>先序输出顺序是中左右，因此首先输出，其次要保存左子树，穷尽左子树之后弹出节点，最后输出右子树</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">stack&lt;TreeNode*&gt; st;</span><br><span class="line">TreeNode* p &#x3D; root;</span><br><span class="line">while (p !&#x3D; NULL || !st.empty()）&#123;</span><br><span class="line">    while (p !&#x3D; NULL) &#123;</span><br><span class="line">        handle(p-&gt;val);</span><br><span class="line">        st.push(p);</span><br><span class="line">        p &#x3D; p-&gt;left;</span><br><span class="line">    &#125;</span><br><span class="line">    if (!st.empty()) &#123;</span><br><span class="line">        p &#x3D; st.top();</span><br><span class="line">        st.pop();</span><br><span class="line">        p &#x3D; p-&gt;right;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-<h1 id="inorder"><a href="#inorder" class="headerlink" title="inorder"></a>inorder</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">inorder(p-&gt;left);</span><br><span class="line">handle(p-&gt;val);</span><br><span class="line">inorder(p-&gt;right);</span><br></pre></td></tr></table></figure>
-
-<p>4-&gt;2-&gt;5-&gt;1-&gt;6-&gt;3</p>
-<p>中序遍历的输出顺序是左中右，和先序遍历有相似性，因为也需要先保存左子树，再弹出左子树找到中和右。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">stack&lt;TreeNode*&gt; st;</span><br><span class="line">TreeNode* p &#x3D; root;</span><br><span class="line">while (p !&#x3D; NULL || !st.empty()) &#123;</span><br><span class="line">    st.push(p);</span><br><span class="line">    p &#x3D; p-&gt;left;</span><br><span class="line">&#125;</span><br><span class="line">if (!st.empty()) &#123;</span><br><span class="line">    p &#x3D; st.top();</span><br><span class="line">    st.pop();</span><br><span class="line">    handle(p-&gt;val);</span><br><span class="line">    p &#x3D; p-&gt;right;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="postorder"><a href="#postorder" class="headerlink" title="postorder"></a>postorder</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">postorder(p-&gt;left);</span><br><span class="line">postorder(p-&gt;right);</span><br><span class="line">handle(p-&gt;val);</span><br></pre></td></tr></table></figure>
-
-<p>4-&gt;5-&gt;2-&gt;6-&gt;3-&gt;1</p>
-<p>后序遍历输出顺序是左右中，先保存左侧节点，然后检查右侧节点，当右子树为空或者已经被访问了，可以访问这个节点</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">stack&lt;TreeNode*&gt; st;</span><br><span class="line">TreeNode* p &#x3D; root;</span><br><span class="line">while (p !&#x3D; NULL || !st.empty()) &#123;</span><br><span class="line">    while (p !&#x3D; NULL) &#123;</span><br><span class="line">        st.push(p);</span><br><span class="line">        p &#x3D; p-&gt;left;</span><br><span class="line">    &#125;</span><br><span class="line">    p &#x3D; s.top();</span><br><span class="line">    TreeNode* tmp &#x3D; NULL;</span><br><span class="line">    while (!st.empty() &amp;&amp; (p-&gt;right &#x3D;&#x3D; NULL || p-&gt;right &#x3D;&#x3D; tmp)) &#123;</span><br><span class="line">        st.pop();</span><br><span class="line">        if (!st.empty()) &#123;</span><br><span class="line">            tmp &#x3D; p;</span><br><span class="line">            p &#x3D; st.top();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    if (st.emtpy()) break;</span><br><span class="line">    p &#x3D; p-&gt;right;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h1 id="BFS"><a href="#BFS" class="headerlink" title="BFS"></a>BFS</h1><p>1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;6</p>
-<p>广度优先按照层次每次保存一层，当输出的时候记录当前队列长度，该长度即为上层被保存的节点数量，依次遍历即为按层次输出</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">queue&lt;TreeNode*&gt; q;</span><br><span class="line">TreeNode* p &#x3D; NULL;</span><br><span class="line">q.push(p);</span><br><span class="line">while (!q.emtpy()) &#123;</span><br><span class="line">    int size &#x3D; q.size();</span><br><span class="line">    for (int i &#x3D; 0;i &lt; size;i++) &#123;</span><br><span class="line">        p &#x3D; q.front();</span><br><span class="line">        q.pop();</span><br><span class="line"></span><br><span class="line">        handle(p-&gt;val);</span><br><span class="line"></span><br><span class="line">        if (p-&gt;left !&#x3D; NULL) q.push(p-&gt;left);</span><br><span class="line">        if (p-&gt;right !&#x3D; NULL) q.push(p-&gt;right);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <tags>
-        <tag>leetcode</tag>
-        <tag>algorithm</tag>
-        <tag>binarytree</tag>
       </tags>
   </entry>
 </search>

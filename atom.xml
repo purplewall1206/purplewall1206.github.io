@@ -172,9 +172,9 @@
     <category term="kernel" scheme="https://www.zi-c.wang/categories/kernel/"/>
     
     
-    <category term="io_uring" scheme="https://www.zi-c.wang/tags/io-uring/"/>
-    
     <category term="kernel" scheme="https://www.zi-c.wang/tags/kernel/"/>
+    
+    <category term="io_uring" scheme="https://www.zi-c.wang/tags/io-uring/"/>
     
   </entry>
   
