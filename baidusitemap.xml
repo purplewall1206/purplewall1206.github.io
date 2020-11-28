@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://www.zi-c.wang/2020/11/28/Linux-User-mode-Driver/</loc>
+    <lastmod>2020-11-28</lastmod>
+  </url>
+  <url>
+    <loc>https://www.zi-c.wang/2020/11/28/kernel-exploit-vm%E6%90%AD%E5%BB%BA/</loc>
+    <lastmod>2020-11-28</lastmod>
+  </url>
+  <url>
     <loc>https://www.zi-c.wang/2020/11/24/%E4%BA%8C%E5%8F%89%E6%A0%91%E9%9D%9E%E9%80%92%E5%BD%92%E9%81%8D%E5%8E%86/</loc>
     <lastmod>2020-11-24</lastmod>
   </url>

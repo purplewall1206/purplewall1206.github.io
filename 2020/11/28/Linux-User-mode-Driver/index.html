@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/media/icon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/media/icon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/media/icon.ico">
+  <link rel="mask-icon" href="/media/icon.ico" color="#222">
+  <meta name="google-site-verification" content="TdeO_1sptDt1finCK96f1d4ZglWFqiiHdGv8OXZbgr4">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.zi-c.wang","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="UIO userspace i&#x2F;o20200702Make the user mode driver code a better citizen20040120User-space device driverstldp userspace device driver20161019Linux drivers in user space — a surveyUIO: user-space drive">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux User-mode Driver">
+<meta property="og:url" content="https://www.zi-c.wang/2020/11/28/Linux-User-mode-Driver/index.html">
+<meta property="og:site_name" content="purplewall1206 blog">
+<meta property="og:description" content="UIO userspace i&#x2F;o20200702Make the user mode driver code a better citizen20040120User-space device driverstldp userspace device driver20161019Linux drivers in user space — a surveyUIO: user-space drive">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.zi-c.wang/2020/11/28/Linux-User-mode-Driver/media/usermodedriver-UIO.gif">
+<meta property="og:image" content="https://www.zi-c.wang/2020/11/28/Linux-User-mode-Driver/media/usermodedriver-vfio.png">
+<meta property="og:image" content="https://www.zi-c.wang/2020/11/28/Linux-User-mode-Driver/media/usermodedriver-dpdk.PNG">
+<meta property="article:published_time" content="2020-11-28T07:18:10.000Z">
+<meta property="article:modified_time" content="2020-11-28T07:19:54.297Z">
+<meta property="article:author" content="purplewall1206">
+<meta property="article:tag" content="kernel">
+<meta property="article:tag" content="Driver">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.zi-c.wang/2020/11/28/Linux-User-mode-Driver/media/usermodedriver-UIO.gif">
+
+<link rel="canonical" href="https://www.zi-c.wang/2020/11/28/Linux-User-mode-Driver/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Linux User-mode Driver | purplewall1206 blog</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?468b5e05c899b3e2f97b65ef421b820d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="purplewall1206 blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">purplewall1206 blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.zi-c.wang/2020/11/28/Linux-User-mode-Driver/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/media/icon.ico">
+      <meta itemprop="name" content="purplewall1206">
+      <meta itemprop="description" content="something about kernel & programming">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="purplewall1206 blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux User-mode Driver
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-11-28 15:18:10 / 修改时间：15:19:54" itemprop="dateCreated datePublished" datetime="2020-11-28T15:18:10+08:00">2020-11-28</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="UIO-userspace-i-o"><a href="#UIO-userspace-i-o" class="headerlink" title="UIO userspace i/o"></a>UIO userspace i/o</h2><p><a target="_blank" rel="noopener" href="https://lwn.net/Articles/825190/">20200702Make the user mode driver code a better citizen</a><br><a target="_blank" rel="noopener" href="https://lwn.net/Articles/66829/">20040120User-space device drivers</a><br><a target="_blank" rel="noopener" href="https://tldp.org/LDP/khg/HyperNews/get/devices/fake.html">tldp userspace device driver</a><br><a target="_blank" rel="noopener" href="https://lwn.net/Articles/703785/">20161019Linux drivers in user space — a survey</a><br><a target="_blank" rel="noopener" href="https://lwn.net/Articles/232575/">UIO: user-space drivers</a><br><a target="_blank" rel="noopener" href="https://www.kernel.org/doc/html/latest/driver-api/uio-howto.html?highlight=uio">The Userspace I/O HOWTO</a></p>
+<a id="more"></a>
+
+<p>UIO因为不支持DMA已经被vfio取代了,zd 2.6.22被引入</p>
+<p>UIO的目的，对于有些设备来说创建Linux kernel driver有点多余了，这些设备只是需要处理中断和提供对device内存区域的访问，例如industrial I/O card。</p>
+<p>UIO不完全排除内核空间代码的使用，需要一个小的模块负责device设置，PCI总线接口、注册interrupt handler等</p>
+<p>相关数据结构在<code>linux/uio_driver.h</code>,在sysfs和/dev/uioX 导出用户接口，使用dev的接口进行设备控制，mmap映射设备的寄存器或者RAM，通过读dev/uioX处理中断（可以通过select），每个UIO设备可以创建一个或多个内存区域能够进行内存映射，因为一些industrial I/O card在driver中需要访问超过一个PCI内存区域</p>
+<p>UIO驱动是char drivers，没有block和network drivers，不能在用户态设置DMA</p>
+<p><img src="/2020/11/28/Linux-User-mode-Driver/media/usermodedriver-UIO.gif" alt="usermodedriver-UIO"></p>
+<h2 id="VFIO"><a href="#VFIO" class="headerlink" title="VFIO"></a>VFIO</h2><p><a target="_blank" rel="noopener" href="https://www.kernel.org/doc/Documentation/vfio.txt">vfio-kernel document</a><br><a target="_blank" rel="noopener" href="https://lwn.net/Articles/473234/">VFIO core framework</a><br><a target="_blank" rel="noopener" href="https://lwn.net/Articles/499240/">VFIO</a><br><a target="_blank" rel="noopener" href="https://lwn.net/Articles/815745/">vfio: expose virtual Shared Virtual Addressing to VMs</a><br><a target="_blank" rel="noopener" href="https://lwn.net/Articles/474088/">Safe device assignment with VFIO</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/yi-mu-xi/p/10515609.html">IOMMU &amp; iomap &amp;VFIO &amp; uio</a><br><a target="_blank" rel="noopener" href="https://www.kernel.org/doc/Documentation/vfio.txt">VFIO - “Virtual Function I/O”</a></p>
+<p>VFIO 把内核态的和IO相关的内存区域、IO port和DMA暴露给用户态，可以用KVM做设备直通，也可以构建用户态driver。也是通过 /dev/vfio暴露接口，通过IOCTL系统调用发送操作device的command</p>
+<p>在VFIO中虚拟机直通的最小单元不再是单独的设备，而是同一group里面的所有设备，而仅仅通过IOMMU设置直通则无法处理多个有联系的PCI设备的相互访问。因此VFIO集成了IOMMU和UIO的优点。</p>
+<p><img src="/2020/11/28/Linux-User-mode-Driver/media/usermodedriver-vfio.png" alt="usermodedriver-vfio"></p>
+<h2 id="DPDK-Data-Plane-Development-Kit"><a href="#DPDK-Data-Plane-Development-Kit" class="headerlink" title="DPDK Data Plane Development Kit"></a>DPDK Data Plane Development Kit</h2><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/86af81a10195">DPDK介绍</a><br><a target="_blank" rel="noopener" href="https://lwn.net/Articles/725254/">Network acceleration with DPDK</a>   </p>
+<p>是一种intel使用intel硬件提供的用户空间的网络驱动解决方案。用于快速数据包处理的函数库与驱动集合，可以极大提高数据处理性能和吞吐量，提高数据平面应用程序的工作效率。</p>
+<p>DPDK使用了轮询(polling)而不是中断来处理数据包。在收到数据包时，经DPDK重载的网卡驱动不会通过中断通知CPU，而是直接将数据包存入内存，交付应用层软件通过DPDK提供的接口来直接处理，这样节省了大量的CPU中断时间和内存拷贝时间</p>
+<p> DPDK defines an execution environment which contains user-space network drivers.</p>
+<p>具体优点是使用了HUGEPAGE和numa，CPU亲和等硬件技术，加快运行速度，还有使用了UIO或VFIO技术直接暴露设备内存通过zero copy的方式减少系统调用和复制数据开销。</p>
+<p><img src="/2020/11/28/Linux-User-mode-Driver/media/usermodedriver-dpdk.PNG" alt="dpdk"></p>
+<h2 id="SPDK-storage-performance-development-kit"><a href="#SPDK-storage-performance-development-kit" class="headerlink" title="SPDK  storage performance development kit"></a>SPDK  storage performance development kit</h2><p>给NVME-ssd设计的高速工具包，intel提供的使用intel网络、处理、存取技术，充分发挥固态存储的优势，采用了UIO和polling，将驱动代码运行在内核态，多路复用取代阻塞I/O。</p>
+<p>其中也涉及不少实现细节，但总之是当下速度比较快的一种I/O工具。实现思路和DPDK一样，也是取消get/put_user，mmap直接干。</p>
+<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><p><a target="_blank" rel="noopener" href="https://lwn.net/Articles/703785/">Linux drivers in user space — a survey</a><br><a target="_blank" rel="noopener" href="https://tldp.org/LDP/khg/HyperNews/get/devices/fake.html">User-space device drivers</a><br><a target="_blank" rel="noopener" href="https://lwn.net/Articles/66829/">User-space device drivers</a><br><a target="_blank" rel="noopener" href="https://lwn.net/Articles/825190/">Make the user mode driver code a better citizen</a></p>
+
+    </div>
+
+    
+    
+    
+      
+  <div class="popular-posts-header">相关文章推荐</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2020/11/16/Raspberry-Pi-内核编译/" rel="bookmark">Raspberry Pi 内核编译</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2020/11/15/io-uring-系统性整理/" rel="bookmark">io_uring 系统性整理</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2020/11/16/kernel-contribution-统计/" rel="bookmark">kernel contribution 统计</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2020/11/15/内核近期改变/" rel="bookmark">内核近期改变</a></div>
+    </li>
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="/2020/11/28/kernel-exploit-vm搭建/" rel="bookmark">kernel-exploit-vm搭建</a></div>
+    </li>
+  </ul>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>purplewall1206
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://www.zi-c.wang/2020/11/28/Linux-User-mode-Driver/" title="Linux User-mode Driver">https://www.zi-c.wang/2020/11/28/Linux-User-mode-Driver/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/kernel/" rel="tag"># kernel</a>
+              <a href="/tags/Driver/" rel="tag"># Driver</a>
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/11/28/kernel-exploit-vm%E6%90%AD%E5%BB%BA/" rel="prev" title="kernel-exploit-vm搭建">
+      <i class="fa fa-chevron-left"></i> kernel-exploit-vm搭建
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#UIO-userspace-i-o"><span class="nav-number">1.</span> <span class="nav-text">UIO userspace i&#x2F;o</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VFIO"><span class="nav-number">2.</span> <span class="nav-text">VFIO</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DPDK-Data-Plane-Development-Kit"><span class="nav-number">3.</span> <span class="nav-text">DPDK Data Plane Development Kit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SPDK-storage-performance-development-kit"><span class="nav-number">4.</span> <span class="nav-text">SPDK  storage performance development kit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#reference"><span class="nav-number">5.</span> <span class="nav-text">reference</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="purplewall1206"
+      src="/media/icon.ico">
+  <p class="site-author-name" itemprop="name">purplewall1206</p>
+  <div class="site-description" itemprop="description">something about kernel & programming</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/purplewall1206" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;purplewall1206" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:wzc@smail.nju.edu.cn" title="E-Mail → mailto:wzc@smail.nju.edu.cn" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">吉ICP备15007680号-2 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">purplewall1206</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
