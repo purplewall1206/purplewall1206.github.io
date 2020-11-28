@@ -6,7 +6,7 @@
   <link href="https://www.zi-c.wang/atom.xml" rel="self"/>
   
   <link href="https://www.zi-c.wang/"/>
-  <updated>2020-11-28T07:19:54.297Z</updated>
+  <updated>2020-11-28T07:21:59.157Z</updated>
   <id>https://www.zi-c.wang/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://www.zi-c.wang/2020/11/28/Linux-User-mode-Driver/"/>
     <id>https://www.zi-c.wang/2020/11/28/Linux-User-mode-Driver/</id>
     <published>2020-11-28T07:18:10.000Z</published>
-    <updated>2020-11-28T07:19:54.297Z</updated>
+    <updated>2020-11-28T07:21:59.157Z</updated>
     
     
     <summary type="html">&lt;h2 id=&quot;UIO-userspace-i-o&quot;&gt;&lt;a href=&quot;#UIO-userspace-i-o&quot; class=&quot;headerlink&quot; title=&quot;UIO userspace i/o&quot;&gt;&lt;/a&gt;UIO userspace i/o&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://lwn.net/Articles/825190/&quot;&gt;20200702Make the user mode driver code a better citizen&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://lwn.net/Articles/66829/&quot;&gt;20040120User-space device drivers&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://tldp.org/LDP/khg/HyperNews/get/devices/fake.html&quot;&gt;tldp userspace device driver&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://lwn.net/Articles/703785/&quot;&gt;20161019Linux drivers in user space — a survey&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://lwn.net/Articles/232575/&quot;&gt;UIO: user-space drivers&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://www.kernel.org/doc/html/latest/driver-api/uio-howto.html?highlight=uio&quot;&gt;The Userspace I/O HOWTO&lt;/a&gt;&lt;/p&gt;</summary>
