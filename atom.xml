@@ -6,7 +6,7 @@
   <link href="https://www.zi-c.wang/atom.xml" rel="self"/>
   
   <link href="https://www.zi-c.wang/"/>
-  <updated>2020-12-01T07:43:04.395Z</updated>
+  <updated>2020-12-11T13:22:03.478Z</updated>
   <id>https://www.zi-c.wang/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>kernel memory layout</title>
+    <link href="https://www.zi-c.wang/2020/12/11/kernel-memory-layout/"/>
+    <id>https://www.zi-c.wang/2020/12/11/kernel-memory-layout/</id>
+    <published>2020-12-11T13:20:41.000Z</published>
+    <updated>2020-12-11T13:22:03.478Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;&lt;a href=&quot;https://www.kernel.org/doc/html/latest/x86/x86_64/mm.html&quot;&gt;latest mm documentation&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://www.kernel.org/doc/html/latest/x86/boot.html?highlight=layout&quot;&gt;latest boot documentatino&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://lwn.net/Articles/338009/&quot;&gt;x86: fix return from kernel to userspace with 16-bit stack&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;/Documentation/x86/x86_64/mm.txt&lt;/p&gt;
+&lt;p&gt;/Documentation/x86/boot.txt&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="kernel" scheme="https://www.zi-c.wang/tags/kernel/"/>
+    
+    <category term="linux" scheme="https://www.zi-c.wang/tags/linux/"/>
+    
+  </entry>
   
   <entry>
     <title>Linux User-mode Driver</title>

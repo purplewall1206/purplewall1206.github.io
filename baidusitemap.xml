@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://www.zi-c.wang/2020/12/11/kernel-memory-layout/</loc>
+    <lastmod>2020-12-11</lastmod>
+  </url>
+  <url>
     <loc>https://www.zi-c.wang/2020/11/28/Linux-User-mode-Driver/</loc>
     <lastmod>2020-12-01</lastmod>
   </url>
