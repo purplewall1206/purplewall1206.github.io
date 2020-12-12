@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://www.zi-c.wang/2020/12/12/typedef-code-pointer-%E4%BB%A3%E7%A0%81%E6%8C%87%E9%92%88/</loc>
+    <lastmod>2020-12-12</lastmod>
+  </url>
+  <url>
     <loc>https://www.zi-c.wang/2020/12/11/kernel-memory-layout/</loc>
     <lastmod>2020-12-11</lastmod>
   </url>
