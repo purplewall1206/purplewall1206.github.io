@@ -6,7 +6,7 @@
   <link href="https://www.zi-c.wang/atom.xml" rel="self"/>
   
   <link href="https://www.zi-c.wang/"/>
-  <updated>2020-12-15T01:47:24.600Z</updated>
+  <updated>2020-12-27T02:20:32.427Z</updated>
   <id>https://www.zi-c.wang/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>装机</title>
+    <link href="https://www.zi-c.wang/2020/12/27/%E8%A3%85%E6%9C%BA/"/>
+    <id>https://www.zi-c.wang/2020/12/27/%E8%A3%85%E6%9C%BA/</id>
+    <published>2020-12-27T01:43:23.000Z</published>
+    <updated>2020-12-27T02:20:32.427Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;装机-硬件设备厂家选择&quot;&gt;&lt;a href=&quot;#装机-硬件设备厂家选择&quot; class=&quot;headerlink&quot; title=&quot;装机-硬件设备厂家选择&quot;&gt;&lt;/a&gt;装机-硬件设备厂家选择&lt;/h1&gt;&lt;p&gt;20201226&lt;/p&gt;
+&lt;p&gt;装机主要分成八个部分：CPU，主板，内存，显卡，硬盘，电源，散热，机箱&lt;/p&gt;
+&lt;p&gt;这篇文章主要是分析八种硬件有哪些型号，性能对比，以及厂商的质量和价格，最终目的是设计一套合理的装机配置。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="硬件" scheme="https://www.zi-c.wang/tags/%E7%A1%AC%E4%BB%B6/"/>
+    
+    <category term="装机" scheme="https://www.zi-c.wang/tags/%E8%A3%85%E6%9C%BA/"/>
+    
+  </entry>
   
   <entry>
     <title>access_ok 重要的函数指针传递分析</title>
