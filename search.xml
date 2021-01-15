@@ -1055,4 +1055,29 @@ hbase(main)> truncate 't1'
         <tag>装机</tag>
       </tags>
   </entry>
+  <entry>
+    <title>内核栈与vmap kernel stack</title>
+    <url>/2021/01/15/%E5%86%85%E6%A0%B8%E6%A0%88%E4%B8%8Evmap-kernel-stack/</url>
+    <content><![CDATA[<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://lwn.net/Articles/692208/">Virtually mapped kernel stacks</a><br><a href="https://lwn.net/Articles/691631/">Virtually mapped stacks with guard pages (x86, core)</a></p>
+<p>kernel stack在64位系统上通常是8k或16k连续映射，但是很容易造成溢出，而且在内存被大量占用的情况下不太容易找到连续的2页或4页。</p>
+<p>因此有开发者提出了解决办法，使用vmap解决这两个问题,使得内核栈在溢出时print一个错误信息。</p>
+<a id="more"></a>
+<h1 id="Virtually-mapped-stacks"><a href="#Virtually-mapped-stacks" class="headerlink" title="Virtually mapped stacks"></a>Virtually mapped stacks</h1><p>作者 Andy Lutomirski 使用vmalloc分配内核栈，然而这面临着内存分配速度1.5us，比较慢的问题。</p>
+<p>作者本来打算不管这套，并且想让vmalloc速度快点，但是linus建议为per_cpu分配几个cache，实际实现的过程中是为每个CPU分配了2个cache</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#define NR_CACHED_STACKS 2</span><br><span class="line">static DEFINE_PER_CPU(struct vm_struct *, cached_stacks[NR_CACHED_STACKS]);</span><br></pre></td></tr></table></figure>
+
+<p>如果其中一个能用就分配给申请的task，如果两个都不行就再申请个新的</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">for (i &#x3D; 0; i &lt; NR_CACHED_STACKS; i++) &#123;</span><br><span class="line">		struct vm_struct *s;</span><br><span class="line"></span><br><span class="line">		s &#x3D; this_cpu_xchg(cached_stacks[i], NULL);</span><br><span class="line"></span><br><span class="line">		if (!s)</span><br><span class="line">			continue;</span><br><span class="line"></span><br><span class="line">		&#x2F;* Clear the KASAN shadow of the stack. *&#x2F;</span><br><span class="line">		kasan_unpoison_shadow(s-&gt;addr, THREAD_SIZE);</span><br><span class="line"></span><br><span class="line">		&#x2F;* Clear stale pointers from reused stack. *&#x2F;</span><br><span class="line">		memset(s-&gt;addr, 0, THREAD_SIZE);</span><br><span class="line"></span><br><span class="line">		tsk-&gt;stack_vm_area &#x3D; s;</span><br><span class="line">		tsk-&gt;stack &#x3D; s-&gt;addr;</span><br><span class="line">		return s-&gt;addr;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	&#x2F;*</span><br><span class="line">	 * Allocated stacks are cached and later reused by new threads,</span><br><span class="line">	 * so memcg accounting is performed manually on assigning&#x2F;releasing</span><br><span class="line">	 * stacks to tasks. Drop __GFP_ACCOUNT.</span><br><span class="line">	 *&#x2F;</span><br><span class="line">	stack &#x3D; __vmalloc_node_range(THREAD_SIZE, THREAD_ALIGN,</span><br><span class="line">				     VMALLOC_START, VMALLOC_END,</span><br><span class="line">				     THREADINFO_GFP &amp; ~__GFP_ACCOUNT,</span><br><span class="line">				     PAGE_KERNEL,</span><br><span class="line">				     0, node, __builtin_return_address(0));</span><br></pre></td></tr></table></figure>
+<h2 id="kconfig"><a href="#kconfig" class="headerlink" title="kconfig"></a>kconfig</h2><ul>
+<li>CONFIG_HAVE_ARCH_VMAP_STACK=y</li>
+<li>CONFIG_VMAP_STACK=y</li>
+</ul>
+<h1 id="原本的内核栈"><a href="#原本的内核栈" class="headerlink" title="原本的内核栈"></a>原本的内核栈</h1><p>直接申请物理页，赋予的地址在直接映射区</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">struct page *page &#x3D; alloc_pages_node(node, THREADINFO_GFP,</span><br><span class="line">				     THREAD_SIZE_ORDER);</span><br><span class="line"></span><br><span class="line">if (likely(page)) &#123;</span><br><span class="line">	tsk-&gt;stack &#x3D; page_address(page);</span><br><span class="line">	return tsk-&gt;stack;</span><br><span class="line">&#125;</span><br><span class="line">return NULL;</span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>kernel</tag>
+        <tag>linux</tag>
+        <tag>stack</tag>
+      </tags>
+  </entry>
 </search>
