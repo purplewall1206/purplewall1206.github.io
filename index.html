@@ -207,6 +207,137 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.zi-c.wang/2021/03/01/kernel-compile-obj-m-or-obj-y/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/media/icon.ico">
+      <meta itemprop="name" content="purplewall1206">
+      <meta itemprop="description" content="something about kernel & programming">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="purplewall1206 blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/01/kernel-compile-obj-m-or-obj-y/" class="post-title-link" itemprop="url">kernel compile: obj-m or obj-y</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-01 16:14:14 / 修改时间：16:14:48" itemprop="dateCreated datePublished" datetime="2021-03-01T16:14:14+08:00">2021-03-01</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="obj-m-obj-y"><a href="#obj-m-obj-y" class="headerlink" title="obj-m/obj-y"></a>obj-m/obj-y</h1><p>使用obj-m可以将文件编译成单独的.ko文件</p>
+<p>使用obj-y可以将文件编译到内核的zImage中</p>
+<p>使用obj-n表示不编译</p>
+<p>内核中常见的还有 obj-$(SYM) 这种类型的，一般$(SYM)可以取值为y，m</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.zi-c.wang/2021/03/01/%E4%B8%BA%E4%BB%80%E4%B9%88LKM%E6%97%A0%E6%B3%95%E7%9B%B4%E6%8E%A5%E8%B0%83%E7%94%A8swapper-pg-dir-%E5%86%85%E6%A0%B8%E4%B8%AD%E7%9A%84static%E5%8F%98%E9%87%8F%E5%92%8C%E5%87%BD%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/media/icon.ico">
+      <meta itemprop="name" content="purplewall1206">
+      <meta itemprop="description" content="something about kernel & programming">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="purplewall1206 blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/01/%E4%B8%BA%E4%BB%80%E4%B9%88LKM%E6%97%A0%E6%B3%95%E7%9B%B4%E6%8E%A5%E8%B0%83%E7%94%A8swapper-pg-dir-%E5%86%85%E6%A0%B8%E4%B8%AD%E7%9A%84static%E5%8F%98%E9%87%8F%E5%92%8C%E5%87%BD%E6%95%B0/" class="post-title-link" itemprop="url">为什么LKM无法直接调用swapper_pg_dir--内核中的static变量和函数</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-01 16:09:53 / 修改时间：16:12:33" itemprop="dateCreated datePublished" datetime="2021-03-01T16:09:53+08:00">2021-03-01</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="kernel-static-functions-内核静态函数"><a href="#kernel-static-functions-内核静态函数" class="headerlink" title="kernel static functions 内核静态函数"></a>kernel static functions 内核静态函数</h1><p>在编写drivers想要调用一些敏感的内核函数时，往往会出现<code>xxx undefined</code>这种情况，并不能通过加入头文件的方式解决。</p>
+<p>深入了解一下，以<code>__p4d_alloc</code>为例：</p>
+<p>在<code>include/linux/mm.h</code>中声明<code>static inline int __p4d_alloc(struct mm_struct *mm, pgd_t *pgd, unsigned long address)</code> 为静态内联函数</p>
+<p>那么为什么在driver中无法调用静态函数呢？这回归到了C语言的一个基础问题，static到底是做什么的？</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/03/01/%E4%B8%BA%E4%BB%80%E4%B9%88LKM%E6%97%A0%E6%B3%95%E7%9B%B4%E6%8E%A5%E8%B0%83%E7%94%A8swapper-pg-dir-%E5%86%85%E6%A0%B8%E4%B8%AD%E7%9A%84static%E5%8F%98%E9%87%8F%E5%92%8C%E5%87%BD%E6%95%B0/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://www.zi-c.wang/2021/01/15/%E5%86%85%E6%A0%B8%E6%A0%88%E4%B8%8Evmap-kernel-stack/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -750,177 +881,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://www.zi-c.wang/2020/11/19/NJU%E7%A0%94%E7%A9%B6%E7%94%9F%E9%80%9A%E7%9F%A5RSS/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/media/icon.ico">
-      <meta itemprop="name" content="purplewall1206">
-      <meta itemprop="description" content="something about kernel & programming">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="purplewall1206 blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/19/NJU%E7%A0%94%E7%A9%B6%E7%94%9F%E9%80%9A%E7%9F%A5RSS/" class="post-title-link" itemprop="url">NJU研究生通知RSS</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-11-19 14:39:45" itemprop="dateCreated datePublished" datetime="2020-11-19T14:39:45+08:00">2020-11-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-11-21 16:54:32" itemprop="dateModified" datetime="2020-11-21T16:54:32+08:00">2020-11-21</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index"><span itemprop="name">python</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/rss/" itemprop="url" rel="index"><span itemprop="name">rss</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/rss/github/" itemprop="url" rel="index"><span itemprop="name">github</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="NJU-notifeed"><a href="#NJU-notifeed" class="headerlink" title="NJU-notifeed"></a>NJU-notifeed</h1><p>Nanjing University notification feed</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/purplewall1206/NJU-notifeed">https://github.com/purplewall1206/NJU-notifeed</a></p>
-<p><strong>直接订阅：</strong><br><a target="_blank" rel="noopener" href="http://idcvz.zi-c.wang:8000/rss">http://idcvz.zi-c.wang:8000/rss</a></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/11/19/NJU%E7%A0%94%E7%A9%B6%E7%94%9F%E9%80%9A%E7%9F%A5RSS/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://www.zi-c.wang/2020/11/16/Raspberry-Pi-%E5%86%85%E6%A0%B8%E7%BC%96%E8%AF%91/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/media/icon.ico">
-      <meta itemprop="name" content="purplewall1206">
-      <meta itemprop="description" content="something about kernel & programming">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="purplewall1206 blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/16/Raspberry-Pi-%E5%86%85%E6%A0%B8%E7%BC%96%E8%AF%91/" class="post-title-link" itemprop="url">Raspberry Pi 内核编译</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-11-16 20:06:10 / 修改时间：20:10:02" itemprop="dateCreated datePublished" datetime="2020-11-16T20:06:10+08:00">2020-11-16</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/kernel/" itemprop="url" rel="index"><span itemprop="name">kernel</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/kernel/raspberryPi/" itemprop="url" rel="index"><span itemprop="name">raspberryPi</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><strong>我的版本 : 树莓派3</strong></p>
-<h1 id="1-内核获取"><a href="#1-内核获取" class="headerlink" title="1.内核获取"></a>1.内核获取</h1><h2 id="1-1-软件下载"><a href="#1-1-软件下载" class="headerlink" title="1.1.软件下载"></a>1.1.软件下载</h2><p><code>sudo apt install git bc bison flex libssl-dev make</code></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/11/16/Raspberry-Pi-%E5%86%85%E6%A0%B8%E7%BC%96%E8%AF%91/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -992,7 +952,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-count">23</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1005,7 +965,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-count">28</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

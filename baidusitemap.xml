@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://www.zi-c.wang/2021/03/01/kernel-compile-obj-m-or-obj-y/</loc>
+    <lastmod>2021-03-01</lastmod>
+  </url>
+  <url>
+    <loc>https://www.zi-c.wang/2021/03/01/%E4%B8%BA%E4%BB%80%E4%B9%88LKM%E6%97%A0%E6%B3%95%E7%9B%B4%E6%8E%A5%E8%B0%83%E7%94%A8swapper-pg-dir-%E5%86%85%E6%A0%B8%E4%B8%AD%E7%9A%84static%E5%8F%98%E9%87%8F%E5%92%8C%E5%87%BD%E6%95%B0/</loc>
+    <lastmod>2021-03-01</lastmod>
+  </url>
+  <url>
     <loc>https://www.zi-c.wang/2021/01/15/%E5%86%85%E6%A0%B8%E6%A0%88%E4%B8%8Evmap-kernel-stack/</loc>
     <lastmod>2021-01-15</lastmod>
   </url>

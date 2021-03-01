@@ -6,7 +6,7 @@
   <link href="https://www.zi-c.wang/atom.xml" rel="self"/>
   
   <link href="https://www.zi-c.wang/"/>
-  <updated>2021-01-15T08:40:29.298Z</updated>
+  <updated>2021-03-01T08:14:48.766Z</updated>
   <id>https://www.zi-c.wang/</id>
   
   <author>
@@ -15,6 +15,59 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>kernel compile: obj-m or obj-y</title>
+    <link href="https://www.zi-c.wang/2021/03/01/kernel-compile-obj-m-or-obj-y/"/>
+    <id>https://www.zi-c.wang/2021/03/01/kernel-compile-obj-m-or-obj-y/</id>
+    <published>2021-03-01T08:14:14.000Z</published>
+    <updated>2021-03-01T08:14:48.766Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="kernel" scheme="https://www.zi-c.wang/tags/kernel/"/>
+    
+    <category term="linux" scheme="https://www.zi-c.wang/tags/linux/"/>
+    
+    <category term="compile" scheme="https://www.zi-c.wang/tags/compile/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>为什么LKM无法直接调用swapper_pg_dir--内核中的static变量和函数</title>
+    <link href="https://www.zi-c.wang/2021/03/01/%E4%B8%BA%E4%BB%80%E4%B9%88LKM%E6%97%A0%E6%B3%95%E7%9B%B4%E6%8E%A5%E8%B0%83%E7%94%A8swapper-pg-dir-%E5%86%85%E6%A0%B8%E4%B8%AD%E7%9A%84static%E5%8F%98%E9%87%8F%E5%92%8C%E5%87%BD%E6%95%B0/"/>
+    <id>https://www.zi-c.wang/2021/03/01/%E4%B8%BA%E4%BB%80%E4%B9%88LKM%E6%97%A0%E6%B3%95%E7%9B%B4%E6%8E%A5%E8%B0%83%E7%94%A8swapper-pg-dir-%E5%86%85%E6%A0%B8%E4%B8%AD%E7%9A%84static%E5%8F%98%E9%87%8F%E5%92%8C%E5%87%BD%E6%95%B0/</id>
+    <published>2021-03-01T08:09:53.000Z</published>
+    <updated>2021-03-01T08:12:33.446Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;kernel-static-functions-内核静态函数&quot;&gt;&lt;a href=&quot;#kernel-static-functions-内核静态函数&quot; class=&quot;headerlink&quot; title=&quot;kernel static functions 内核静态函数&quot;&gt;&lt;/a&gt;kernel static functions 内核静态函数&lt;/h1&gt;&lt;p&gt;在编写drivers想要调用一些敏感的内核函数时，往往会出现&lt;code&gt;xxx undefined&lt;/code&gt;这种情况，并不能通过加入头文件的方式解决。&lt;/p&gt;
+&lt;p&gt;深入了解一下，以&lt;code&gt;__p4d_alloc&lt;/code&gt;为例：&lt;/p&gt;
+&lt;p&gt;在&lt;code&gt;include/linux/mm.h&lt;/code&gt;中声明&lt;code&gt;static inline int __p4d_alloc(struct mm_struct *mm, pgd_t *pgd, unsigned long address)&lt;/code&gt; 为静态内联函数&lt;/p&gt;
+&lt;p&gt;那么为什么在driver中无法调用静态函数呢？这回归到了C语言的一个基础问题，static到底是做什么的？&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="kernel" scheme="https://www.zi-c.wang/tags/kernel/"/>
+    
+    <category term="linux" scheme="https://www.zi-c.wang/tags/linux/"/>
+    
+    <category term="c" scheme="https://www.zi-c.wang/tags/c/"/>
+    
+    <category term="programming" scheme="https://www.zi-c.wang/tags/programming/"/>
+    
+  </entry>
   
   <entry>
     <title>内核栈与vmap kernel stack</title>
@@ -476,55 +529,6 @@
     
     
     <category term="markdown" scheme="https://www.zi-c.wang/tags/markdown/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>nutch-2.3.1+hbase-0.94+eclipse 环境搭建教程</title>
-    <link href="https://www.zi-c.wang/2016/03/08/nutch-2.3.1+hbase-0.94+eclipse%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/"/>
-    <id>https://www.zi-c.wang/2016/03/08/nutch-2.3.1+hbase-0.94+eclipse%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</id>
-    <published>2016-03-08T15:52:10.000Z</published>
-    <updated>2020-11-22T08:50:36.390Z</updated>
-    
-    
-    <summary type="html">&lt;h2 id=&quot;1-开发环境及软件版本&quot;&gt;&lt;a href=&quot;#1-开发环境及软件版本&quot; class=&quot;headerlink&quot; title=&quot;1.开发环境及软件版本&quot;&gt;&lt;/a&gt;1.开发环境及软件版本&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;centos 6.7&lt;/li&gt;
-&lt;li&gt;apache-nutch-2.3.1&lt;/li&gt;
-&lt;li&gt;hbase-0.94&lt;/li&gt;
-&lt;li&gt;eclipse javaEE&lt;/li&gt;
-&lt;li&gt;jdk8&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;2-安装并配置jdk&quot;&gt;&lt;a href=&quot;#2-安装并配置jdk&quot; class=&quot;headerlink&quot; title=&quot;2.安装并配置jdk&quot;&gt;&lt;/a&gt;2.安装并配置jdk&lt;/h2&gt;</summary>
-    
-    
-    
-    
-    <category term="hbase" scheme="https://www.zi-c.wang/tags/hbase/"/>
-    
-    <category term="nutch" scheme="https://www.zi-c.wang/tags/nutch/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>hbase的常用shell</title>
-    <link href="https://www.zi-c.wang/2016/01/20/hbase%E5%B8%B8%E7%94%A8shell/"/>
-    <id>https://www.zi-c.wang/2016/01/20/hbase%E5%B8%B8%E7%94%A8shell/</id>
-    <published>2016-01-20T02:43:10.000Z</published>
-    <updated>2020-11-22T08:52:48.260Z</updated>
-    
-    
-    <summary type="html">&lt;h2 id=&quot;1-打开hbase并进入hbase-shell-console&quot;&gt;&lt;a href=&quot;#1-打开hbase并进入hbase-shell-console&quot; class=&quot;headerlink&quot; title=&quot;1.打开hbase并进入hbase shell console&quot;&gt;&lt;/a&gt;1.打开hbase并进入hbase shell console&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;
-$HBASE_HOME/bin/start-hbase.sh
-$HBASE_HOME/bin/hbase shell
-hbase(main)&gt; whoami
-&lt;/code&gt;&lt;/pre&gt;</summary>
-    
-    
-    
-    
-    <category term="markdown" scheme="https://www.zi-c.wang/tags/markdown/"/>
-    
-    <category term="hbase" scheme="https://www.zi-c.wang/tags/hbase/"/>
     
   </entry>
   
