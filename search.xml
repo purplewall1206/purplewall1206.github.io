@@ -1098,6 +1098,12 @@ hbase(main)> truncate 't1'
 <li>默认初始化为0,因为静态区默认初始化为0.</li>
 </ol>
 <p>因此我们能够明白为什么在LKM中我们无法直接调用<code>__p4d_alloc</code> 和 <code>swapper_pg_dir</code> 这些符号，因为都是被static限定了适用范围。</p>
+<h1 id="头文件中的static-inline声明"><a href="#头文件中的static-inline声明" class="headerlink" title="头文件中的static inline声明"></a>头文件中的static inline声明</h1><p>头文件中最好不要使用static声明函数，因为：</p>
+<blockquote>
+<p>头文件中的 static 函数会在每个文件中生成一份代码，这造成代码冗余倒不是最大的问题，最大的问题是可能带来库文件与工程文件同一函数的代码的不一致性，这有风险。</p>
+</blockquote>
+<p>但是有例外情况 比如内核中大量<code>static inline int pud_present(pud_t pud)</code>这类函数，定义为static inline</p>
+<p>因为c语言中的inline 关键字只是建议内联，通常编译器不执行，但是如果使用 <code>static inline</code> 则会保证一定<strong>内联</strong>。</p>
 <h1 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h1><p>目前看来唯一可行的办法是通过地址引用<code>struct mmstruct *INIT_MM = 0xaddress</code>。</p>
 <p>另外记录两次失败案例：</p>
 <ul>
