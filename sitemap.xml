@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://www.zi-c.wang/2021/04/03/llvm-pass-build/</loc>
+    
+    <lastmod>2021-04-03</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.zi-c.wang/2021/04/03/llvm-%E8%8E%B7%E5%8F%96%E4%BB%A3%E7%A0%81-%E7%BC%96%E8%AF%91/</loc>
     
     <lastmod>2021-04-03</lastmod>
@@ -404,6 +411,27 @@
   
   <url>
     <loc>https://www.zi-c.wang/tags/llvm/</loc>
+    <lastmod>2021-04-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.zi-c.wang/tags/compiler/</loc>
+    <lastmod>2021-04-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.zi-c.wang/tags/llvm-pass/</loc>
+    <lastmod>2021-04-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.zi-c.wang/tags/instrumentation/</loc>
     <lastmod>2021-04-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>

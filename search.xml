@@ -1202,4 +1202,26 @@ cmake -DCMAKE_BUILD_TYPE=Debug --enable-optimized -DLLVM_TARGETS_TO_BUILD=X86 -D
         <tag>llvm</tag>
       </tags>
   </entry>
+  <entry>
+    <title>llvm-pass-build</title>
+    <url>/2021/04/03/llvm-pass-build/</url>
+    <content><![CDATA[<h1 id="llvm-pass-build"><a href="#llvm-pass-build" class="headerlink" title="llvm-pass-build"></a>llvm-pass-build</h1><p>llvm pass 编译有三种方式，直接上clang干，或者使用github skeleton项目给出的cmake，或者直接make</p>
+<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>这里有个非常诡异的问题， <code>opt -load mypass.so</code>显示文件格式错误，但是<code>opt -load ./mypass.so</code> 就可以正常使用</p>
+<p>因此记得 <strong>opt -load ./mypass.so</strong></p>
+<h1 id="clang"><a href="#clang" class="headerlink" title="clang"></a>clang</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">clang &#96;llvm-config --cxxflags&#96; -Wl,-znodelete -fno-rtti -fPIC -shared Hello.cpp -o LLVMHello.so &#96;llvm-config --ldflags&#96;</span><br><span class="line"></span><br><span class="line">opt -load .&#x2F;LLVMHello.so -hello test.bc</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+
+<h1 id="make"><a href="#make" class="headerlink" title="make"></a>make</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">LLVM_CONFIG?&#x3D;llvm-config</span><br><span class="line"></span><br><span class="line">SRC_DIR?&#x3D;$(PWD)</span><br><span class="line">LD_FLAGS+&#x3D;$(shell $(LLVM_CONFIG) --ldflags)</span><br><span class="line"></span><br><span class="line">COMMON_FLAGS&#x3D;-Wall -Wextra</span><br><span class="line">CXXFLAGS+&#x3D;$(COMMON_FLAGS) $(shell $(LLVM_CONFIG) --cxxflags)</span><br><span class="line">CXXFLAGS+&#x3D;-fPIC</span><br><span class="line">CPPFLAGS+&#x3D;$(shell $(LLVM_CONFIG) --cppflags) -T$(SRC_DIR)</span><br><span class="line">CPPFLAGS+&#x3D;-fPIC</span><br><span class="line"></span><br><span class="line">ifeq ($(shell uname), Darwin)</span><br><span class="line">LOADABLE_MODULE_OPTIONS&#x3D;-bundle -undefined dynamic_lookup</span><br><span class="line">else</span><br><span class="line">LOADABLE_MODULE_OPTIONS&#x3D;-shared -Wl,-O1</span><br><span class="line">endif</span><br><span class="line"></span><br><span class="line">HELLOPASS&#x3D;hellopass.so</span><br><span class="line">HELLOPASS_OBJECTS&#x3D;Hello.o</span><br><span class="line"></span><br><span class="line">default: $(HELLOPASS)</span><br><span class="line"></span><br><span class="line">%.o : $(SRC_DIR)&#x2F;%.cpp</span><br><span class="line">	@echo Compiling $.cpp</span><br><span class="line">	$(CXX) -c $(CPPFLAGS) $(CXXFLAGS) $&lt;</span><br><span class="line"></span><br><span class="line">$(HELLOPASS) : $(HELLOPASS_OBJECTS)</span><br><span class="line">	@echo Linking</span><br><span class="line">	$(CXX) -o $@  $(LOADABLE_MODULE_OPTIONS) $(CXXFLAGS) $(LD_FLAGS) $^</span><br><span class="line"></span><br><span class="line">clean:</span><br><span class="line">	rm -f $(HELLOPASS) $(HELLOPASS_OBJECTS)</span><br></pre></td></tr></table></figure>
+<p><a href="https://github.com/purplewall1206/llvm-practice/blob/main/tutorial/5-pass-test/Makefile">llvm-practice/tutorial/5-pass-test/Makefile</a></p>
+<h1 id="cmake"><a href="#cmake" class="headerlink" title="cmake"></a>cmake</h1><p><a href="https://github.com/sampsyo/llvm-pass-skeleton">github skeleton</a></p>
+<p>或者我的github</p>
+<p><a href="https://github.com/purplewall1206/llvm-practice/tree/main/tutorial/6-instrumentation">llvm-practice/tutorial/6-instrumentation/</a></p>
+]]></content>
+      <tags>
+        <tag>llvm</tag>
+        <tag>compiler</tag>
+        <tag>llvm-pass</tag>
+        <tag>instrumentation</tag>
+      </tags>
+  </entry>
 </search>

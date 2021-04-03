@@ -6,7 +6,7 @@
   <link href="https://www.zi-c.wang/atom.xml" rel="self"/>
   
   <link href="https://www.zi-c.wang/"/>
-  <updated>2021-04-03T08:54:47.892Z</updated>
+  <updated>2021-04-03T09:03:43.219Z</updated>
   <id>https://www.zi-c.wang/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>llvm-pass-build</title>
+    <link href="https://www.zi-c.wang/2021/04/03/llvm-pass-build/"/>
+    <id>https://www.zi-c.wang/2021/04/03/llvm-pass-build/</id>
+    <published>2021-04-03T09:02:18.000Z</published>
+    <updated>2021-04-03T09:03:43.219Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;llvm-pass-build&quot;&gt;&lt;a href=&quot;#llvm-pass-build&quot; class=&quot;headerlink&quot; title=&quot;llvm-pass-build&quot;&gt;&lt;/a&gt;llvm-pass-build&lt;/h1&gt;&lt;p&gt;llvm pass 编译有三种方式，直接上clang干，或者使用github skeleton项目给出的cmake，或者直接make&lt;/p&gt;
+&lt;h1 id=&quot;写在前面&quot;&gt;&lt;a href=&quot;#写在前面&quot; class=&quot;headerlink&quot; title=&quot;写在前面&quot;&gt;&lt;/a&gt;写在前面&lt;/h1&gt;&lt;p&gt;这里有个非常诡异的问题， &lt;code&gt;opt -load mypass.so&lt;/code&gt;显示文件格式错误，但是&lt;code&gt;opt -load ./mypass.so&lt;/code&gt; 就可以正常使用&lt;/p&gt;
+&lt;p&gt;因此记得 &lt;strong&gt;opt -load ./mypass.so&lt;/strong&gt;&lt;/p&gt;
+&lt;h1 id=&quot;clang&quot;&gt;&lt;a href=&quot;#clang&quot; class=&quot;headerlink&quot; title=&quot;clang&quot;&gt;&lt;/a&gt;clang&lt;/h1&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;clang &amp;#96;llvm-config --cxxflags&amp;#96; -Wl,-znodelete -fno-rtti -fPIC -shared Hello.cpp -o LLVMHello.so &amp;#96;llvm-config --ldflags&amp;#96;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;opt -load .&amp;#x2F;LLVMHello.so -hello test.bc&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;</summary>
+    
+    
+    
+    
+    <category term="llvm" scheme="https://www.zi-c.wang/tags/llvm/"/>
+    
+    <category term="compiler" scheme="https://www.zi-c.wang/tags/compiler/"/>
+    
+    <category term="llvm-pass" scheme="https://www.zi-c.wang/tags/llvm-pass/"/>
+    
+    <category term="instrumentation" scheme="https://www.zi-c.wang/tags/instrumentation/"/>
+    
+  </entry>
   
   <entry>
     <title>llvm 获取代码+编译</title>
@@ -507,27 +533,6 @@
     <category term="leetcode" scheme="https://www.zi-c.wang/tags/leetcode/"/>
     
     <category term="algorithm" scheme="https://www.zi-c.wang/tags/algorithm/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Hello World</title>
-    <link href="https://www.zi-c.wang/2020/11/14/hello-world/"/>
-    <id>https://www.zi-c.wang/2020/11/14/hello-world/</id>
-    <published>2020-11-14T08:54:12.760Z</published>
-    <updated>2020-11-15T11:22:11.557Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html"></summary>
-        
-      
-    
-    
-    
     
   </entry>
   
