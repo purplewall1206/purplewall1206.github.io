@@ -6,7 +6,7 @@
   <link href="https://www.zi-c.wang/atom.xml" rel="self"/>
   
   <link href="https://www.zi-c.wang/"/>
-  <updated>2021-03-01T08:14:48.766Z</updated>
+  <updated>2021-04-03T08:54:47.892Z</updated>
   <id>https://www.zi-c.wang/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>llvm 获取代码+编译</title>
+    <link href="https://www.zi-c.wang/2021/04/03/llvm-%E8%8E%B7%E5%8F%96%E4%BB%A3%E7%A0%81-%E7%BC%96%E8%AF%91/"/>
+    <id>https://www.zi-c.wang/2021/04/03/llvm-%E8%8E%B7%E5%8F%96%E4%BB%A3%E7%A0%81-%E7%BC%96%E8%AF%91/</id>
+    <published>2021-04-03T07:39:08.000Z</published>
+    <updated>2021-04-03T08:54:47.892Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;llvm-获取代码-编译&quot;&gt;&lt;a href=&quot;#llvm-获取代码-编译&quot; class=&quot;headerlink&quot; title=&quot;llvm 获取代码+编译&quot;&gt;&lt;/a&gt;llvm 获取代码+编译&lt;/h1&gt;&lt;p&gt;&lt;a href=&quot;https://wiki.archlinux.org/index.php/Swap_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E4%BA%A4%E6%8D%A2%E6%96%87%E4%BB%B6&quot;&gt;swapfile&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://www.aosabook.org/en/llvm.html&quot;&gt;llvm作者写的文档&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://llvm.org/docs/GettingStarted.html#id17&quot;&gt;llvm-doc&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://llvm.org/docs/tutorial/index.html&quot;&gt;llvm-tutorial&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://zhuanlan.zhihu.com/p/36769900&quot;&gt;zhihu-编译llvm内存不够情况&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://zhuanlan.zhihu.com/p/67625228&quot;&gt;zhihu-编译llvm clang&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;https://clangbuiltlinux.github.io/&quot;&gt;ClangBuiltLinux&lt;/a&gt;&lt;br&gt;&lt;a href&gt;&lt;/a&gt;  &lt;/p&gt;
+&lt;h1 id=&quot;获取源代码&quot;&gt;&lt;a href=&quot;#获取源代码&quot; class=&quot;headerlink&quot; title=&quot;获取源代码&quot;&gt;&lt;/a&gt;获取源代码&lt;/h1&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;git clone https:&amp;#x2F;&amp;#x2F;gitee.com&amp;#x2F;mirrors&amp;#x2F;llvm-project.git&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;git checkout llvmorg-12.0.0-rc2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;!-- 因为zzzq的原因master分支不让用了,本次编译了rc2 --&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;github不加代理实在太慢了&lt;/p&gt;
+&lt;p&gt;编译出来结果至少有120GB，因此最好分配一个200GB的虚拟机&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="compile" scheme="https://www.zi-c.wang/tags/compile/"/>
+    
+    <category term="llvm" scheme="https://www.zi-c.wang/tags/llvm/"/>
+    
+  </entry>
   
   <entry>
     <title>kernel compile: obj-m or obj-y</title>
@@ -506,29 +528,6 @@
     
     
     
-    
-  </entry>
-  
-  <entry>
-    <title>Nutch2.3.1+hbase-0.98-hadoop+solr5.2.1的自动部署脚本</title>
-    <link href="https://www.zi-c.wang/2016/10/18/Nutch2.3.1+hbase-0.98-hadoop+solr5.2.1%E7%9A%84%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2%E8%84%9A%E6%9C%AC/"/>
-    <id>https://www.zi-c.wang/2016/10/18/Nutch2.3.1+hbase-0.98-hadoop+solr5.2.1%E7%9A%84%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2%E8%84%9A%E6%9C%AC/</id>
-    <published>2016-10-18T09:50:10.000Z</published>
-    <updated>2020-11-22T08:51:15.510Z</updated>
-    
-    
-    <summary type="html">&lt;p&gt;在阳总的帮助下，终于搞出了这个自动部署脚本，感谢阳总让我第一次看到真人写的bash脚本，很涨姿势。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;hbase-0.98-hadoop 的选择原因是[&lt;a href=&quot;http://wiki.apache.org/nutch/Nutch2Tutorial&quot;&gt;http://wiki.apache.org/nutch/Nutch2Tutorial&lt;/a&gt; ](nutch turorial)上这么推荐的&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;solr5.x 的玩法似乎和solr4.9 差别不小，之后应该会单独写一篇分析的&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;测试环境是 centos6环境，使用ubuntu或者其他发行版的兄弟记得改下 那堆yum，rpm&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;</summary>
-    
-    
-    
-    
-    <category term="markdown" scheme="https://www.zi-c.wang/tags/markdown/"/>
     
   </entry>
   

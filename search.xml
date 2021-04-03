@@ -1134,4 +1134,72 @@ hbase(main)> truncate 't1'
         <tag>compile</tag>
       </tags>
   </entry>
+  <entry>
+    <title>llvm 获取代码+编译</title>
+    <url>/2021/04/03/llvm-%E8%8E%B7%E5%8F%96%E4%BB%A3%E7%A0%81-%E7%BC%96%E8%AF%91/</url>
+    <content><![CDATA[<h1 id="llvm-获取代码-编译"><a href="#llvm-获取代码-编译" class="headerlink" title="llvm 获取代码+编译"></a>llvm 获取代码+编译</h1><p><a href="https://wiki.archlinux.org/index.php/Swap_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E4%BA%A4%E6%8D%A2%E6%96%87%E4%BB%B6">swapfile</a><br><a href="http://www.aosabook.org/en/llvm.html">llvm作者写的文档</a><br><a href="https://llvm.org/docs/GettingStarted.html#id17">llvm-doc</a><br><a href="https://llvm.org/docs/tutorial/index.html">llvm-tutorial</a><br><a href="https://zhuanlan.zhihu.com/p/36769900">zhihu-编译llvm内存不够情况</a><br><a href="https://zhuanlan.zhihu.com/p/67625228">zhihu-编译llvm clang</a><br><a href="https://clangbuiltlinux.github.io/">ClangBuiltLinux</a><br><a href></a>  </p>
+<h1 id="获取源代码"><a href="#获取源代码" class="headerlink" title="获取源代码"></a>获取源代码</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git clone https:&#x2F;&#x2F;gitee.com&#x2F;mirrors&#x2F;llvm-project.git</span><br><span class="line">git checkout llvmorg-12.0.0-rc2</span><br><span class="line">&lt;!-- 因为zzzq的原因master分支不让用了,本次编译了rc2 --&gt;</span><br></pre></td></tr></table></figure>
+<p>github不加代理实在太慢了</p>
+<p>编译出来结果至少有120GB，因此最好分配一个200GB的虚拟机</p>
+<a id="more"></a>
+
+<h1 id="编译llvm"><a href="#编译llvm" class="headerlink" title="编译llvm"></a>编译llvm</h1><p>首先下载llvm源代码，然后进行编译，要注意llvm编译过程中耗费大量内存，因此需要额外进行处理。</p>
+<ol>
+<li><p>创建llvm-build文件夹，进入文件夹</p>
+</li>
+<li><p>cmake</p>
+</li>
+</ol>
+<p>根据官网文档，试试看另一种编译</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cmake -G &quot;Unix Makefiles&quot; -DCMAKE_INSTALL_PREFIX&#x3D;..&#x2F;install -DCMAKE_BUILD_TYPE&#x3D;Debug -DLLVM_TARGETS_TO_BUILD&#x3D;X86  -DLLVM_USE_LINKER&#x3D;gold -DLLVM_ENABLE_PROJECTS&#x3D;&quot;clang;lld&quot;   ..&#x2F;llvm&#x2F;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>这里</p>
+<ul>
+<li>DCMAKE_BUILD_TYPE 有Debug 和 Release因为我要后期开发，因此使用debug</li>
+<li>DCMAKE_INSTALL_PREFIX 表示安装的文件夹，这里显示是上层目录，即llvm-source-code目录下的install文件夹</li>
+<li>DLLVM_USE_LINKER=gold 使用gold链接器替换ld，据说能够节省大量内存</li>
+<li>DLLVM_TARGETS_TO_BUILD=X86  只编译x86相关的指令即可</li>
+<li>DLLVM_ENABLE_PROJECTS=”clang;lld”  这里可以一起编译clang和lld</li>
+</ul>
+<ol start="3">
+<li>创建一个10GB的swap分区</li>
+</ol>
+<p>具体看<a href="https://wiki.archlinux.org/index.php/Swap_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E4%BA%A4%E6%8D%A2%E6%96%87%E4%BB%B6">swapfile</a>  </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">fallocate -l 10G &#x2F;swapfile</span><br><span class="line"># dd if&#x3D;&#x2F;dev&#x2F;zero of&#x3D;&#x2F;swapfile bs&#x3D;1M count&#x3D;10240（和上面那条指令等价）</span><br><span class="line">chmod 600 &#x2F;swapfile</span><br><span class="line">mkswap &#x2F;swapfile</span><br><span class="line">swapon &#x2F;swapfile</span><br></pre></td></tr></table></figure>
+<p>如果想保存swap分区可以编辑 <code>/etc/fstab</code> 增加这一条目</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;swapfile none swap defaults 0 0</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>make<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">make ; make install</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>这里单线程，不要多线程，占用内存太多有崩溃风险</p>
+<h1 id="添加环境变量"><a href="#添加环境变量" class="headerlink" title="添加环境变量"></a>添加环境变量</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vim ~&#x2F;.bashrc</span><br><span class="line"></span><br><span class="line">export PATH&#x3D;$PATH:&#x2F;home&#x2F;x&#x2F;Documents&#x2F;llvm-project&#x2F;install&#x2F;bin</span><br><span class="line">export LD_LIBRARY_PATH&#x3D;&#x2F;home&#x2F;x&#x2F;Documents&#x2F;llvm-project&#x2F;install&#x2F;lib</span><br><span class="line"></span><br><span class="line">source ~&#x2F;.bashrc</span><br></pre></td></tr></table></figure>
+
+<p>目录中有 clang和llvm需要的一系列工具，但是没有ld.lld</p>
+<h1 id="编译linux内核"><a href="#编译linux内核" class="headerlink" title="编译linux内核"></a>编译linux内核</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">make LLVM&#x3D;1 -j4</span><br><span class="line"></span><br><span class="line">make CC&#x3D;clang  -j4</span><br></pre></td></tr></table></figure>
+
+<p>注意这里不知道为什么没有ld.lld，可能需要单独安装一下。</p>
+<p>如果想要使用llvm编译linux内核，需要查看一下<strong>ClangBuiltLinux</strong> 项目，这里面维护了几个所有编译都能通过的linux版本，其他版本则有这样或那样的可能导致编译失败。</p>
+<p><a href="https://clangbuiltlinux.github.io/">ClangBuiltLinux</a>  </p>
+<!-- ```
+cmake -DCMAKE_BUILD_TYPE=Debug --enable-optimized --enable-targets=host-only -DCMAKE_INSTALL_PREFIX=../install  -DLLVM_USE_LINKER=gold -G "Unix Makefiles" ../llvm
+
+cmake -DCMAKE_BUILD_TYPE=Debug --enable-optimized -DLLVM_TARGETS_TO_BUILD=X86 -DCMAKE_INSTALL_PREFIX=../install  -DLLVM_USE_LINKER=gold -G "Unix Makefiles" ../llvm
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">&lt;!-- # 编译clang</span><br><span class="line"></span><br><span class="line">此处需要编译过llvm之后才能进行编译，因为clang的cmake需要依赖llvm的编译结果</span><br><span class="line"></span><br><span class="line">1. 创建clang-build文件夹，进入文件夹</span><br><span class="line"></span><br><span class="line">2. cmake</span><br></pre></td></tr></table></figure>
+<p>cmake -DCMAKE_BUILD_TYPE=Debug –enable-optimized –enable-targets=host-only -DCMAKE_INSTALL_PREFIX=../install  -DLLVM_USE_LINKER=gold -G “Unix Makefiles” ../clang</p>
+<p>cmake -DCMAKE_BUILD_TYPE=Debug –enable-optimized -DLLVM_TARGETS_TO_BUILD=X86 -DCMAKE_INSTALL_PREFIX=../install  -DLLVM_USE_LINKER=gold -G “Unix Makefiles” ../clang</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">3. make</span><br></pre></td></tr></table></figure>
+<p>make ; make install</p>
+<p>```</p>
+<p>如果资源不够不要多线程，这里被卡死过一次。 –&gt;</p>
+-->]]></content>
+      <tags>
+        <tag>compile</tag>
+        <tag>llvm</tag>
+      </tags>
+  </entry>
 </search>
