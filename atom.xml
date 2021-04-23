@@ -6,7 +6,7 @@
   <link href="https://www.zi-c.wang/atom.xml" rel="self"/>
   
   <link href="https://www.zi-c.wang/"/>
-  <updated>2021-04-03T09:03:43.219Z</updated>
+  <updated>2021-04-23T08:24:47.641Z</updated>
   <id>https://www.zi-c.wang/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>内核如何检测CPU features支持</title>
+    <link href="https://www.zi-c.wang/2021/04/23/%E5%86%85%E6%A0%B8%E5%A6%82%E4%BD%95%E6%A3%80%E6%B5%8BCPU-features%E6%94%AF%E6%8C%81/"/>
+    <id>https://www.zi-c.wang/2021/04/23/%E5%86%85%E6%A0%B8%E5%A6%82%E4%BD%95%E6%A3%80%E6%B5%8BCPU-features%E6%94%AF%E6%8C%81/</id>
+    <published>2021-04-23T08:23:53.000Z</published>
+    <updated>2021-04-23T08:24:47.641Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;linux内核如何检查存在CPU-features支持&quot;&gt;&lt;a href=&quot;#linux内核如何检查存在CPU-features支持&quot; class=&quot;headerlink&quot; title=&quot;linux内核如何检查存在CPU features支持&quot;&gt;&lt;/a&gt;linux内核如何检查存在CPU features支持&lt;/h1&gt;&lt;p&gt;&lt;a href=&quot;https://elixir.bootlin.com/linux/v5.10.25/source/arch/x86/include/asm/cpufeatures.h&quot;&gt;elixir code&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;代码所在地址 &lt;code&gt;arch/x86/include/asm/cpufeatures.h&lt;/code&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="kernel" scheme="https://www.zi-c.wang/tags/kernel/"/>
+    
+    <category term="cpu" scheme="https://www.zi-c.wang/tags/cpu/"/>
+    
+  </entry>
   
   <entry>
     <title>llvm-pass-build</title>
@@ -510,29 +530,6 @@
     
     
     <category term="kernel" scheme="https://www.zi-c.wang/tags/kernel/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>dynamicprogramming.md</title>
-    <link href="https://www.zi-c.wang/2020/11/15/dynamicprogramming-md/"/>
-    <id>https://www.zi-c.wang/2020/11/15/dynamicprogramming-md/</id>
-    <published>2020-11-15T10:36:17.000Z</published>
-    <updated>2020-11-15T11:52:25.507Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;动态规划-Dynamic-Programming&quot;&gt;&lt;a href=&quot;#动态规划-Dynamic-Programming&quot; class=&quot;headerlink&quot; title=&quot;动态规划 Dynamic Programming&quot;&gt;&lt;/a&gt;动态规划 Dynamic Programming&lt;/h1&gt;&lt;p&gt;动态规划(dynamic programming)是运筹学的一个分支，是求解决策过程(decision process)最优化的数学方法。20世纪50年代初美国数学家R.E.Bellman等人在研究多阶段决策过程(multistep decision process)的优化问题时，提出了著名的最优化原理(principle of optimality)，把多阶段过程转化为一系列单阶段问题，利用各阶段之间的关系，逐个求解，创立了解决这类过程优化问题的新方法——动态规划。1957年出版了他的名著《Dynamic Programming》，这是该领域的第一本著作。&lt;/p&gt;
-&lt;h2 id=&quot;tricky&quot;&gt;&lt;a href=&quot;#tricky&quot; class=&quot;headerlink&quot; title=&quot;tricky&quot;&gt;&lt;/a&gt;tricky&lt;/h2&gt;&lt;p&gt;一般不要求记录解空间具体内容的，但是看起来好像需要从所有解中提取结果的都可以试试看动态规划，设计不好dp不妨试试看从0到i的物品的xxx，dp有可能是1维2维甚至3维。&lt;/p&gt;
-&lt;p&gt;如果要求解空间具体内容的上backtrack也不错，而且dp的题也可以用backtrack或者dfs碰碰运气。&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="leetcode" scheme="https://www.zi-c.wang/categories/leetcode/"/>
-    
-    
-    <category term="leetcode" scheme="https://www.zi-c.wang/tags/leetcode/"/>
-    
-    <category term="algorithm" scheme="https://www.zi-c.wang/tags/algorithm/"/>
     
   </entry>
   

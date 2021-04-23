@@ -207,6 +207,73 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.zi-c.wang/2021/04/23/%E5%86%85%E6%A0%B8%E5%A6%82%E4%BD%95%E6%A3%80%E6%B5%8BCPU-features%E6%94%AF%E6%8C%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/media/icon.ico">
+      <meta itemprop="name" content="purplewall1206">
+      <meta itemprop="description" content="something about kernel & programming">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="purplewall1206 blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/23/%E5%86%85%E6%A0%B8%E5%A6%82%E4%BD%95%E6%A3%80%E6%B5%8BCPU-features%E6%94%AF%E6%8C%81/" class="post-title-link" itemprop="url">内核如何检测CPU features支持</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-04-23 16:23:53 / 修改时间：16:24:47" itemprop="dateCreated datePublished" datetime="2021-04-23T16:23:53+08:00">2021-04-23</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="linux内核如何检查存在CPU-features支持"><a href="#linux内核如何检查存在CPU-features支持" class="headerlink" title="linux内核如何检查存在CPU features支持"></a>linux内核如何检查存在CPU features支持</h1><p><a target="_blank" rel="noopener" href="https://elixir.bootlin.com/linux/v5.10.25/source/arch/x86/include/asm/cpufeatures.h">elixir code</a></p>
+<p>代码所在地址 <code>arch/x86/include/asm/cpufeatures.h</code></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/04/23/%E5%86%85%E6%A0%B8%E5%A6%82%E4%BD%95%E6%A3%80%E6%B5%8BCPU-features%E6%94%AF%E6%8C%81/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://www.zi-c.wang/2021/04/03/llvm-pass-build/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -818,78 +885,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://www.zi-c.wang/2020/11/28/Linux-User-mode-Driver/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/media/icon.ico">
-      <meta itemprop="name" content="purplewall1206">
-      <meta itemprop="description" content="something about kernel & programming">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="purplewall1206 blog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/11/28/Linux-User-mode-Driver/" class="post-title-link" itemprop="url">Linux User-mode Driver</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-11-28 15:18:10" itemprop="dateCreated datePublished" datetime="2020-11-28T15:18:10+08:00">2020-11-28</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-12-01 15:43:04" itemprop="dateModified" datetime="2020-12-01T15:43:04+08:00">2020-12-01</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="UIO-userspace-i-o"><a href="#UIO-userspace-i-o" class="headerlink" title="UIO userspace i/o"></a>UIO userspace i/o</h2><p><a target="_blank" rel="noopener" href="https://lwn.net/Articles/825190/">20200702Make the user mode driver code a better citizen</a><br><a target="_blank" rel="noopener" href="https://lwn.net/Articles/66829/">20040120User-space device drivers</a><br><a target="_blank" rel="noopener" href="https://tldp.org/LDP/khg/HyperNews/get/devices/fake.html">tldp userspace device driver</a><br><a target="_blank" rel="noopener" href="https://lwn.net/Articles/703785/">20161019Linux drivers in user space — a survey</a><br><a target="_blank" rel="noopener" href="https://lwn.net/Articles/232575/">UIO: user-space drivers</a><br><a target="_blank" rel="noopener" href="https://www.kernel.org/doc/html/latest/driver-api/uio-howto.html?highlight=uio">The Userspace I/O HOWTO</a></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/11/28/Linux-User-mode-Driver/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -961,7 +956,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -974,7 +969,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-count">33</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

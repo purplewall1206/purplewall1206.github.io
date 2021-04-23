@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://www.zi-c.wang/2021/04/23/%E5%86%85%E6%A0%B8%E5%A6%82%E4%BD%95%E6%A3%80%E6%B5%8BCPU-features%E6%94%AF%E6%8C%81/</loc>
+    <lastmod>2021-04-23</lastmod>
+  </url>
+  <url>
     <loc>https://www.zi-c.wang/2021/04/03/llvm-pass-build/</loc>
     <lastmod>2021-04-03</lastmod>
   </url>
