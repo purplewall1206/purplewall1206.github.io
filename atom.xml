@@ -6,7 +6,7 @@
   <link href="https://www.zi-c.wang/atom.xml" rel="self"/>
   
   <link href="https://www.zi-c.wang/"/>
-  <updated>2021-04-23T08:24:47.641Z</updated>
+  <updated>2021-07-28T04:57:32.946Z</updated>
   <id>https://www.zi-c.wang/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>make-输出过程信息</title>
+    <link href="https://www.zi-c.wang/2021/07/28/make-%E8%BE%93%E5%87%BA%E8%BF%87%E7%A8%8B%E4%BF%A1%E6%81%AF/"/>
+    <id>https://www.zi-c.wang/2021/07/28/make-%E8%BE%93%E5%87%BA%E8%BF%87%E7%A8%8B%E4%BF%A1%E6%81%AF/</id>
+    <published>2021-07-28T04:55:37.000Z</published>
+    <updated>2021-07-28T04:57:32.946Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="compiler" scheme="https://www.zi-c.wang/tags/compiler/"/>
+    
+    <category term="make" scheme="https://www.zi-c.wang/tags/make/"/>
+    
+  </entry>
   
   <entry>
     <title>内核如何检测CPU features支持</title>
@@ -482,54 +507,6 @@
     
     
     <category term="eBPF" scheme="https://www.zi-c.wang/tags/eBPF/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>内核近期改变</title>
-    <link href="https://www.zi-c.wang/2020/11/15/%E5%86%85%E6%A0%B8%E8%BF%91%E6%9C%9F%E6%94%B9%E5%8F%98/"/>
-    <id>https://www.zi-c.wang/2020/11/15/%E5%86%85%E6%A0%B8%E8%BF%91%E6%9C%9F%E6%94%B9%E5%8F%98/</id>
-    <published>2020-11-15T11:09:13.000Z</published>
-    <updated>2020-11-15T11:52:26.240Z</updated>
-    
-    
-    <summary type="html">&lt;h1 id=&quot;内核近期改变&quot;&gt;&lt;a href=&quot;#内核近期改变&quot; class=&quot;headerlink&quot; title=&quot;内核近期改变&quot;&gt;&lt;/a&gt;内核近期改变&lt;/h1&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#%E5%86%85%E6%A0%B8%E8%BF%91%E6%9C%9F%E6%94%B9%E5%8F%98&quot;&gt;内核近期改变&lt;/a&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#ioctl&quot;&gt;ioctl&lt;/a&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#1%E5%8E%9F%E5%A7%8B%E7%89%88%E6%9C%AC%E7%9A%84ioctl&quot;&gt;1.原始版本的ioctl&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#2%E5%86%85%E6%A0%B8%E6%94%B9%E8%BF%9B%E5%90%8E%E7%9A%84ioctl&quot;&gt;2.内核改进后的ioctl&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#3%E5%9C%A8%E7%BC%96%E5%86%99%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84%E5%A4%84%E7%90%86%E5%8A%9E%E6%B3%95&quot;&gt;3.在编写过程中的处理办法&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#4-%E5%8E%9F%E5%9B%A0%E5%88%86%E6%9E%90&quot;&gt;4. 原因分析&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#%E5%BC%82%E6%AD%A5io-read_iter&quot;&gt;异步I/O read_iter&lt;/a&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#1%E5%85%B7%E4%BD%93%E5%8F%98%E5%8C%96&quot;&gt;1.具体变化&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#2%E5%8E%9F%E5%9B%A0%E5%88%86%E6%9E%90&quot;&gt;2.原因分析&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#3%E9%97%AE%E9%A2%98&quot;&gt;3.问题&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#timer%E8%AE%A1%E6%97%B6%E5%99%A8%E5%8F%91%E7%94%9F%E6%94%B9%E5%8F%98&quot;&gt;timer计时器发生改变&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#block-%E9%A9%B1%E5%8A%A8%E5%9C%A850%E5%90%8E%E8%BF%9B%E8%A1%8C%E4%BA%86%E9%9D%9E%E5%B8%B8%E5%A4%A7%E7%9A%84%E5%8F%98%E5%8C%96&quot;&gt;block 驱动在5.0后进行了非常大的变化&lt;/a&gt;&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;#%E5%8E%9F%E5%9B%A0&quot;&gt;原因&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#blk-mq-%E8%AE%BE%E8%AE%A1%E4%BA%86%E4%B8%A4%E5%B1%82%E9%98%9F%E5%88%97&quot;&gt;blk-mq 设计了两层队列&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#%E5%9C%A8%E6%9E%B6%E6%9E%84%E5%B1%82%E9%9D%A2&quot;&gt;在架构层面&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#%E5%85%B7%E4%BD%93%E5%88%B0%E5%87%BD%E6%95%B0&quot;&gt;具体到函数&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#%E5%86%85%E6%A0%B8%E8%AE%A1%E6%97%B6%E6%8E%A5%E5%8F%A3%E5%8F%91%E7%94%9F%E5%8F%98%E5%8C%96&quot;&gt;内核计时接口发生变化&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%88%9D%E5%A7%8B%E5%8C%96%E6%8E%A5%E5%8F%A3%E5%8F%98%E5%8C%96%E6%9C%AA%E8%A7%A3%E5%86%B3&quot;&gt;系统调用初始化接口变化（未解决）&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E5%87%8F%E5%B0%91%E5%AE%9A%E4%B9%89%E6%95%B0%E9%87%8F-%E6%9C%AA%E8%A7%A3%E5%86%B3&quot;&gt;文件系统减少定义数量 （未解决）&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;#jprobe-%E8%A2%AB%E5%8F%96%E6%B6%88&quot;&gt;jprobe 被取消&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;</summary>
-    
-    
-    
-    <category term="kernel" scheme="https://www.zi-c.wang/categories/kernel/"/>
-    
-    
-    <category term="kernel" scheme="https://www.zi-c.wang/tags/kernel/"/>
     
   </entry>
   
