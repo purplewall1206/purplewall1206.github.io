@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://www.zi-c.wang/2021/08/09/arm-MTE/</loc>
+    
+    <lastmod>2021-08-09</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://www.zi-c.wang/2021/08/06/%E5%86%85%E6%A0%B8%E7%AC%A6%E5%8F%B7kallsyms%E5%92%8C%E5%8F%AA%E8%AF%BB%E6%B5%8B%E8%AF%95/</loc>
     
     <lastmod>2021-08-06</lastmod>
@@ -228,7 +235,7 @@
 
   <url>
     <loc>https://www.zi-c.wang/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -236,238 +243,252 @@
   
   <url>
     <loc>https://www.zi-c.wang/tags/kernel/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.zi-c.wang/tags/Driver/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.zi-c.wang/tags/Linux/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.zi-c.wang/tags/python/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.zi-c.wang/tags/rss/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.zi-c.wang/tags/github/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.zi-c.wang/tags/NJU/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.zi-c.wang/tags/markdown/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.zi-c.wang/tags/raspberryPi/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.zi-c.wang/tags/leetcode/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.zi-c.wang/tags/algorithm/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.zi-c.wang/tags/eBPF/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.zi-c.wang/tags/hbase/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.zi-c.wang/tags/io-uring/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.zi-c.wang/tags/lwn-net/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.zi-c.wang/tags/vm/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.zi-c.wang/tags/exploit/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.zi-c.wang/tags/nutch/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.zi-c.wang/tags/bash/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.zi-c.wang/tags/linux/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.zi-c.wang/tags/tool/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.zi-c.wang/tags/binarytree/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.zi-c.wang/tags/c/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.zi-c.wang/tags/%E7%A1%AC%E4%BB%B6/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.zi-c.wang/tags/%E8%A3%85%E6%9C%BA/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.zi-c.wang/tags/stack/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.zi-c.wang/tags/programming/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.zi-c.wang/tags/compile/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.zi-c.wang/tags/llvm/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.zi-c.wang/tags/compiler/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.zi-c.wang/tags/llvm-pass/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.zi-c.wang/tags/instrumentation/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.zi-c.wang/tags/cpu/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.zi-c.wang/tags/make/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.zi-c.wang/tags/arm/</loc>
+    <lastmod>2021-08-09</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.zi-c.wang/tags/hardware/</loc>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
@@ -476,63 +497,63 @@
   
   <url>
     <loc>https://www.zi-c.wang/categories/python/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.zi-c.wang/categories/kernel/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.zi-c.wang/categories/leetcode/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.zi-c.wang/categories/python/rss/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.zi-c.wang/categories/eBPF/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.zi-c.wang/categories/kernel/raspberryPi/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.zi-c.wang/categories/python/rss/github/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.zi-c.wang/categories/linux/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://www.zi-c.wang/categories/linux/bash/</loc>
-    <lastmod>2021-08-06</lastmod>
+    <lastmod>2021-08-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
