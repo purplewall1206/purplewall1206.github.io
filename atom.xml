@@ -6,7 +6,7 @@
   <link href="https://www.zi-c.wang/atom.xml" rel="self"/>
   
   <link href="https://www.zi-c.wang/"/>
-  <updated>2021-08-09T07:45:14.674Z</updated>
+  <updated>2021-11-16T06:26:02.080Z</updated>
   <id>https://www.zi-c.wang/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>从keyboard输入到screen输出</title>
+    <link href="https://www.zi-c.wang/2021/11/16/%E4%BB%8Ekeyboard%E8%BE%93%E5%85%A5%E5%88%B0screen%E8%BE%93%E5%87%BA/"/>
+    <id>https://www.zi-c.wang/2021/11/16/%E4%BB%8Ekeyboard%E8%BE%93%E5%85%A5%E5%88%B0screen%E8%BE%93%E5%87%BA/</id>
+    <published>2021-11-16T06:22:29.000Z</published>
+    <updated>2021-11-16T06:26:02.080Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html"></summary>
+        
+      
+    
+    
+    
+    
+    <category term="kernel" scheme="https://www.zi-c.wang/tags/kernel/"/>
+    
+    <category term="driver" scheme="https://www.zi-c.wang/tags/driver/"/>
+    
+  </entry>
   
   <entry>
     <title>arm memory tagging extension</title>
@@ -459,29 +484,6 @@
     <category term="linux" scheme="https://www.zi-c.wang/tags/linux/"/>
     
     <category term="tool" scheme="https://www.zi-c.wang/tags/tool/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>kernel contribution 统计</title>
-    <link href="https://www.zi-c.wang/2020/11/16/kernel-contribution-%E7%BB%9F%E8%AE%A1/"/>
-    <id>https://www.zi-c.wang/2020/11/16/kernel-contribution-%E7%BB%9F%E8%AE%A1/</id>
-    <published>2020-11-16T06:19:37.000Z</published>
-    <updated>2020-11-16T06:24:36.180Z</updated>
-    
-    
-    <summary type="html">&lt;p&gt;保存lwn.net发布的新版本开发统计文章，目前来看还是华为最屌。&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://lwn.net/Articles/780271/&quot;&gt;Development statistics for the 5.0 kernel&lt;/a&gt;&lt;br&gt;As of this writing, 12,517 non-merge changesets have been pulled into the mainline repository for the 5.0 release&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://lwn.net/Articles/810639/&quot;&gt;Some 5.5 kernel development statistics&lt;/a&gt;&lt;br&gt;5.5 saw the merging of 14,350 non-merge changesets from 1,885 developers&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="kernel" scheme="https://www.zi-c.wang/categories/kernel/"/>
-    
-    
-    <category term="kernel" scheme="https://www.zi-c.wang/tags/kernel/"/>
-    
-    <category term="lwn.net" scheme="https://www.zi-c.wang/tags/lwn-net/"/>
     
   </entry>
   

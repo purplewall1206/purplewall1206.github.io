@@ -1299,4 +1299,35 @@ cmake -DCMAKE_BUILD_TYPE=Debug --enable-optimized -DLLVM_TARGETS_TO_BUILD=X86 -D
         <tag>hardware</tag>
       </tags>
   </entry>
+  <entry>
+    <title>从keyboard输入到screen输出</title>
+    <url>/2021/11/16/%E4%BB%8Ekeyboard%E8%BE%93%E5%85%A5%E5%88%B0screen%E8%BE%93%E5%87%BA/</url>
+    <content><![CDATA[<h1 id="kernel-把keyboard输入变成text输出的流程"><a href="#kernel-把keyboard输入变成text输出的流程" class="headerlink" title="kernel 把keyboard输入变成text输出的流程"></a>kernel 把keyboard输入变成text输出的流程</h1><p>怎样向命令行输入一个字母？？中间有哪些流程</p>
+<p><a href="https://unix.stackexchange.com/questions/116629/how-do-keyboard-input-and-text-output-work/116630#116630">How do keyboard input and text output work?</a></p>
+<h1 id="键盘输入获取-dev-input-eventX"><a href="#键盘输入获取-dev-input-eventX" class="headerlink" title="键盘输入获取 /dev/input/eventX"></a>键盘输入获取 /dev/input/eventX</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo evtest &#x2F;dev&#x2F;input&#x2F;event2</span><br><span class="line">Input driver version is 1.0.1</span><br><span class="line">Input device ID: bus 0x3 vendor 0x1a81 product 0x2039 version 0x111</span><br><span class="line">Input device name: &quot;USB Keyboard USB Keyboard&quot;</span><br></pre></td></tr></table></figure>
+
+<h1 id="具体处理输入"><a href="#具体处理输入" class="headerlink" title="具体处理输入"></a>具体处理输入</h1><p>另外 tty driver只能处理terminal -type类型的键盘输入，比如serial terminals<code>/dev/ttyS*</code>,以及pseudo ttys</p>
+<p>GUI的输入系统 x11  wayland的处理方法各有不同。</p>
+<p>现在的terminal基本都是GUI上面的app，所以基本一样</p>
+<ul>
+<li>第一步从<code>/dev/input/event*</code>里面获取keyboard输入的scancode</li>
+<li>第二步x11 或者 pty（pseudo-terminal）driver处理这些input变成scancode</li>
+<li>第三步发给xserver绘制到指定位置，或者pty driver绘制到current cursor</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">+----------+              +-------------+         +-----+</span><br><span class="line">| keyboard |-------------&gt;| motherboard |--------&gt;| CPU |</span><br><span class="line">+----------+              +-------------+         +-----+</span><br><span class="line">             USB, PS&#x2F;2, …                 PCI, …</span><br><span class="line">             key down&#x2F;up</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">         +--------+        +----------+          +-------------+</span><br><span class="line">--------&gt;| kernel |-------&gt;| X server |---------&gt;| application |</span><br><span class="line">         +--------+        +----------+          +-------------+</span><br><span class="line">interrupt          scancode             keysym</span><br><span class="line">                   &#x3D;keycode            +modifiers</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">+-------------+        +----------+          +-----+         +---------+</span><br><span class="line">| application |-------&gt;| X server |---····--&gt;| GPU |--------&gt;| monitor |</span><br><span class="line">+-------------+        +----------+          +-----+         +---------+</span><br><span class="line">               text or              varies          VGA, DVI,</span><br><span class="line">               image                                HDMI, …</span><br></pre></td></tr></table></figure>
+
+
+<p>对于text mode没有界面的</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">      +-------------------+               +-------------+</span><br><span class="line">-----&gt;| terminal emulator |--------------&gt;| application |</span><br><span class="line">      +-------------------+               +-------------+</span><br><span class="line">keysym                     character or</span><br><span class="line">                           escape sequence</span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>kernel</tag>
+        <tag>driver</tag>
+      </tags>
+  </entry>
 </search>
