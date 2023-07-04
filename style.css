@@ -1,0 +1,74 @@
+body, table {
+	font: 10pt Arial, Helvetica, sans-serif;
+	color: #000000;
+}
+
+.textmain { font: 10pt Arial, Helvetica, sans-serif;     
+}
+
+.textbig { font: 13pt AvantGarde, Arial, Helvetica, sans-serif; }
+
+.text {	font: 10pt Arial, Helvetica, sans-serif;}
+
+.textsmall { font: 8pt Arial, Helvetica, sans-serif; }
+
+
+.quote1 { font: italic 11pt Palatino, Times, serif; }
+.quote2 { font: bold italic 24pt Palatino, Times, serif; }
+
+
+.program li { margin-top: 4pt; }
+
+h1 {
+	font: bold 20pt AvantGarde, Arial, Helvetica, sans-serif;
+	color: #ffffff;
+	text-align: center;
+	margin-top: 6pt;
+	margin-bottom: 12pt;
+}
+
+h2 {
+	font: bold 14pt AvantGarde, Arial, Helvetica, sans-serif;
+	color: #000000;
+	/* background: #D4D4DD; */
+	margin-top: 16pt;
+	margin-bottom: 9pt;
+	/* padding-bottom: 2px;
+	padding-top: 2px;
+	padding-left: .25em; */
+}
+
+h3 {
+	font: bold 11pt AvantGarde, Arial, Helvetica, sans-serif;
+	margin-top: 1.25em;
+	margin-bottom: 4pt;
+	/* color: #CC0000; */
+}
+
+h4 {
+	font: bold 10pt AvantGarde, Arial, Helvetica, sans-serif;
+	margin-top: 1em;
+	margin-bottom: 3pt;
+	/* color: #CC0000; */
+}
+
+.subhead {
+	font: bold 13pt AvantGarde, Arial, Helvetica, sans-serif;
+	color: #000066;
+	background: #CCCCFF;
+}
+
+.text a, .textmain a {
+	font-weight: bold;
+	text-decoration: none;
+}
+p {
+    text-align: left;
+    margin-left:10px; 
+    margin-right:10px;
+    margin-top:10px; 
+    margin-bottom:10px;
+
+}
+
+
