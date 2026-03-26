@@ -1,10 +1,14 @@
-﻿<html>
-
-<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>王子成 Zicheng Wang</title>
-  <link type="text/css" rel="stylesheet" href="./style.css">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zicheng Wang | OS Kernel Security Researcher</title>
   <link rel="icon" type="image/x-icon" href="./icon.ico">
-  <style>a{TEXT-DECORATION:none}</style> 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
 </head>
 
 <!-- Google tag (gtag.js) -->
@@ -13,406 +17,282 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-41SYF6R2JL');
 </script>
 
 <body>
-<center>
-  <table width="840" border="0" cellspacing="0" cellpadding="0" bgcolor="#6a0060" align="center">
-    <tbody>
-      <tr height="2">
-      <td style="border: solid 0 white; border-bottom-width:0.5px;">&nbsp;&nbsp;</td>
-      <td width="80" align="center" style="border: solid 0 white; border-bottom-width:0.5px;">  
-        <font color="white" style="font-size:12pt;font-family:Trebuchet MS;font-weight:bold">
-        
-        </font>
-      </td>
-      <td align="center" style="border: solid 0 white; border-bottom-width:0.5px;">&nbsp;&nbsp;</td>
-      </tr>
-    </tbody>
-  </table>
 
-  <table cellpadding="0" cellspacing="0" width="840" bgcolor="#ffffff">
-    <tbody> 
-      <tr height="200">
-      <td width="320" align="center">
-        <img border="0" src="./photo.jpg" width="220" height="230" style="float: center"></a>
-      </td>
+<!-- ===== Hero Banner ===== -->
+<header class="hero-banner">
+  <div class="hero-content">
+    <div class="hero-photo">
+      <img src="./photo.jpg" alt="Zicheng Wang" width="180" height="190">
+    </div>
+    <div class="hero-info">
+      <h1 class="hero-name">王子成 Zicheng Wang</h1>
+      <div class="hero-title">Senior Operating System Engineer</div>
+      <div class="hero-email">wangzicheng AT honor.com</div>
+      <div class="hero-links">
+        <a href="./CV_CN.pdf">CV 中文</a>
+        <a href="./CV_EN.pdf">CV English</a>
+        <a href="https://github.com/purplewall1206">GitHub</a>
+        <a href="https://scholar.google.com/citations?user=0F67QWgAAAAJ&hl=en&oi=ao">Scholar</a>
+      </div>
+    </div>
+  </div>
+</header>
 
-      <td colspan="3" width="600" valign="middle">
-        <p style="font-family: Trebuchet MS;">
-          <font size=5>
-            <font style="line-height:160%;">
-            <b>王子成 Zicheng Wang</b>
-          </font> <br> 
-          <font size=4>
-            <font style="line-height:160%;">
-            <!-- Exchange in University of Colorado Boulder, 2023-2024 <br>
-            Ph.D Student in Nanjing University, 2018-2024<br>
-            Bachelor in Jilin Univerisity, 2014-2018, <i>Cum Laude</i> <br> -->
+<!-- ===== Main Content ===== -->
+<main class="main-content">
+  <div class="site-wrapper">
 
-	    <!-- Email: wzc AT smail.nju.edu.cn <br> -->
-      Senior Operating System Engineer <br>
-      Email: wangzicheng AT honor.com <br>
-            [ <a href="./CV_CN.pdf"> CV (中文版本) </a> ] 
-            [ <a href="./CV_EN.pdf"> CV (ver. English) </a> ] <br>
-            [ <a href="https://github.com/purplewall1206"> Github </a>]
-            [ <a href="https://scholar.google.com/citations?user=0F67QWgAAAAJ&hl=en&oi=ao"> Scholar</a> ]
-          
-          </font>
+    <!-- Research -->
+    <section class="section">
+      <h2 class="section-title">Research</h2>
+      <p class="about-text">
+        My research focuses on <strong>Operating System Kernel Security</strong>,
+        specifically in the areas of kernel vulnerabilities prevention and isolation/compartmentalization techniques.
+        Recently I am researching on <a href="https://ebpf.io/"><strong>eBPF</strong></a>&mdash;an innovative in-kernel virtual machine&mdash;and its integration with AI models,
+        to enhance both the security and performance aspects of the kernel.
+        Currently, I am particularly interested in <strong>data-driven performance optimization</strong> in operating systems
+        and applying machine learning techniques to improve system performance.
+      </p>
+    </section>
+
+    <!-- In the News -->
+    <section class="section">
+      <h2 class="section-title">In the News</h2>
+      <div class="news-card">
+        <span class="news-badge">LWN.net</span>
+        <h3><a href="https://lwn.net/Articles/1060967/">Reconsidering the Multi-Generational LRU</a></h3>
+        <div class="news-meta">Jonathan Corbet &middot; March 5, 2026</div>
+        <p class="news-excerpt">
+          A discussion on the future of MGLRU in the Linux kernel&mdash;the alternative memory reclamation mechanism
+          that uses multiple generations to decide which memory pages to keep in RAM.
+          The article covers the challenges, maintenance status, and path forward for this critical kernel subsystem,
+          to be discussed at the 2026 Linux Storage, Filesystem, Memory-Management and BPF Summit.
         </p>
-      </td>
-      </tr>
-      <tr>
-      
-      <td colspan="3">
-      <hr>
+      </div>
+    </section>
 
-        <!-- <p style="font-family: Trebuchet MS"> <font size=5>
-          <center>
-          <font color="#cf0404" style="font-family:Trebuchet MS">
-            <font style="line-height:160%;">
-            <b>
-                I have joined Honor Device!
-            </b>
-          </font>
-          </center>
-          </font>
-        </p> -->
+    <!-- Experience -->
+    <section class="section">
+      <h2 class="section-title">Experience</h2>
+      <ul class="timeline">
+        <li class="timeline-item">
+          <div class="timeline-period">2024 &ndash; now</div>
+          <div class="timeline-detail">
+            <h3>Honor Device</h3>
+            <div class="role">Senior Operating System Engineer</div>
+          </div>
+        </li>
+        <li class="timeline-item">
+          <div class="timeline-period">2023 &ndash; 2024</div>
+          <div class="timeline-detail">
+            <h3>University of Colorado Boulder</h3>
+            <div class="role">Visiting Scholar, Computer Science Department</div>
+            <div class="extra">Advisor: <a href="http://cusecurity.cs.colorado.edu/yueqichen/">Prof. Yueqi Chen</a></div>
+          </div>
+        </li>
+        <li class="timeline-item">
+          <div class="timeline-period">2018 &ndash; 2024</div>
+          <div class="timeline-detail">
+            <h3>Nanjing University</h3>
+            <div class="role">Ph.D., State Key Lab for Novel Software Technology</div>
+            <div class="extra">Advisor: <a href="https://cs.nju.edu.cn/58/1a/c2639a153626/pagem.htm">Prof. Qingkai Zeng</a> &middot; Outstanding Ph.D. Graduate</div>
+          </div>
+        </li>
+        <li class="timeline-item">
+          <div class="timeline-period">2014 &ndash; 2018</div>
+          <div class="timeline-detail">
+            <h3>Jilin University</h3>
+            <div class="role">B.Sc., College of Software Engineering</div>
+            <div class="extra">Cum Laude</div>
+          </div>
+        </li>
+      </ul>
+    </section>
 
-        <p style="font-family: Trebuchet MS"> <font size=3>
-          <font style="line-height:160%;">
-            <!-- I am a Ph.D. student at Nanjing Univerisity, adviced by <a href="https://cs.nju.edu.cn/58/1a/c2639a153626/pagem.htm">Prof. Qingkai Zeng</a>.
-            And I am currently exchange in University of Colorado Boulder adviced by <a href="http://cusecurity.cs.colorado.edu/yueqichen/"> Yueqi Chen</a>.
-            My research focuses Operating System Kernel Security, including prevent the kernel vulnerabilities and kernel isolation/compartmentalization.
-            Recently I am working on eBPF, a revolutionary in-kernel virtual machine, to empower the kernel security and performance.  -->
-        
-            <!-- I am a Ph.D. student at Nanjing University, under the guidance of <a href="https://cs.nju.edu.cn/58/1a/c2639a153626/pagem.htm">Prof. Qingkai Zeng</a>. 
-            Currently, I am also pursuing an exchange program at the University of Colorado Boulder, advised by <a href="http://cusecurity.cs.colorado.edu/yueqichen/">Prof. Yueqi Chen</a>.<br> -->
-    
-        </font>
-    </p>
+    <!-- Publications -->
+    <section class="section">
+      <h2 class="section-title">Publications</h2>
+      <ol class="pub-list">
 
+        <li class="pub-item">
+          <div class="pub-title"><a href="Research on Real-time Defense Against Kernel Vulnerabilities Based on eBPF.pdf">Research on Real-time Defense Against Kernel Vulnerabilities Based on eBPF<br>基于eBPF技术的内核漏洞实时防御研究</a></div>
+          <div class="pub-authors"><span class="me">Zicheng Wang</span></div>
+          <div class="pub-venue">Ph.D. Thesis, 2024</div>
+          <span class="pub-note">Outstanding Ph.D. Thesis, NJU CS Department</span>
+        </li>
 
-        
+        <li class="pub-item">
+          <div class="pub-title"><a href="https://www.usenix.org/conference/usenixsecurity24/presentation/wang-zicheng">SeaK: Rethinking the Design of a Secure Allocator for OS Kernel</a></div>
+          <div class="pub-authors"><span class="me">Zicheng Wang</span>, Yicheng Guang, Yueqi Chen, Zhenpeng Lin, Michael Le, Dang K Le, Dan Williams, Xinyu Xing, Zhongshu Gu, Hani Jamjoom</div>
+          <div class="pub-venue">USENIX Security Symposium <strong>(Security)</strong>, 2024</div>
+        </li>
 
-        <p style="font-family: Trebuchet MS"> <font size=3>
-          <font style="line-height:160%;">
-            <!-- In general, my research area is <b>system and software security</b>. I have special interest in <b>weird machine programming</b>, a.k.a., exploitation, and <b>anti-programming</b>, a.k.a., protection design, for cyber infrastructures (e.g., Operating Systems, Cryptography Libraries, and Satellite Systems). In the meanwhile, I am actively seeking to commercialize research outcomes. 
-	        I am very happy that our works have received wide recognition in both academia and industry. -->
-          <!-- <b>Operating System performance optimization</b> is my main research interest,    -->
-          
-          My research focuses on Operating System Kernel Security, 
-            specifically in the areas of kernel vulnerabilities prevention and isolation/compartmentalization techniques.
-            Recently I am researching on <a href="https://ebpf.io/"><b>eBPF</b></a>—an innovative in-kernel virtual machine—and its integration with AI models,
-            to enhance both the security and performance aspects of the kernel.
-            Currently, I am particularly interested in data-driven performance optimization in operating systems and applying machine learning techniques to improve system performance.
-          </font>
-        </p>
+        <li class="pub-item">
+          <div class="pub-title"><a href="https://www.usenix.org/conference/usenixsecurity23/presentation/wang-zicheng">PET: Prevent Discovered Errors from Being Triggered in the Linux Kernel</a></div>
+          <div class="pub-authors"><span class="me">Zicheng Wang</span>, Yueqi Chen, Qingkai Zeng</div>
+          <div class="pub-venue">USENIX Security Symposium <strong>(Security)</strong>, 2023</div>
+          <span class="pub-note">NJU International Conference Funding</span>
+        </li>
 
+        <li class="pub-item">
+          <div class="pub-title">BULKHEAD: Secure, Scalable, and Efficient Kernel Compartmentalization with PKS</div>
+          <div class="pub-authors">Yinggang Guo, <span class="me">Zicheng Wang</span>, Weiheng Bai, Qingkai Zeng, Kangjie Lu</div>
+          <div class="pub-venue">Network and Distributed System Security <strong>(NDSS)</strong>, 2025</div>
+        </li>
 
+        <li class="pub-item">
+          <div class="pub-title"><a href="https://www.blackhat.com/us-24/briefings/schedule/#stop-sandboxing-exploitable-functions-and-modules-using-in-kernel-machine-learning-40750">Stop! Sandboxing Exploitable Functions and Modules Using In-Kernel Machine Learning</a></div>
+          <div class="pub-authors">Qinrun Dai, Tiejin Chen, <span class="me">Zicheng Wang</span>, Hua Wei, Yueqi Chen</div>
+          <div class="pub-venue">BlackHat USA 2024 Briefing &middot; Linux Security Summit Europe 2024</div>
+        </li>
 
-<!-- News -->
-        <!-- <hr>
-        <p style="font-family: Trebuchet MS"> <font size=5><b> News </font></b> </p>                        
-        <p style="font-family: Trebuchet MS">
-          <font style="line-height:160%;">
-            [ 2024-08-31 ] <b>BULKHEAD has been accepted to NDSS 2025!</b> <br>
-            [ 2024-05-30 ] <b>O2Q has been accepted to oral presented at 26th Chinasys!</b> <br>
-            [ 2024-05-30 ] O2C has been accpeted to present at Black Hat USA 2024! <br>
-            [ 2024-04-07 ] Awarded Nanjing University Outstanding Ph.D. Graduate! <br>
-            [ 2024-02-16 ] SeaK is accepted to USENIX Security 2024! <br>
-            [ 2024-01-12 ] Awarded Nanjing University Outstanding Graduate Student <br>
-            [ 2023-09-16 ] Era is accepted to China Linux Kernel Developer(CLK) Conference 2023 <br>
-            </font>
-        </p> -->
+        <li class="pub-item">
+          <div class="pub-title">An Infrastructure For Preventing Compromise of Operating System Kernels Due to Discovered Errors</div>
+          <div class="pub-authors">Yueqi Chen, <span class="me">Zicheng Wang</span></div>
+          <div class="pub-venue">Provisional <strong>US Patent Application No.: 63/464,887</strong></div>
+        </li>
 
-<!-- experience -->
-        <hr>
-        <p style="font-family: Trebuchet MS"> <font size=5><b> Experience </font></b> </p>
-        <ol style="font-family: Trebuchet MS">
+        <li class="pub-item">
+          <div class="pub-title"><a href="https://arxiv.org/abs/2401.05641">When eBPF Meets Machine Learning: On-the-fly OS Kernel Compartmentalization</a></div>
+          <div class="pub-authors"><span class="me">Zicheng Wang</span>, Tiejin Chen, Qinrun Dai, Yueqi Chen, Hua Wei, Qingkai Zeng</div>
+          <div class="pub-venue">arXiv:2401.05641</div>
+        </li>
 
-          <li style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-            <div style="flex: 0.2;"> 
-                <b>Honor Device</b>
-            </div>
-            <div style="flex: 0.8; text-align: left;">
-                <div>2024 ~ present</div>
-                <div><b>Senior Operating System Engineer</b></div>
-            </div>
-          </li>
+        <li class="pub-item">
+          <div class="pub-title"><a href="https://www.blackhat.com/us-23/briefings/schedule/#kill-latest-mpu-based-protections-in-just-one-shot-targeting-all-commodity-rtoses-32733">Kill Latest MPU-based Protections in Just One Shot: Targeting All Commodity RTOSes</a></div>
+          <div class="pub-authors">Minghao Lin, <span class="me">Zicheng Wang</span>, Jiahe Wang, Chaoyang Lin, Minghang Shen, Yueqi Chen</div>
+          <div class="pub-venue">BlackHat USA 2023 Briefing</div>
+        </li>
 
-          <li style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-            <div style="flex: 0.2;"> 
-                <b>Univerisity of Colorado Boulder</b>
-            </div>
-            <div style="flex: 0.8; text-align: left;">
-                <div>2023 ~ 2024</div>
-                <div><b>Visiting Scholar</b>  Computer Science Department</div>
-                <div>Advisor:  <a href="http://cusecurity.cs.colorado.edu/yueqichen/">Prof. Yueqi Chen</a></div>
-            </div>
-          </li>
+        <li class="pub-item">
+          <div class="pub-title"><a href="https://www.youtube.com/watch?v=SgGWCWKSyHk">HotBPF++: A More Powerful Memory Protection for the Linux Kernel</a></div>
+          <div class="pub-authors"><span class="me">Zicheng Wang</span>, Yueqi Chen</div>
+          <div class="pub-venue">Linux Security Summit North America, 2023</div>
+          <span class="pub-note">Linux Foundation $1,600 Travel Fund</span>
+        </li>
 
-          <li style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-            <div style="flex: 0.2;"> 
-                <b>Nanjing University</b>
-            </div>
-            <div style="flex: 0.8; text-align: left;">
-                <div>2018 ~ 2024</div>
-                <div><b>Ph.D.</b> State Key Lab for Novel Software Technology</div>
-                <div>Advisor: <a href="https://cs.nju.edu.cn/58/1a/c2639a153626/pagem.htm">Prof. Qingkai Zeng</a></div>
-                <div><i>Outstanding Ph.D. Graduate</i></div>
-            </div>
-          </li>
+        <li class="pub-item">
+          <div class="pub-title"><a href="http://jos.org.cn/jos/article/abstract/6923">基于eBPF的内核堆漏洞动态缓解研究</a></div>
+          <div class="pub-authors"><span class="me">Wang Zicheng</span>, Guo Yinggang, Zhong Bingnan, Chen Yueqi, Zeng Qingkai</div>
+          <div class="pub-venue">软件学报, 2023</div>
+        </li>
 
-          <li style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-            <div style="flex: 0.2;"> 
-                <b>Jilin University</b>
-            </div>
-            <div style="flex: 0.8; text-align: left;">
-                <div>2014 ~ 2018</div>
-                <div><b>B.Sc</b> College of Software Engineering </div>
-                <div><i>Cum Laude</i> </div>
-            </div>
-          </li>
-        </ol>
-        
+        <li class="pub-item">
+          <div class="pub-title"><a href="https://dl.acm.org/doi/10.1145/3564625.3567984">Formal Modeling and Security Analysis for Intra-level Privilege Separation</a></div>
+          <div class="pub-authors">Yinggang Guo, <span class="me">Zicheng Wang</span>, Bingnan Zhong, Qingkai Zeng</div>
+          <div class="pub-venue">Annual Computer Security Applications Conference <strong>(ACSAC)</strong>, 2022</div>
+        </li>
 
-<!-- Publications -->
-        <hr>
-        <p style="font-family: Trebuchet MS"> <font size=5><b> Publications </font></b> </p>
+        <li class="pub-item">
+          <div class="pub-title">AttnCall: Refining Indirect Call Targets in Binaries with Attention</div>
+          <div class="pub-authors">Rui Sun, Yinggang Guo, <span class="me">Zicheng Wang</span>, Qingkai Zeng</div>
+          <div class="pub-venue">European Symposium on Research in Computer Security <strong>(ESORICS)</strong>, 2023</div>
+        </li>
 
-        <ol style="font-family: Trebuchet MS">
-          <li>
-            <a href="Research on Real-time Defense Against Kernel Vulnerabilities Based on eBPF.pdf">Research on Real-time Defense Against Kernel Vulnerabilities Based on eBPF <br>
-              基于eBPF技术的内核漏洞实时防御研究</a> <br>
-            <b>Zicheng Wang</b> <br>
-	    <i> Ph.D. Thesis 2024 </i> <br>
-	    [Awarded 2024 Nanjing University CS Department Outstanding Ph.D Thesis]
-          </li> <br>
+        <li class="pub-item">
+          <div class="pub-title"><a href="https://link.springer.com/chapter/10.1007/978-3-031-06975-8_16">CryptKSP: A Kernel Stack Protection Model Based on AES-NI Hardware Feature</a></div>
+          <div class="pub-authors">Bingnan Zhong, <span class="me">Zicheng Wang</span>, Yinggang Guo, Qingkai Zeng</div>
+          <div class="pub-venue">ICT Systems Security and Privacy Protection <strong>(ICT SEC)</strong>, 2022</div>
+        </li>
 
-          <li><a href="https://www.usenix.org/conference/usenixsecurity24/presentation/wang-zicheng">SeaK: Rethinking the Design of a Secure Allocator for OS Kernel</a> <br>
-            <b>Zicheng Wang</b>, Yicheng Guang, Yueqi Chen, Zhenpeng Lin, Michael Le, Dang K Le, Dan Williams, Xinyu Xing, Zhongshu Gu, Hani Jamjoom <br>
-            <i> USENIX Security Symposium <b>(Security)</b> 2024 </i> <br>
-          </li> <br>
+        <li class="pub-item">
+          <div class="pub-title"><a href="http://ckernel.org/">ERA: 基于eBPF的内核堆漏洞动态缓解机制</a></div>
+          <div class="pub-authors"><span class="me">Zicheng Wang</span>, Yinggang Guo, Yueqi Chen, Qingkai Zeng</div>
+          <div class="pub-venue">中国Linux内核开发者大会 <strong>(CLK)</strong>, 2022</div>
+          <div style="margin-top:0.3rem;font-size:0.85rem;"><a href="https://patchwork.kernel.org/project/netdevbpf/patch/20230719155032.4972-1-wzc@smail.nju.edu.cn/">[RFC] HotBPF: Prevent Kernel Heap-based Exploitation</a></div>
+        </li>
 
-          <li> <a href="https://www.usenix.org/conference/usenixsecurity23/presentation/wang-zicheng">PET: Prevent Discovered Errors from Being Triggered in the Linux Kernel</a> <br> 
-	        <b>Zicheng Wang</b>, Yueqi Chen, Qingkai Zeng <br> 
-            <i> USENIX Security Symposium <b>(Security)</b> 2023 </i> <br>
-            [Awarded 2023 Nanjing University Funding for International Academic Conferences] 
-          </li> <br> 
+        <li class="pub-item">
+          <div class="pub-title"><a href="https://www.ebpftravel.com/">从内核到APP: eBPF驱动的跨层性能分析</a></div>
+          <div class="pub-authors"><span class="me">Zicheng Wang</span>, Zhen Wang, Lu Liu</div>
+          <div class="pub-venue">第三届 eBPF开发者大会, 2025</div>
+        </li>
 
-          <li> 
-            BULKHEAD: Secure, Scalable, and Efficient Kernel Compartmentalization with PKS <br>
-            Yinggang Guo, <b>Zicheng Wang</b>, Weiheng Bai, Qingkai Zeng, Kangjie Lu <br>
-            <i> Network and Distributed System Security <b>(NDSS)</b> 2025 </i> <br>
-            <i> 27th Chinasys Symposium 2024 / Kanxue Summit 2024 </i>
-          </li> <br>
+        <li class="pub-item">
+          <div class="pub-title">Evolving Beyond Pressure: RL-enhanced Camera Launch for Resource-Critical Scenarios</div>
+          <div class="pub-authors"><span class="me">Zicheng Wang</span>, Zesen Liu, Lizhi Sun, Yinggang Guo, Ligeng Chen (Honor Device Co., Ltd), Yixin Guo, Claire Gu, Jun Xiao, Tao Wang, Lu Liu, Yanyan Jiang</div>
+          <div class="pub-venue">4th Workshop on Practical Adoption Challenges of ML for Systems <strong>(PACMI '25)</strong></div>
+        </li>
 
-          <li>
-            <a href="https://www.blackhat.com/us-24/briefings/schedule/#stop-sandboxing-exploitable-functions-and-modules-using-in-kernel-machine-learning-40750">Stop! Sandboxing Exploitable Functions and Modules Using In-Kernel Machine Learning</a> <br>
-            Qinrun Dai, Tiejin Chen, <b>Zicheng Wang</b>, Hua Wei, Yueqi Chen <br>
-            <i>BlackHat USA 2024 Briefing</i> <br>
-            <i>Linux Security Summit Europe 2024 </i>
-          </li> <br>
+        <li class="pub-item">
+          <div class="pub-title">Data Knows What the App Needs: An Intelligent Resource Watermark for Mobile Systems</div>
+          <div class="pub-authors">Zesen Liu, <span class="me">Zicheng Wang</span>, Yinggang Guo, Lizhi Sun, Ligeng Chen, Yixin Guo, Claire Gu, Jun Xiao, Tao Wang, Lu Liu, Yanyan Jiang</div>
+          <div class="pub-venue">4th Workshop on Practical Adoption Challenges of ML for Systems <strong>(PACMI '25)</strong></div>
+        </li>
 
-          <li>
-            An Infrastructure For Preventing Compromise of Operating System Kernels Due to Discovered Errors <br>
-            Yueqi Chen, <b>Zicheng Wang</b> <br>
-            Provisional <b>US Patent Application No.: 63/464,887</b>
-          </li><br>
+      </ol>
+    </section>
 
-          <li><a href="https://arxiv.org/abs/2401.05641">When eBPF Meets Machine Learning: On-the-fly OS Kernel Compartmentalization</a> <br>
-            <b>Zicheng Wang</b>, Tiejin Chen, Qinrun Dai, Yueqi Chen, Hua Wei, Qingkai Zeng <br>
-            <i>arXiv:2401.05641 </i>
-          </li><br>
+    <!-- Awards -->
+    <section class="section">
+      <h2 class="section-title">Awards</h2>
+      <ul class="simple-list">
+        <li>Nanjing University Outstanding Ph.D. Graduate</li>
+        <li>Nanjing University Outstanding Graduate Student</li>
+        <li>2023 Nanjing University Funding for International Academic Conferences</li>
+        <li>Linux Foundation $1,600 Travel Funding</li>
+      </ul>
+    </section>
 
-          <li> <a href="https://www.blackhat.com/us-23/briefings/schedule/#kill-latest-mpu-based-protections-in-just-one-shot-targeting-all-commodity-rtoses-32733">Kill Latest MPU-based Protections in Just One Shot: Targeting All Commodity RTOSes</a> <br> 
-            Minghao Lin, <b>Zicheng Wang</b>, Jiahe Wang, Chaoyang Lin, Minghang Shen, Yueqi Chen <br> 
-            <i>BlackHat USA 2023 Briefing</i> <br>
-            </li> <br>
-    
-    
-        <li> <a href="https://www.youtube.com/watch?v=SgGWCWKSyHk">HotBPF++: A More Powerful Memory Protection for the Linux Kernel</a> <br> 
-            <b>Zicheng Wang</b>, Yueqi Chen <br> 
-            <i>Linux Security Summit North America 2023</i> <br>
-            [Awarded Linux Foundation $1,600 Travel Fund]
-        </li> <br>
+    <!-- Teaching -->
+    <section class="section">
+      <h2 class="section-title">Teaching Assistant</h2>
+      <ul class="simple-list">
+        <li>Advanced Object Oriented Programming, 2018 Fall</li>
+        <li>Assembly Programming, 2019 Summer</li>
+      </ul>
+    </section>
 
-        <li>
-            <a href="http://jos.org.cn/jos/article/abstract/6923">基于eBPF的内核堆漏洞动态缓解研究</a> <br>
-            <b>Wang Zicheng</b>,Guo Yinggang,Zhong Bingnan,Chen Yueqi,Zeng Qingkai<br>
-            <i>软件学报 2023</i> <br>
-        </li> <br>
+    <!-- Services -->
+    <section class="section">
+      <h2 class="section-title">Services</h2>
+      <ul class="simple-list">
+        <li>Peer Review: IEEE Transactions on Information Forensics and Security</li>
+      </ul>
+    </section>
 
-        <li>
-            <a href="https://dl.acm.org/doi/10.1145/3564625.3567984">Formal Modeling and Security Analysis for Intra-level Privilege Separation</a> <br>
-            Yinggang Guo, <b>Zicheng Wang</b>, Bingnan Zhong, Qingkai Zeng <br>
-            <i>Annual Computer Security Applications Conference <b>(ACSAC)</b> 2022</i> <br>
-        </li> <br>
+    <!-- Open Source -->
+    <section class="section">
+      <h2 class="section-title">Open Source</h2>
+      <div class="oss-grid">
+        <div class="oss-card">
+          <h3><a href="https://github.com/a85tract/SeaK">SeaK</a></h3>
+          <p>Rethinking the Design of a Secure Allocator for OS Kernel</p>
+        </div>
+        <div class="oss-card">
+          <h3><a href="https://github.com/a85tract/o2c/tree/lss">O2C</a></h3>
+          <p>On-the-fly compartmentalization for kernel vulnerabilities</p>
+        </div>
+        <div class="oss-card">
+          <h3><a href="https://github.com/purplewall1206/ERA-eBPF-assisted-Randomize-Allocator">ERA</a></h3>
+          <p>eBPF assisted Randomization Allocator to prevent kernel heap vulnerabilities</p>
+        </div>
+        <div class="oss-card">
+          <h3><a href="https://github.com/purplewall1206/PET">PET</a></h3>
+          <p>eBPF framework to prevent discovered errors from being triggered</p>
+        </div>
+        <div class="oss-card">
+          <h3><a href="https://github.com/purplewall1206/TA-BattleEinsteinChess">TA-BattleEinsteinChess</a></h3>
+          <p>Einstein Chess Battle Server, supports 200+ players</p>
+        </div>
+        <div class="oss-card">
+          <h3><a href="https://github.com/WenyanLiu/CCFrank4dblp">CCFrank4dblp</a></h3>
+          <p>Displays CCF rank of conferences and journals with ConnectedPapers support</p>
+        </div>
+      </div>
+    </section>
 
-        
-        <li>
-          AttnCall: Refining Indirect Call Targets in Binaries with Attention <br>
-          Rui Sun, Yinggang Guo, <b>Zicheng Wang</b>, Qingkai Zeng <br>
-          <i>European Symposium on Research in Computer Security <b>(ESORICS)</b> 2023</i>
-        </li><br>
+  </div>
+</main>
 
-        <li>
-            <a href="https://link.springer.com/chapter/10.1007/978-3-031-06975-8_16">CryptKSP: A Kernel Stack Protection Model Based on AES-NI Hardware Feature</a> <br>
-            Bingnan Zhong, <b>Zicheng Wang</b>, Yinggang Guo, Qingkai Zeng <br>
-            <i>ICT Systems Security and Privacy Protection <b>(ICT SEC)</b> 2022</i>
-        </li> <br>
+<!-- ===== Footer ===== -->
+<footer class="site-footer">
+  Last update: 2026-03-26
+</footer>
 
-        <li>
-          <a href="http://ckernel.org/">ERA:基于eBPF的内核堆漏洞动态缓解机制</a> <br>
-           <b>Zicheng Wang</b>, Yinggang Guo, Yueqi Chen, Qingkai Zeng <br>
-          <i>中国Linux内核开发者大会2023 <b>(CLK)</b> 2022</i> <br>
-          [<a href="https://patchwork.kernel.org/project/netdevbpf/patch/20230719155032.4972-1-wzc@smail.nju.edu.cn/">[RFC] HotBPF: Prevent Kernel Heap-based Exploitation</a>]
-      </li> <br>
-
-      <li>
-        <a href="https://www.ebpftravel.com/">从内核到APP: eBPF驱动的跨层性能分析</a> <br>
-         <b>Zicheng Wang</b>, Zhen Wang, Lu Liu <br>
-        <i>第三届 eBPF开发者大会 2025</i> <br>
-    </li> <br>
-
-        <li>
-            Evolving Beyond Pressure: RL-enhanced Camera Launch for Resource-Critical Scenarios <br>
-            <b>Zicheng Wang</b> , Zesen Liu, Lizhi Sun , Yinggang Guo , Ligeng Chen (Honor Device Co., Ltd), Yixin Guo , Claire Gu , Jun Xiao , Tao Wang , Lu Liu , Yanyan Jiang <br>
-        <i>4th Workshop on Practical Adoption Challenges of ML for Systems (PACMI '25)</i> <br>
-    </li> <br>
-
-    <li>
-            Data Knows What the App Needs: An Intelligent Resource Watermark for Mobile Systems <br>
-            Zesen Liu, <b>Zicheng Wang</b> , Yinggang Guo , Lizhi Sun , Ligeng Chen , Yixin Guo , Claire Gu , Jun Xiao , Tao Wang , Lu Liu , Yanyan Jiang <br>
-        <i>4th Workshop on Practical Adoption Challenges of ML for Systems (PACMI '25)</i> <br>
-    </li> <br>
-
-</ol>
-
-
-
-<!-- Other Publications -->
-        <!-- <hr>
-        <p style="font-family: Trebuchet MS"><b><font size=5>Other Publications</font></b></p> 
-
-        <ol start="10" style="font-family: Trebuchet MS">
-          <li>
-            Two top tier conference papers under revision.
-          </li> <br>
-
-</ol> -->
-
-<!-- Awards -->
-
-<hr>
-        <p style="font-family: Trebuchet MS"><b><font size=5>Awards</font></b></p>  
-          <ol>
-            <li>
-              Nanjing University Outstanding Ph.D. Graduate
-            </li> <br>
-            <li>
-              Nanjing University Outstanding Graduate Student
-            </li> <br>
-            <li>
-              2023 Nanjing University Funding for International Academic Conferences
-            </li> <br>
-
-            <li>
-              Awarded Linux Foundation $1,600 Travel Funding
-            </li> <br>
-
-
-</ol>
-<!-- Teaching -->
-<hr>
-<p style="font-family: Trebuchet MS"><b><font size=5>Teaching Assistant</font></b></p> 
-
-<ul style="font-family: Trebuchet MS">
-  <li>
-  Advanced Object Oriented Programming, 2018 Fall <br>
-</li> <br>
-<li>
- Assembly Programming, 2019 Summer <br>
-</li>
-   
-</ul>
-
-<!-- Community Service -->
-<hr>
-<p style="font-family: Trebuchet MS"><b><font size=5>Services</font></b></p>
-<ul style="font-family: Trebuchet MS">
-  <li>
-    Peer Review IEEE Transactions on Information Forensics and Security<br>
-    <!-- <ul>
-      <li>IEEE Transactions on Information Forensics and Security <br></li>
-    </ul> -->
-  </li> <br>
-</ul>
-
-
-<!-- open source -->
-<hr>
-    <p style="font-family: Trebuchet MS"><b><font size=5>Open Source</font></b></p>  
-
-    <ol style="font-family: Trebuchet MS" >
-        <li>
-          <a href="https://github.com/a85tract/SeaK">Seak</a> <br>
-          SeaK: Rethinking the Design of a Secure Allocator for OS Kernel
-        </li> <br>
-        
-        <li>
-          <a href="https://github.com/a85tract/o2c/tree/lss">O2C</a> <br>
-          On-the-fly compartmentalization for kernel vulnerabilities
-
-        </li> <br>
-
-        <li>
-            <a href="https://github.com/purplewall1206/ERA-eBPF-assisted-Randomize-Allocator">ERA-eBPF-assisted-Randomize-Allocator</a> <br>
-            An eBPF assisted Randomization Allocator to prevent kernel heap vulnerabilities
-        </li> <br>
-
-        <li>
-            <a href="https://github.com/purplewall1206/PET">PET</a> <br>
-            An eBPF framework to prevent discovered error from being triggered
-        </li> <br>
-
-        <li>
-            <a href="https://github.com/purplewall1206/TA-BattleEinsteinChess">TA-BattleEinsteinChess</a> <br>
-            2018 TA project, Einstein Chess Battle Server, support 200+ players.
-        </li> <br>
-
-        <li>
-            <a href="https://github.com/WenyanLiu/CCFrank4dblp">CCFrank4dblp</a> <br>
-            Displays the CCF recommended rank of conferences and journals, commit "ConnectedPapers" support. <br>
-        </li> <br>
-
-</ol>
-
-    last update: 2025-09-14
-
-
-
-      </td>
-      </tr>
-    </tbody>
-  </table>
-
-  <table width="860" border="0" cellspacing="0" cellpadding="0" bgcolor="#6a0060" align="center">
-    <tbody>
-      <tr height="3">
-      <td style="border: solid 0 white; border-bottom-width:0.5px;">&nbsp;&nbsp;</td>
-      <td width="80" align="center" style="border: solid 0 white; border-bottom-width:0.5px;">  
-        <font color="white" style="font-size:12pt;font-family:Trebuchet MS;font-weight:bold">
-          <!-- End -->
-        </font>
-      </td>
-      <td align="center" style="border: solid 0 white; border-bottom-width:0.5px;">&nbsp;&nbsp;</td>
-      </tr>
-    </tbody>
-  </table>
- 
 </body>
 </html>
