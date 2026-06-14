@@ -25,14 +25,13 @@ Academic homepage for 王子成 (Zicheng Wang), hosted on GitHub Pages at `www.z
 
 1. Hero banner (name, title, email, links)
 2. Research
-3. In the News
-4. Experience
-5. Publications
-6. Awards
-7. Teaching Assistant
-8. Services
-9. Open Source
-10. Footer (last update date)
+3. Experience
+4. Publications
+5. Awards
+6. Teaching Assistant
+7. Services
+8. Open Source
+9. Footer (last update date)
 
 ## Content Conventions
 
