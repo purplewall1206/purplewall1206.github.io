@@ -330,6 +330,14 @@ img { max-width: 100%; height: auto; }
   color: var(--purple-main);
   font-style: normal;
 }
+.pub-sub {
+  margin-top: 0.8rem;
+  padding-left: 0.9rem;
+  border-left: 2px solid var(--border);
+}
+.pub-sub .pub-title { font-size: 0.88rem; }
+.pub-sub .pub-authors { font-size: 0.82rem; margin-bottom: 0.15rem; }
+.pub-sub .pub-venue { font-size: 0.8rem; }
 .pub-note {
   display: inline-block;
   margin-top: 0.3rem;
